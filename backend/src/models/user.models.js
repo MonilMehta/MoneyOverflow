@@ -20,15 +20,28 @@ const userSchema = new Schema(
       lowerCase: true,
       trim: true,
     },
-    fullName: {
+    fullName:{
       type: String,
-      required: true,
+      required: [true, "FullName is required"],
+      lowerCase: true,
       trim: true,
       index: true,
+    },
+    date_of_birth:{
+      type:Date,
+      required: true
+    },
+    phone_no:{
+      type:String,
+      required:true
     },
     password: {
       type: String,
       required: [true, "Password is required"],
+    },
+    points: {
+      type: Number,
+      default: 0
     },
     refreshToken: {
       type: String,
