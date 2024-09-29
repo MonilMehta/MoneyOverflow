@@ -37,7 +37,7 @@ const MainNavbar = () => {
         {/* Links to different sections with active link styling */}
         <Button
           component={Link}
-          to="/main/home"
+          to="/main/"
           sx={{
             color: isActive('/main/home') ? '#00796b' : '#ffffff', // Darker color for active page
             textDecoration: 'none',
@@ -110,6 +110,21 @@ const MainNavbar = () => {
         >
           Saving
         </Button>
+        <Button
+          component={Link}
+          to="/main/games"
+          sx={{
+            color: isActive('/main/games') ? '#00796b' : '#ffffff',
+            textDecoration: 'none',
+            margin: '0 12px',
+            transition: 'color 0.3s ease',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Quizzes
+        </Button>
 
         {/* Profile Icon with Dropdown Menu */}
         <Box>
@@ -129,8 +144,30 @@ const MainNavbar = () => {
             open={Boolean(anchorEl)}
             onClose={handleMenuClose}
           >
-            <MenuItem onClick={handleMenuClose}>Account</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Sign Out</MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+            <Link to='/main/account' style={{
+              color: '#000000',
+              textDecoration: 'none',
+              margin: '0 12px',
+              transition: 'color 0.3s ease',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}>
+            Account
+            </Link></MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+            <Link to='/' style={{
+              color: '#000000',
+              textDecoration: 'none',
+              margin: '0 12px',
+              transition: 'color 0.3s ease',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            }}>
+            Sign Out
+            </Link></MenuItem>
           </Menu>
         </Box>
       </Toolbar>

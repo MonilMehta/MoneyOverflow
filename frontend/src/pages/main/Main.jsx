@@ -13,13 +13,13 @@ const Main = () => {
     <>
      <MainNavbar/>
     <Routes>
-        <Route  path="/main/home" element={<Home />} />
-        <Route  path="/main/account" element={<Account />} />
-        <Route  path="/main/budgeting" element={<Budgeting />} />
-        <Route  path="/main/games" element={<Games />} />
-        <Route  path="/main/investing" element={<Investing />} />
-        <Route  path="/main/retirement" element={<Retirement />} />
-        <Route  path="/main/saving" element={<Saving />} />
+        <Route  path="/" element={<Home />} />
+        <Route  path="/account" element={<Account />} />
+        <Route  path="/budgeting" element={<Budgeting />} />
+        <Route  path="/games" element={<Games />} />
+        <Route  path="/investing" element={<Investing />} />
+        <Route  path="/retirement" element={<Retirement />} />
+        <Route  path="/saving" element={<Saving />} />
         
     </Routes>
     </>
