@@ -1,42 +1,40 @@
-import React from 'react'
-import Quizz from './quizze/Quizz'
-import Daily from './dailyq/Daily'
+import React, { useState } from 'react';
+import Quizz from './quizze/Quizz';
+import Daily from './dailyq/Daily';
+import Questions from './Questions/Questions';
+
 const Games = () => {
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  const handleSelectCategory = (category) => {
+    setSelectedCategory(category);
+    document.getElementById('questions').scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <>
-    <h1>Games Page</h1>
-    <div style={{
-      display: 'flex',
-      justifyContent: 'space-around',
-      flexWrap: 'wrap',
-      gap: '20px',
-      flexDirection:'row',
-      border: '1px solid black',
-      padding: '20px',
-      borderRadius: '10px',
-      width: '90%',
-      margin: 'auto',
-      height: '100vh'
+    <div>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          flexWrap: 'wrap',
+          gap: '20px',
+          flexDirection: 'row',
+          
+          padding: '20px',
+          borderRadius: '10px',
+          width: '90%',
+          margin: 'auto',
+          height: '100vh',
+        }}
+      >
 
-    }}>
-      <div style={{
-        width: '45%',
-        height: '400px',
-        border: '1px solid black',
-        borderRadius: '10px',
-        padding: '20px',
-        backgroundColor: 'lightgray',
-
-      }}>
-      <Quizz />
+          <Quizz onSelectCategory={handleSelectCategory} />
+        <Daily />
       </div>
-      <Daily />
-    
-    
+      <Questions category={selectedCategory} />
     </div>
-    
-    </>
-  )
-}
+  );
+};
 
-export default Games
+export default Games;

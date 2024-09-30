@@ -33,8 +33,6 @@ const MainNavbar = () => {
         >
           Financial Literacy
         </Typography>
-
-        {/* Links to different sections with active link styling */}
         <Button
           component={Link}
           to="/main/"
@@ -51,6 +49,21 @@ const MainNavbar = () => {
           Home
         </Button>
         <Button
+          component={Link}
+          to="/main/blog"
+          sx={{
+            color: isActive('/main/blog') ? '#00796b' : '#ffffff', // Darker color for active page
+            textDecoration: 'none',
+            margin: '0 12px',
+            transition: 'color 0.3s ease', // Smooth transition effect
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Blog
+        </Button>
+        {/* <Button
           component={Link}
           to="/main/budgeting"
           sx={{
@@ -109,7 +122,7 @@ const MainNavbar = () => {
           }}
         >
           Saving
-        </Button>
+        </Button> */}
         <Button
           component={Link}
           to="/main/games"
