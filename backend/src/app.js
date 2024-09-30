@@ -27,9 +27,11 @@ import userRouter from './routes/user.routes.js';
 import quizRouter from './routes/quiz.routes.js';
 import blogRouter from './routes/blog.routes.js';
 import communityRouter from './routes/community.routes.js'
+import learningPathRouter from './routes/learningPath.routes.js'
 // declare routes
 app.use("/api/users", userRouter)
 app.use("/api/quiz",quizRouter);
 app.use("/api/blog",blogRouter);
 app.use("/api/community",communityRouter)
+app.use("/api/learning",learningPathRouter)
 export { app }
