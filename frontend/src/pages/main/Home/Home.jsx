@@ -31,7 +31,10 @@ const Home = () => {
           <p className="text-gray-500">Keep up the great work!</p>
         </div>
         <div className="flex justify-between items-center bg-blue-100 p-4 rounded-lg">
-          <span className="text-lg font-semibold">XP Booster: {xpBooster}x</span>
+          <div className="flex items-center">
+          <img src='https://cdn.iconscout.com/icon/premium/png-256-thumb/xp-8203450-6650796.png' style={{width:'30px'}}/>
+          <span className="text-lg font-semibold">  Booster: {xpBooster}x</span>
+          </div>
           <div className="flex items-center">
             <Coins className="text-yellow-500 mr-2 h-6 w-6" />
             <span className="text-lg font-semibold">Coins: {coins}</span>
