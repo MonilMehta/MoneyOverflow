@@ -23,30 +23,37 @@ const SideBar = () => {
     }
   };
 
+  const handleNextModule = () => {
+    const currentIndex = modules.findIndex(module => module.name === selectedModule);
+    if (currentIndex < modules.length - 1) {
+      setSelectedModule(modules[currentIndex + 1].name);
+    }
+  };
+
   const renderModule = () => {
     switch (selectedModule) {
       case 'Financial Basics':
-        return <FinancialBasic />;
+        return <FinancialBasic onNextModule={handleNextModule} />;
       case 'Budgeting':
-        return <Budgeting />;
+        return <Budgeting onNextModule={handleNextModule} />;
       case 'Saving':
-        return <Saving />;
+        return <Saving onNextModule={handleNextModule} />;
       case 'Debt Management':
-        return <DebtManagement />;
+        return <DebtManagement onNextModule={handleNextModule} />;
       case 'Investing':
-        return <Investing />;
+        return <Investing onNextModule={handleNextModule} />;
       case 'Retirement Planning':
-        return <RetirementPlanning />;
+        return <RetirementPlanning onNextModule={handleNextModule} />;
       case 'Insurance and Protection':
-        return <InsuranceAndProtection />;
+        return <InsuranceAndProtection onNextModule={handleNextModule} />;
       case 'Taxes and Legal Considerations':
-        return <TaxesAndLegalConsideration />;
+        return <TaxesAndLegalConsideration onNextModule={handleNextModule} />;
       case 'Financial Tools and Resources':
-        return <FinancialToolsAndResources />;
+        return <FinancialToolsAndResources onNextModule={handleNextModule} />;
       case 'Wealth Building':
         return <WealthBuilding />;
       default:
-        return <FinancialBasic />;
+        return <FinancialBasic onNextModule={handleNextModule} />;
     }
   };
 
@@ -156,7 +163,10 @@ const SideBar = () => {
                 <span>{module.name}</span>
                 <button
                   className="expand-btn"
-                  onClick={() => toggleExpand(module.name)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleExpand(module.name);
+                  }}
                 >
                   {expandedModules.includes(module.name) ? (
                     <ChevronUp className="arrow" />
@@ -183,19 +193,16 @@ const SideBar = () => {
   );
 };
 
-// Add sticky sidebar styles
 const styles = `
   .app-container {
     display: flex;
     height: 100vh;
-    postition:sticky;
   }
   .sidebar {
-    background-color: #2563eb; /* Changed to bg-blue-600 */
+    background-color: #2563eb;
     color: white;
     width: 250px;
     padding: 16px;
-    position: -webkit-sticky; /* For Safari */
     position: sticky;
     top: 0;
     height: 100vh;
@@ -219,7 +226,7 @@ const styles = `
     align-items: center;
   }
   .module:hover, .module.active {
-    background-color: #1e40af; /* Darker shade for hover and active */
+    background-color: #1e40af;
   }
   .expand-btn {
     background: none;
@@ -241,11 +248,11 @@ const styles = `
   .submodule {
     padding: 4px;
     font-size: 14px;
-    background-color: #1e3a8a; /* Change submodule color */
+    background-color: #1e3a8a;
     border-radius: 4px;
   }
   .submodule:hover {
-    background-color: #1d4ed8; /* Change hover color for submodules */
+    background-color: #1d4ed8;
   }
   .content-area {
     flex-grow: 1;

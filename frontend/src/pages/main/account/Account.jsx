@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import { Camera, Mail, Phone, Cake, Edit2, Save, X, AlertCircle, Calendar } from 'lucide-react';
 import Badge from './Badge/Badge';
+import { currentUser } from "../../../apis/user.api";
 
 const Alert = ({ children, onClose }) => {
   useEffect(() => {
@@ -47,16 +49,40 @@ const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [formData, setFormData] = useState({
-    username: 'johndoe',
-    fullName: 'John Doe',
-    email: 'john@example.com',
-    phone: '+1 234 567 8900',
-    dateOfBirth: '1990-01-01',
-    points: 100,
-    profileImage: '/api/placeholder/150/150',
+    username: '',
+    fullName: '',
+    email: '',
+    phone: '',
+    dateOfBirth: '',
+    points: 0,
   });
 
   const fileInputRef = useRef(null);
+
+  // Fetch current user data from backend
+  const fetchCurrentUser = async () => {
+    try {
+      let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
+      const res = await axios.get(currentUser, { headers: { Authorization: `Bearer ${accessToken}` } });
+      const userData = res?.data?.data;
+
+      // Update formData with fetched user data
+      setFormData({
+        username: userData.username || '',
+        fullName: userData.fullName || '',
+        email: userData.email || '',
+        phone: userData.phone_no || '',
+        dateOfBirth: userData.date_of_birth ? userData.date_of_birth.split('T')[0] : '',
+        points: userData.points || 0
+      });
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCurrentUser();
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -92,30 +118,6 @@ const Account = () => {
         </div>
         <div className="px-4 py-5 sm:p-6">
           <div className="flex flex-col md:flex-row md:space-x-6">
-            <div className="flex-shrink-0 mb-6 md:mb-0">
-              <div className="relative">
-                <img
-                  className="h-40 w-40 rounded-full object-cover"
-                  src={formData.profileImage}
-                  alt="Profile"
-                />
-                <button
-                  className={`absolute bottom-0 right-0 rounded-full p-2 shadow-lg ${
-                    isEditing ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'
-                  }`}
-                  onClick={triggerImageUpload}
-                >
-                  <Camera className="h-5 w-5" />
-                </button>
-                <input
-                  type="file"
-                  ref={fileInputRef}
-                  onChange={handleImageUpload}
-                  accept="image/*"
-                  className="hidden"
-                />
-              </div>
-            </div>
             <div className="flex-grow space-y-4">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <ProfileField
@@ -154,30 +156,31 @@ const Account = () => {
                   onChange={(e) => handleInputChange({ target: { name: 'dateOfBirth', value: e.target.value } })}
                   type="date"
                 />
-                <div className="flex flex-col space-y-1">
-                  <label className="text-sm font-medium text-gray-700">Points</label>
-                  <div className="text-lg font-semibold text-blue-600">{formData.points}</div>
-                </div>
+                <ProfileField
+                  label="Points"
+                  value={formData.points}
+                  isEditing={false} // Points are read-only
+                />
               </div>
             </div>
           </div>
         </div>
-        <div className="px-4 py-4 sm:px-6 bg-gray-50 flex justify-end space-x-3">
+        <div className="bg-gray-50 px-4 py-4 sm:px-6 flex justify-end space-x-4">
           {isEditing ? (
             <>
-              <button
-                onClick={() => setIsEditing(false)}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                <X className="h-5 w-5 mr-2" />
-                Cancel
-              </button>
               <button
                 onClick={handleSave}
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 <Save className="h-5 w-5 mr-2" />
-                Save Changes
+                Save
+              </button>
+              <button
+                onClick={() => setIsEditing(false)}
+                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-gray-600 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+              >
+                <X className="h-5 w-5 mr-2" />
+                Cancel
               </button>
             </>
           ) : (
@@ -186,20 +189,13 @@ const Account = () => {
               className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               <Edit2 className="h-5 w-5 mr-2" />
-              Edit Profile
+              Edit
             </button>
           )}
         </div>
       </div>
-      {/* Badge Section */}
-      <div className="max-w-3xl mx-auto py-4">
-        <Badge />
-      </div>
       {showAlert && (
-        <Alert onClose={() => setShowAlert(false)}>
-          <AlertCircle className="h-5 w-5 inline mr-2" />
-          Profile updated successfully!
-        </Alert>
+        <Alert onClose={() => setShowAlert(false)}>Profile updated successfully!</Alert>
       )}
     </div>
   );

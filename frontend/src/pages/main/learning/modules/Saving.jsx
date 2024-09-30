@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Savings = () => {
+const Savings = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,11 +39,19 @@ const Savings = () => {
     ));
   };
 
+  const handleNextClick = () => {
+    if (onNextModule && typeof onNextModule === 'function') {
+      onNextModule();
+    } else {
+      console.error("onNextModule is not a function or is not provided");
+    }
+  };
+
   return (
     <div className="financial-basic-page" style={{
         width: '100%',
     }}>
-      <h1>Saving</h1>
+      <h1>Savings</h1>
       {submodules.map((submodule, index) => (
         <div key={index} className="submodule-section">
           <h2 className="submodule-title">{submodule.title}</h2>
@@ -52,6 +60,7 @@ const Savings = () => {
           </div>
         </div>
       ))}
+      <button className="next-button" onClick={handleNextClick}>Next</button>
     </div>
   );
 };
@@ -87,11 +96,25 @@ const styles = `
   .submodule-paragraph {
     margin-bottom: 12px;
   }
+  .next-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .next-button:hover {
+    background-color: #1e40af;
+  }
 `;
 
-export default () => (
+export default ({ onNextModule }) => (
   <>
     <style>{styles}</style>
-    <Savings />
+    <Savings onNextModule={onNextModule} />
   </>
 );

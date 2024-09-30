@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const FinancialBasic = () => {
+const FinancialBasic = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +39,14 @@ const FinancialBasic = () => {
     ));
   };
 
+  const handleNextClick = () => {
+    if (onNextModule && typeof onNextModule === 'function') {
+      onNextModule();
+    } else {
+      console.error("onNextModule is not a function or is not provided");
+    }
+  };//aa e ek 
+
   return (
     <div className="financial-basic-page" style={{
         width: '100%',
@@ -52,11 +60,11 @@ const FinancialBasic = () => {
           </div>
         </div>
       ))}
+      <button className="next-button" onClick={handleNextClick}>Next</button>
     </div>
   );
 };
 
-// Add styles to make the page look decent and responsive
 const styles = `
   .financial-basic-page {
     font-size: 14px;
@@ -87,11 +95,25 @@ const styles = `
   .submodule-paragraph {
     margin-bottom: 12px;
   }
+  .next-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .next-button:hover {
+    background-color: #1e40af;
+  }
 `;
 
-export default () => (
+export default ({ onNextModule }) => (
   <>
     <style>{styles}</style>
-    <FinancialBasic />
+    <FinancialBasic onNextModule={onNextModule} />
   </>
 );
