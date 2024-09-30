@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { Card, CardContent, CardMedia, Typography } from '@mui/material'; // Import Material-UI components
 import { singleBlog } from '../../../apis/blogs.api';
 
 export default function BlogPage() {
-  const { id } = useParams(); 
-  const [blogDetails, setBlogDetails] = useState(null); 
+  const { id } = useParams();
+  const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -41,22 +42,43 @@ export default function BlogPage() {
 
   return (
     <div className="container mx-auto p-5">
-      <h1 className="text-4xl font-bold mb-4 text-center">{blogDetails.title}</h1>
-      {blogDetails.imageUrl && (
-        <div className="flex justify-center mb-6">
-          <img
-            src={blogDetails.imageUrl}
+      <Card
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          width: '100%',
+          borderRadius: '8px',
+          boxShadow: '0px 4px 8px rgba(37, 99, 235, 0.5)', // Blue shadow color
+          transition: 'box-shadow 0.3s ease', // Smooth transition for hover effect
+          '&:hover': {
+            boxShadow: '0px 8px 16px rgba(37, 99, 235, 0.7)', // Increased blue shadow on hover
+          },
+        }}
+      >
+        {blogDetails.imageUrl && (
+          <CardMedia
+            component="img"
+            image={blogDetails.imageUrl}
             alt={blogDetails.title}
-            className="rounded-lg shadow-lg max-w-full h-auto"
+            sx={{
+              width: { xs: '100%', md: '40%' },
+              height: { xs: '200px', md: 'auto' },
+              objectFit: 'cover',
+            }} 
           />
-        </div>
-      )}
-      <p className="text-gray-600 mb-6 text-center">
-        Published on: {new Date(blogDetails.createdAt).toLocaleDateString()}
-      </p>
-      <div className="text-lg leading-relaxed text-justify max-w-4xl mx-auto">
-        {blogDetails.description}
-      </div>
+        )}
+        <CardContent sx={{ flex: '1', padding: '24px' }}> {/* Increased padding for better spacing */}
+          <Typography variant="h5" component="div" className="text-center font-bold mb-2">
+            {blogDetails.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" className="text-center mb-4">
+            Published on: {new Date(blogDetails.createdAt).toLocaleDateString()}
+          </Typography>
+          <Typography variant="body1" color="text.primary" className="text-justify mb-4">
+            {blogDetails.description}
+          </Typography>
+        </CardContent>
+      </Card>
     </div>
   );
 }
