@@ -4,7 +4,7 @@ const Badge = () => {
   return (
     <>
     <h1>
-        MoneyOverflow
+        Your Badges
     </h1>
     </>
   )
