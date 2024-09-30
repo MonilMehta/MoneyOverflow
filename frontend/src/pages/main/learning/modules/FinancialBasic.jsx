@@ -64,8 +64,6 @@ const styles = `
     margin: 20px auto;
     padding: 20px;
     background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   }
   h1 {
     font-size: 24px;
