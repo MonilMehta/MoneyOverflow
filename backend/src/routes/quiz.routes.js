@@ -8,7 +8,7 @@ const router = Router();
 
 router.route("/uploadQuestion").post(uploadQuestion);
 
-router.route("/getQuestion").get(getQuestions);
+router.route("/getQuestion").post(getQuestions);
 
 router.route("/checkAnswer").post(check);
 

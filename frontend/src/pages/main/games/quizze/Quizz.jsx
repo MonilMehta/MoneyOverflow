@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Card, CardContent, Button, Typography, Grid } from '@mui/material';
 
 const Quizz = ({ onSelectCategory }) => {
   const [quizCounters, setQuizCounters] = useState({
-    savings: { solved: 2, total: 20 },
-    retirement: { solved: 5, total: 20 },
-    investing: { solved: 8, total: 20 },
-    budgeting: { solved: 3, total: 20 },
+    savings: { solved: 0, total: 0 },
+    retirement: { solved: 0, total: 0 },
+    investing: { solved: 0, total: 0 },
+    budgeting: { solved: 0, total: 0 },
   });
 
   const handleSelectCategory = (category) => {
@@ -14,50 +13,40 @@ const Quizz = ({ onSelectCategory }) => {
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <Typography variant="h4" style={{ marginBottom: '20px' }}>
-        Select a Quiz
-      </Typography>
-      <Grid container spacing={4} justifyContent="center">
+    <div className="text-center p-5 w-full">
+      <h4 className="text-4xl font-mono mb-8 font-bold text-[#dbf4ff]">Select a Category</h4>
+      <div className="flex space-x-4 justify-around">
         {Object.keys(quizCounters).map((category) => (
-          <Grid item xs={12} sm={6} md={6} key={category}>
-            <Card
-              variant="outlined"
-              style={{
-                cursor: 'pointer',
-                transition: 'transform 0.3s',
-                height: '200px', 
-                '&:hover': { transform: 'scale(1.05)' },
-              }}
-              onClick={() => handleSelectCategory(category)}
+          <div
+            key={category}
+            className="bg-white border border-gray-300 rounded-2xl transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:border-blue-500 h-40 w-64 flex flex-col justify-between p-4"
+          >
+            <div>
+              <h5 className="text-2xl mb-2 font-medium text-[#31475e]">
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </h5>
+              <p className="text-base mb-4">
+                {quizCounters[category].solved}/{quizCounters[category].total} solved
+              </p>
+            </div>
+            <button
+              className={`py-2 px-4 rounded-lg text-white w-full transition duration-300 ${
+                category === 'savings'
+                  ? 'bg-red-500 hover:bg-red-700'
+                  : category === 'retirement'
+                  ? 'bg-purple-600 hover:bg-purple-800'
+                  : category === 'investing'
+                  ? 'bg-green-500 hover:bg-green-700'
+                  : 'bg-yellow-400 hover:bg-yellow-600'
+              }`}
+              onClick={() => handleSelectCategory(category)} // Call the function when button is clicked
             >
-              <CardContent>
-                <Typography variant="h5" style={{ marginBottom: '10px' }}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
-                </Typography>
-                <Typography variant="body1" style={{ marginBottom: '20px' }}>
-                  {quizCounters[category].solved}/{quizCounters[category].total} solved
-                </Typography>
-                <Button
-                  variant="contained"
-                  color={
-                    category === 'savings'
-                      ? 'primary'
-                      : category === 'retirement'
-                      ? 'secondary'
-                      : category === 'investing'
-                      ? 'success'
-                      : 'warning'
-                  }
-                  style={{ marginTop: 'auto', width: '100%' }}
-                >
-                  Start Quiz
-                </Button>
-              </CardContent>
-            </Card>
-          </Grid>
+              Select
+            </button>
+          </div>
         ))}
-      </Grid>
+      </div>
+      <hr className='mt-12 border-b-2 border-white' />
     </div>
   );
 };

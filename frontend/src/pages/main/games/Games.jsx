@@ -12,27 +12,12 @@ const Games = () => {
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          flexWrap: 'wrap',
-          gap: '20px',
-          flexDirection: 'row',
-          
-          padding: '20px',
-          borderRadius: '10px',
-          width: '90%',
-          margin: 'auto',
-          height: '100vh',
-        }}
-      >
-
-          <Quizz onSelectCategory={handleSelectCategory} />
-        <Daily />
-      </div>
+    <div className='pt-16 bg-blue-600 min-h-screen'>
+      <div className="flex flex-wrap justify-around gap-5 p-5 rounded-lg w-11/12 mx-auto">
+        <Quizz onSelectCategory={handleSelectCategory} />
+        {/* <Daily /> */}
       <Questions category={selectedCategory} />
+      </div>
     </div>
   );
 };
