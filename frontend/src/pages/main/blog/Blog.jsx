@@ -85,7 +85,7 @@ const Blog = () => {
   const blogImage = selectedBlog?.imageUrl || image; // Use optional chaining to avoid accessing imageUrl of null
 
   return (
-    <Box display="flex" justifyContent="space-between" padding={2}>
+    <Box display="flex" justifyContent="space-between" padding={2} marginTop={8} className="bg-gradient-to-r from-blue-500 to-purple-500">
       {/* Blog Cards Section */}
       <Box flex={1} marginRight={2}>
         {currentBlogs.map((blog) => (

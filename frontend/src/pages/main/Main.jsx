@@ -10,6 +10,7 @@ import Games from './games/Games';
 // import Saving from './saving/Saving';
 import Blog from './blog/Blog';
 import Tools from './tools/Tools';
+import BlogPosts from './blog/Blog2';
 
 const Main = () => {
   return (
@@ -24,6 +25,7 @@ const Main = () => {
         <Route path="/retirement" element={<Retirement />} />
         <Route path="/saving" element={<Saving />} /> */}
         <Route path="/blogs" element={<Blog />} />
+        <Route path="/blogs2" element={<BlogPosts />} />
         <Route path="/tools" element={<Tools />} />
       </Routes>
     </>
