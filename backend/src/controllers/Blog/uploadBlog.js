@@ -2,11 +2,12 @@ import {Blog} from "../../models/blogs.models.js";
 
 const uploadBlog = async (req, res) => {
     try {
-      const { title, description } = req.body;
+      const { title, description, imageUrl } = req.body;
   
       const newBlog = new Blog({
         title,
-        description
+        description,
+        imageUrl
       });
   
       await newBlog.save();
