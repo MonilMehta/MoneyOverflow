@@ -87,7 +87,7 @@ const styles = `
   .submodule-paragraph {
     margin-bottom: 12px;
   }
-`;
+;`
 
 export default () => (
   <>

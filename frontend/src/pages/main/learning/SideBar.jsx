@@ -156,7 +156,10 @@ const SideBar = () => {
                 <span>{module.name}</span>
                 <button
                   className="expand-btn"
-                  onClick={() => toggleExpand(module.name)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent triggering module selection when expanding
+                    toggleExpand(module.name);
+                  }}
                 >
                   {expandedModules.includes(module.name) ? (
                     <ChevronUp className="arrow" />
@@ -188,14 +191,12 @@ const styles = `
   .app-container {
     display: flex;
     height: 100vh;
-    postition:sticky;
   }
   .sidebar {
-    background-color: #2563eb; /* Changed to bg-blue-600 */
+    background-color: #2563eb;
     color: white;
     width: 250px;
     padding: 16px;
-    position: -webkit-sticky; /* For Safari */
     position: sticky;
     top: 0;
     height: 100vh;
@@ -219,7 +220,7 @@ const styles = `
     align-items: center;
   }
   .module:hover, .module.active {
-    background-color: #1e40af; /* Darker shade for hover and active */
+    background-color: #1e40af;
   }
   .expand-btn {
     background: none;
@@ -241,11 +242,11 @@ const styles = `
   .submodule {
     padding: 4px;
     font-size: 14px;
-    background-color: #1e3a8a; /* Change submodule color */
+    background-color: #1e3a8a;
     border-radius: 4px;
   }
   .submodule:hover {
-    background-color: #1d4ed8; /* Change hover color for submodules */
+    background-color: #1d4ed8;
   }
   .content-area {
     flex-grow: 1;
