@@ -1,0 +1,6 @@
+.hero-section {
+    height: 100vh;
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    background-size: 200% 200%;
+    transition: background-position 0.1s;
+  }
