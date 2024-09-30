@@ -188,6 +188,7 @@ const styles = `
   .app-container {
     display: flex;
     height: 100vh;
+    postition:sticky;
   }
   .sidebar {
     background-color: #1f2937;

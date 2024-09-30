@@ -7,7 +7,7 @@ const FinancialBasic = () => {
 
   useEffect(() => {
     const fetchSubmodules = async () => {
-      const learningPathId = "66faae800e014d17ed7a0d8e"; 
+      const learningPathId = "66faae800e014d17ed7a0d8e";
       const submodulesData = [];
 
       try {
@@ -16,9 +16,9 @@ const FinancialBasic = () => {
             learningPathId,
             order,
           });
-          submodulesData.push(response.data); 
+          submodulesData.push(response.data);
         }
-        setSubmodules(submodulesData); 
+        setSubmodules(submodulesData);
       } catch (error) {
         console.error("Error fetching submodules:", error);
       } finally {
@@ -33,17 +33,67 @@ const FinancialBasic = () => {
     return <p>Loading submodules...</p>;
   }
 
+  const formatContent = (content) => {
+    return content.split('\n').map((paragraph, index) => (
+      <p key={index} className="submodule-paragraph">{paragraph}</p>
+    ));
+  };
+
   return (
-    <div>
+    <div className="financial-basic-page" style={{
+        width: '100%',
+    }}>
       <h1>Financial Basics</h1>
       {submodules.map((submodule, index) => (
         <div key={index} className="submodule-section">
-          <h2>{submodule.title}</h2>
-          <p>{submodule.content}</p>
+          <h2 className="submodule-title">{submodule.title}</h2>
+          <div className="submodule-content">
+            {formatContent(submodule.content)}
+          </div>
         </div>
       ))}
     </div>
   );
 };
 
-export default FinancialBasic;
+// Add styles to make the page look decent and responsive
+const styles = `
+  .financial-basic-page {
+    font-size: 14px;
+    max-width: 1100px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .submodule-section {
+    margin-bottom: 20px;
+  }
+  .submodule-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .submodule-content {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+  }
+  .submodule-paragraph {
+    margin-bottom: 12px;
+  }
+`;
+
+export default () => (
+  <>
+    <style>{styles}</style>
+    <FinancialBasic />
+  </>
+);
