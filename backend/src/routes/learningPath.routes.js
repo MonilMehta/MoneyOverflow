@@ -5,8 +5,13 @@ import { getLesson } from "../controllers/learning/getLesson.js";
 
 const router = Router();
 
+// POST route to create a learning path
 router.route("/createLearningPath").post(createLearnPath);
-router.route("/createLesson").post(createLesson);
-router.route("/getLesson").get(getLesson);
 
-export default router
+// POST route to add lessons to a learning path
+router.route("/createLesson").post(createLesson);
+
+// GET route to get a lesson from a learning path by ID and order
+router.route("/getLesson").post(getLesson);
+
+export default router;

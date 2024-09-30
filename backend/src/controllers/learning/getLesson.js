@@ -1,39 +1,33 @@
 import { LearningPath } from "../../models/lesson.models.js";
 
-const getLesson = async (req, resp) => {
-    const { learningPathId } = req.body;
-    
+// POST to get lessons from a specific learning path by order
+const getLesson = async (req, res) => {
+    const { learningPathId, order } = req.body;
+  
     try {
-        // Validate if learningPathId is provided
-        if (!learningPathId) {
-            return resp.status(400).json({ message: 'Learning path ID is required' });
+        // Validate the input
+        if (!learningPathId || order === undefined) {
+            return res.status(400).json({ message: 'Learning path ID and order are required' });
         }
 
-        // Find the learning path by ID
+        // Find the learning path
         const learningPath = await LearningPath.findById(learningPathId);
-
-        // Check if learning path exists
         if (!learningPath) {
-            return resp.status(404).json({ message: 'Learning path not found' });
+            return res.status(404).json({ message: 'Learning path not found' });
         }
 
-        // Retrieve all lessons from the learning path
-        const lessons = learningPath.lessons;
-
-        // If no lessons exist
-        if (!lessons || lessons.length === 0) {
-            return resp.status(404).json({ message: 'No lessons found for this learning path' });
+        // Find the lesson by order
+        const lesson = learningPath.lessons.find(lesson => lesson.order === parseInt(order));
+        if (!lesson) {
+            return res.status(404).json({ message: 'Lesson not found' });
         }
 
-        // Return all lessons as JSON
-        resp.json(lessons);
-        
+        // Send the lesson back as the response
+        res.json(lesson);
     } catch (error) {
         console.error(error);
-        resp.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error' });
     }
-};
+}
 
-export { getLesson };
-
-
+export {getLesson}
