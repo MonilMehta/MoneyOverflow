@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera, Mail, Phone, Cake, Edit2, Save, X, AlertCircle, Calendar } from 'lucide-react';
+import Badge from './Badge/Badge';
 
 const Alert = ({ children, onClose }) => {
   useEffect(() => {
@@ -189,6 +190,10 @@ const Account = () => {
             </button>
           )}
         </div>
+      </div>
+      {/* Badge Section */}
+      <div className="max-w-3xl mx-auto py-4">
+        <Badge />
       </div>
       {showAlert && (
         <Alert onClose={() => setShowAlert(false)}>
