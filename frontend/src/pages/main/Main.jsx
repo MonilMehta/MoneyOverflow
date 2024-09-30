@@ -13,6 +13,7 @@ import Blog from './blog/Blog';
 import Tools from './tools/Tools';
 import BlogPosts from './blog/Blog2';
 import BlogPage from './blog/BlogPage';
+import BusinessNewsApp from './News/Business';
 
 const Main = () => {
   return (
@@ -31,6 +32,7 @@ const Main = () => {
         <Route path="/blogs/:id" element={<BlogPage />} />
         <Route path="/tools" element={<Tools />} />
         <Route path="/learning" element={<Learning />} />
+        <Route path="/news" element={<BusinessNewsApp />} />
       </Routes>
     </>
   );
