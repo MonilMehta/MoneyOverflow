@@ -23,7 +23,7 @@ const Main = () => {
         {/* <Route path="/investing" element={<Investing />} />
         <Route path="/retirement" element={<Retirement />} />
         <Route path="/saving" element={<Saving />} /> */}
-        <Route path="/blog" element={<Blog />} />
+        <Route path="/blogs" element={<Blog />} />
         <Route path="/tools" element={<Tools />} />
       </Routes>
     </>
