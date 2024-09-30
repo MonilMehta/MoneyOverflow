@@ -14,7 +14,7 @@ const Tools = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowGif(false);
-      setBgColor("bg-gradient-to-r from-blue-500 to-purple-500");
+      setBgColor("bg-gradient-to-r from-blue-500 to-blue-800");
     }, 3000);
 
     return () => clearTimeout(timer); 
