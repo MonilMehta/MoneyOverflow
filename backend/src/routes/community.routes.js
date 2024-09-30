@@ -12,6 +12,6 @@ router.route("/getQuest").get(getQuest);
 
 router.route("/uploadAns").post(uploadAns);
 
-router.route("/getAns").get(getAns);
+router.route("/getAns").post(getAns);
 
 export default router

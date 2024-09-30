@@ -3,6 +3,7 @@ import { PlayCircle } from 'lucide-react';
 import { Card, CardContent } from './Card';
 import { Progress } from './Progress';
 import { Button } from './Button';
+import { Link } from "react-router-dom";
 
 const ContinueLearning = () => {
   const currentCourse = {
@@ -24,16 +25,16 @@ const ContinueLearning = () => {
         <div className="flex flex-col md:flex-row">
           <div className="md:w-1/2 p-8 text-white z-10">
             <h3 className="text-3xl font-semibold mb-4">{currentCourse.title}</h3>
-            <p className="text-xl font-medium font-semibold mb-6">Next Lesson: {currentCourse.nextLesson}</p>
+            <p className="text-xl font-medium mb-6">Next Lesson: {currentCourse.nextLesson}</p>
             <p className="text-m mb-4">Time Left: {currentCourse.timeLeft}</p>
             <Progress value={currentCourse.progress} className="mb-4" />
             <p className="text-xl font-semibold">{currentCourse.progress}% Complete</p>
           </div>
           <div className="flex flex-col justify-center md:w-1/2 p-8 z-10">
-            <Button className="bg-yellow-400 text-gray-800 hover:bg-yellow-500 hover:shadow-lg transition-all flex items-center justify-center space-x-2 py-3 px-6 text-lg rounded-lg font-semibold">
+            <Link to='/main/learning' className="bg-yellow-400 text-gray-800 hover:bg-yellow-500 hover:shadow-lg transition-all flex items-center justify-center space-x-2 py-3 px-6 text-lg rounded-lg font-semibold">
               <PlayCircle className="h-6 w-6" />
               <span>Continue Learning</span>
-            </Button>
+            </Link>
           </div>
         </div>
       </Card>
