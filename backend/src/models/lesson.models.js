@@ -23,8 +23,13 @@ const learningPathSchema = new mongoose.Schema({
         type: String, 
         required: true, 
         unique: true 
-    }, // e.g., "Savings"
-    lessons: [lessonSchema], // Array of lessons
+    }, 
+    lessons: [lessonSchema],
+    index: { 
+        type: Number, 
+        required: true, 
+        unique: true,
+    }
   });
 
 export const LearningPath = mongoose.model('LearningPath',learningPathSchema);
