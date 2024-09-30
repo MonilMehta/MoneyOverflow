@@ -132,7 +132,7 @@ const Blog = () => {
         <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '20px' }}>
           Most Popular Blogs
         </Typography>
-        {blogs.slice(0, 5).map((blog) => (
+        {blogs.slice(0, 3).map((blog) => (
           <BlogCard key={blog._id} blog={blog} onOpen={handleOpen} />
         ))}
       </Box>
