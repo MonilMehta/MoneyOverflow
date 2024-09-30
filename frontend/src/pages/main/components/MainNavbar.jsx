@@ -33,19 +33,19 @@ const MainNavbar = () => {
               to="/courses"
               className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
             >
-              Courses
+              Learning Paths
             </Link>
             <Link
-              to="/resources"
+              to="/main/games"
               className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
             >
-              Resources
+              Quiz
             </Link>
             <Link
-              to="/about"
+              to="/main/blogs"
               className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
             >
-              About
+              Blogs
             </Link>
           </div>
 
@@ -66,7 +66,7 @@ const MainNavbar = () => {
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg py-2 z-50">
                       <Link
-                        to="/profile"
+                        to="/main/account"
                         className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
                       >
                         Profile
