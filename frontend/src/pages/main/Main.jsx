@@ -8,6 +8,7 @@ import Games from './games/Games';
 // import Investing from './investing/Investing';
 // import Retirement from './retirement/Retirement';
 // import Saving from './saving/Saving';
+import Learning from './learning/Learning';
 import Blog from './blog/Blog';
 import Tools from './tools/Tools';
 import BlogPosts from './blog/Blog2';
@@ -27,6 +28,7 @@ const Main = () => {
         <Route path="/blogs" element={<Blog />} />
         <Route path="/blogs2" element={<BlogPosts />} />
         <Route path="/tools" element={<Tools />} />
+        <Route path="/learning" element={<Learning />} />
       </Routes>
     </>
   );
