@@ -20,7 +20,6 @@ const Games = () => {
           flexWrap: 'wrap',
           gap: '20px',
           flexDirection: 'row',
-          
           padding: '20px',
           borderRadius: '10px',
           width: '90%',

@@ -1,154 +1,96 @@
-import React, { useEffect, useState, useRef } from 'react';
-import BlogCard from './BlogCard'; 
-import { Typography, Box, Button, styled } from '@mui/material';
-import image from './image.jpg';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Typography } from '@mui/material';
+import BlogCard from './BlogCard';
+import BlogDetail from './BlogDetail';
+import './Blog.css';
+import BlogCard2 from './BlogCard2';
 
-const Blog = () => {
-  const [blogs, setBlogs] = useState([]); 
-  const [loading, setLoading] = useState(true); 
-  const [error, setError] = useState(null); 
-  const [selectedBlog, setSelectedBlog] = useState(null); 
-  const blogDetailRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false); // State for button visibility
-  const [currentPage, setCurrentPage] = useState(1); // State for current page
-  const blogsPerPage = 5; // Number of blogs per page
+const BlogPage = () => {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedBlog, setSelectedBlog] = useState(null);
+  const [relatedBlogs, setRelatedBlogs] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const blogsPerPage = 5;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/blog/getBlogs'); 
+        const response = await fetch('http://localhost:8000/api/blog/getBlogs');
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Failed to fetch blogs');
         }
         const data = await response.json();
-        setBlogs(data); 
-      } catch (err) {
-        setError(err.message); 
+        setBlogs(data);
+      } catch (error) {
+        setError(error.message);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
-
-    fetchBlogs(); 
+    fetchBlogs();
   }, []);
 
-  const handleOpen = (blog) => {
-    setSelectedBlog(blog); 
-    if (blogDetailRef.current) {
-      blogDetailRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
+  const handleOpenBlog = (blog) => {
+    const relatedBlogs = blogs
+      .filter((b) => b._id !== blog._id)
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 3);
+
+    setSelectedBlog(blog);
+    setRelatedBlogs(relatedBlogs);
   };
 
-  const renderDescription = (description) => {
-    const paragraphs = description.split('\n').filter(paragraph => paragraph.trim() !== '');
-    return paragraphs.map((paragraph, index) => (
-      <Typography key={index} paragraph>
-        {paragraph.trim()}
-      </Typography>
-    ));
-  };
+  const currentBlogs = blogs.slice((currentPage - 1) * blogsPerPage, currentPage * blogsPerPage);
 
-  // Scroll to Top functionality
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  // Handle scroll event
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsVisible(window.scrollY > 300); // Show button if scrolled more than 300px
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
-  if (loading) return <Typography>Loading...</Typography>; 
-  if (error) return <Typography color="error">{error}</Typography>; 
-
-  // Calculate indices for pagination
-  const indexOfLastBlog = currentPage * blogsPerPage; 
-  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage; 
-  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog); 
-
-  const totalPages = Math.ceil(blogs.length / blogsPerPage); // Total number of pages
-
-  const BlogImage = styled('img')({
-    width: '100%',
-    height: '200px',
-    objectFit: 'cover',
-  });
-
-  // Use the image from the backend if it exists, otherwise use the local image
-  const blogImage = selectedBlog?.imageUrl || image; // Use optional chaining to avoid accessing imageUrl of null
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div className="error-message">{error}</div>;
 
   return (
-    <Box display="flex" justifyContent="space-between" padding={2} marginTop={8} className="bg-gradient-to-r from-blue-500 to-purple-500">
-      {/* Blog Cards Section */}
-      <Box flex={1} marginRight={2}>
-        {currentBlogs.map((blog) => (
-          <BlogCard key={blog._id} blog={blog} onOpen={handleOpen} /> 
-        ))}
+    <Box display="flex" padding={2} marginTop={8}>
+      <Box flex={1} marginRight={2} style={{ marginTop: '90px' }}>
+        <h1 className='blog-heading'>Blogs</h1>
+        {selectedBlog ? (
+          <BlogDetail blog={selectedBlog} relatedBlogs={relatedBlogs} />
+        ) : (
+          currentBlogs.map((blog) => (
+            <BlogCard key={blog._id} blog={blog} onOpen={handleOpenBlog} />
+          ))
+        )}
 
-        {/* Pagination Section */}
-        <Box display="flex" justifyContent="center" marginTop={2}>
-          <Button 
-            variant="contained" 
-            disabled={currentPage === 1} 
-            onClick={() => setCurrentPage(currentPage - 1)} 
-            sx={{ marginRight: 1 }}
-          >
-            Previous
-          </Button>
-          <Typography variant="body1" sx={{ margin: '0 10px' }}>
-            Page {currentPage} of {totalPages}
-          </Typography>
-          <Button 
-            variant="contained" 
-            disabled={currentPage === totalPages} 
-            onClick={() => setCurrentPage(currentPage + 1)} 
-            sx={{ marginLeft: 1 }}
-          >
-            Next
-          </Button>
-        </Box>
-
-        {/* Blog details section */}
-        {selectedBlog && (
-          <div ref={blogDetailRef} style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
-            <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: '2rem', marginBottom: '20px' }}>
-              {selectedBlog.title}
+        {!selectedBlog && (
+          <Box display="flex" justifyContent="center" marginTop={2}>
+            <Button
+              variant="contained"
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              Previous
+            </Button>
+            <Typography variant="body1" sx={{ margin: '0 10px' }}>
+              Page {currentPage} of {Math.ceil(blogs.length / blogsPerPage)}
             </Typography>
-            <BlogImage src={blogImage} alt={selectedBlog.title} /> {/* Use the determined image here */}
-            {renderDescription(selectedBlog.description)}
-          </div>
+            <Button
+              variant="contained"
+              disabled={currentPage === Math.ceil(blogs.length / blogsPerPage)}
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Next
+            </Button>
+          </Box>
         )}
       </Box>
-
-      {/* Most Popular Blogs Section */}
-      <Box width="300px" padding={2} borderLeft="1px solid #ccc">
-        <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '20px' }}>
-          Most Popular Blogs
-        </Typography>
-        {blogs.slice(0, 3).map((blog) => (
-          <BlogCard key={blog._id} blog={blog} onOpen={handleOpen} />
+      <Box flex={0.3} marginLeft={2}>
+        <h2 className='blog-heading'>Most Popular</h2>
+        {blogs.slice(5, 9).map((blog) => (
+          <BlogCard2 key={blog._id} blog={blog} onOpen={handleOpenBlog} />
         ))}
       </Box>
-
-      {/* Scroll to Top Button */}
-      {isVisible && (
-        <Button 
-          variant="contained" 
-          sx={{ position: 'fixed', bottom: 30, right: 30, borderRadius: '50%' }} 
-          onClick={scrollToTop}
-        >
-          ↑
-        </Button>
-      )}
     </Box>
   );
 };
 
-export default Blog;
+export default BlogPage;

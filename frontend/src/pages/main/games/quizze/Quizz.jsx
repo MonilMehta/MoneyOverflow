@@ -14,7 +14,7 @@ const Quizz = ({ onSelectCategory }) => {
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
+    <div style={{ textAlign: 'center', padding: '20px' , marginTop:'70px'}}>
       <Typography variant="h4" style={{ marginBottom: '20px' }}>
         Select a Quiz
       </Typography>

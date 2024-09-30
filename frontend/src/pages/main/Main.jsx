@@ -12,6 +12,7 @@ import Learning from './learning/Learning';
 import Blog from './blog/Blog';
 import Tools from './tools/Tools';
 import BlogPosts from './blog/Blog2';
+import BlogDetail from './blog/BlogDetail';
 
 const Main = () => {
   return (
@@ -26,6 +27,7 @@ const Main = () => {
         <Route path="/retirement" element={<Retirement />} />
         <Route path="/saving" element={<Saving />} /> */}
         <Route path="/blogs" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogDetail />} />
         <Route path="/blogs2" element={<BlogPosts />} />
         <Route path="/tools" element={<Tools />} />
         <Route path="/learning" element={<Learning />} />

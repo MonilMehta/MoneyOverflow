@@ -16,6 +16,7 @@
   padding: 20px;
   border-radius: 8px;
   position: relative;
+  
 }
 .blogfull {
   text-align: left;
@@ -123,4 +124,81 @@
   .blog-content {
     max-width: 100%;
   }
+}
+.blog-card {
+  display: flex;
+  align-items: center;
+  max-width: 500px;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.blog-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+.blog-card2:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.blog-image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.blog-content {
+  flex: 1;
+  padding: 16px;
+}
+
+.blog-title {
+  margin: 0 0 8px 0;
+  font-size: 1.25rem;
+}
+
+.blog-description {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #666;
+}
+.blog-layout {
+  display: flex;
+  gap: 20px; /* Add some space between the columns */
+}
+
+.main-content {
+  flex: 7;
+}
+
+.sidebar {
+  flex: 3;
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-left: 2px solid #333;
+}
+
+.blog-page {
+  padding: 20px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-title {
+  margin-bottom: 10px;
+}
+
+.blog-heading {
+  font-size: 4rem;
+  margin-bottom: 10px;
+  text-align: center;
+  font-weight: 700;
 }
