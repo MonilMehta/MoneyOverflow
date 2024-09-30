@@ -23,30 +23,37 @@ const SideBar = () => {
     }
   };
 
+  const handleNextModule = () => {
+    const currentIndex = modules.findIndex(module => module.name === selectedModule);
+    if (currentIndex < modules.length - 1) {
+      setSelectedModule(modules[currentIndex + 1].name);
+    }
+  };
+
   const renderModule = () => {
     switch (selectedModule) {
       case 'Financial Basics':
-        return <FinancialBasic />;
+        return <FinancialBasic onNextModule={handleNextModule} />;
       case 'Budgeting':
-        return <Budgeting />;
+        return <Budgeting onNextModule={handleNextModule} />;
       case 'Saving':
-        return <Saving />;
+        return <Saving onNextModule={handleNextModule} />;
       case 'Debt Management':
-        return <DebtManagement />;
+        return <DebtManagement onNextModule={handleNextModule} />;
       case 'Investing':
-        return <Investing />;
+        return <Investing onNextModule={handleNextModule} />;
       case 'Retirement Planning':
-        return <RetirementPlanning />;
+        return <RetirementPlanning onNextModule={handleNextModule} />;
       case 'Insurance and Protection':
-        return <InsuranceAndProtection />;
+        return <InsuranceAndProtection onNextModule={handleNextModule} />;
       case 'Taxes and Legal Considerations':
-        return <TaxesAndLegalConsideration />;
+        return <TaxesAndLegalConsideration onNextModule={handleNextModule} />;
       case 'Financial Tools and Resources':
-        return <FinancialToolsAndResources />;
+        return <FinancialToolsAndResources onNextModule={handleNextModule} />;
       case 'Wealth Building':
         return <WealthBuilding />;
       default:
-        return <FinancialBasic />;
+        return <FinancialBasic onNextModule={handleNextModule} />;
     }
   };
 
@@ -157,7 +164,7 @@ const SideBar = () => {
                 <button
                   className="expand-btn"
                   onClick={(e) => {
-                    e.stopPropagation(); // Prevent triggering module selection when expanding
+                    e.stopPropagation();
                     toggleExpand(module.name);
                   }}
                 >
@@ -186,7 +193,6 @@ const SideBar = () => {
   );
 };
 
-// Add sticky sidebar styles
 const styles = `
   .app-container {
     display: flex;
