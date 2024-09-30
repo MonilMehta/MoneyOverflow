@@ -200,7 +200,7 @@ const Questions = ({ category }) => {
               className="bg-yellow-500 text-white text-lg font-bold rounded-xl py-3 px-5 mb-4 transition duration-300 hover:bg-yellow-600 hover:border-yellow-600 border-yellow-400 border-2"
               disabled={loading}
             >
-              {loading ? "Loading..." : "Start Quiz"}
+              {loading ? "Loading..." : "Start Test"}
             </button>
           </div>
 
