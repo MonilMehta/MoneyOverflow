@@ -26,8 +26,10 @@ app.use(cookieParser())
 import userRouter from './routes/user.routes.js';
 import quizRouter from './routes/quiz.routes.js';
 import blogRouter from './routes/blog.routes.js';
+import communityRouter from './routes/community.routes.js'
 // declare routes
 app.use("/api/users", userRouter)
 app.use("/api/quiz",quizRouter);
 app.use("/api/blog",blogRouter);
+app.use("/api/community",communityRouter)
 export { app }

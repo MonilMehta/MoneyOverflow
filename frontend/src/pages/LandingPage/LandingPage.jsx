@@ -37,12 +37,12 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-              <Link to="/login">
+              <Link to="/auth">
                 <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
                   Login
                 </button>
               </Link>
-              <Link to="/signup">
+              <Link to="/auth">
                 <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
                   Sign Up
                 </button>

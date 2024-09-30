@@ -1,205 +1,105 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton, Menu, MenuItem, Typography, Box, Button } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { DollarSign, User } from 'lucide-react';
 
 const MainNavbar = () => {
-  const location = useLocation(); // Get the current path
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming user is logged in
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    // Add your logout logic here
   };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  // Function to check if the link is active
-  const isActive = (path) => location.pathname === path;
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: '#004d40', // Teal color for a professional look
-      }}
-    >
-      <Toolbar>
-        {/* Navbar Title */}
-        <Typography
-          variant="h6"
-          sx={{ flexGrow: 1, fontWeight: 'bold', fontFamily: 'Arial, sans-serif' }}
-        >
-          Financial Literacy
-        </Typography>
-        <Button
-          component={Link}
-          to="/main/"
-          sx={{
-            color: isActive('/main/home') ? '#00796b' : '#ffffff', // Darker color for active page
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease', // Smooth transition effect
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Home
-        </Button>
-        <Button
-          component={Link}
-          to="/main/blog"
-          sx={{
-            color: isActive('/main/blog') ? '#00796b' : '#ffffff', // Darker color for active page
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease', // Smooth transition effect
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Blog
-        </Button>
-        <Button
-          component={Link}
-          to="/main/tools"
-          sx={{
-            color: isActive('/main/tools') ? '#00796b' : '#ffffff', // Darker color for active page
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease', // Smooth transition effect
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Tools
-        </Button>
-        {/* <Button
-          component={Link}
-          to="/main/budgeting"
-          sx={{
-            color: isActive('/main/budgeting') ? '#00796b' : '#ffffff',
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Budgeting
-        </Button>
-        <Button
-          component={Link}
-          to="/main/investing"
-          sx={{
-            color: isActive('/main/investing') ? '#00796b' : '#ffffff',
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Investing
-        </Button>
-        <Button
-          component={Link}
-          to="/main/retirement"
-          sx={{
-            color: isActive('/main/retirement') ? '#00796b' : '#ffffff',
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Retirement
-        </Button>
-        <Button
-          component={Link}
-          to="/main/saving"
-          sx={{
-            color: isActive('/main/saving') ? '#00796b' : '#ffffff',
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Saving
-        </Button> */}
-        <Button
-          component={Link}
-          to="/main/games"
-          sx={{
-            color: isActive('/main/games') ? '#00796b' : '#ffffff',
-            textDecoration: 'none',
-            margin: '0 12px',
-            transition: 'color 0.3s ease',
-            '&:hover': {
-              textDecoration: 'underline',
-            },
-          }}
-        >
-          Quizzes
-        </Button>
+    <nav className="bg-white border-b-2 border-gray-200 shadow-md fixed top-0 w-full z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
+            <DollarSign className="h-8 w-8 text-indigo-600" />
+            <span className="ml-2 text-2xl font-bold text-gray-800">MoneyOverflow</span>
+          </div>
 
-        {/* Profile Icon with Dropdown Menu */}
-        <Box>
-          <IconButton
-            edge="end"
-            sx={{ color: '#ffffff' }}
-            aria-controls="profile-menu"
-            aria-haspopup="true"
-            onClick={handleMenuOpen}
-          >
-            <AccountCircle />
-          </IconButton>
-          <Menu
-            id="profile-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
-            <MenuItem onClick={handleMenuClose}>
-            <Link to='/main/account' style={{
-              color: '#000000',
-              textDecoration: 'none',
-              margin: '0 12px',
-              transition: 'color 0.3s ease',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-            }}>
-            Account
-            </Link></MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-            <Link to='/' style={{
-              color: '#000000',
-              textDecoration: 'none',
-              margin: '0 12px',
-              transition: 'color 0.3s ease',
-              '&:hover': {
-                textDecoration: 'underline',
-              },
-            }}>
-            Sign Out
-            </Link></MenuItem>
-          </Menu>
-        </Box>
-      </Toolbar>
-    </AppBar>
+          {/* Links */}
+          <div className="hidden sm:flex sm:space-x-8">
+            <Link
+              to="/"
+              className="border-indigo-500 text-gray-900 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:text-indigo-600"
+            >
+              Home
+            </Link>
+            <Link
+              to="/courses"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              Courses
+            </Link>
+            <Link
+              to="/resources"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              Resources
+            </Link>
+            <Link
+              to="/about"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              About
+            </Link>
+          </div>
+
+          {/* Auth/User Section */}
+          <div className="flex items-center space-x-4">
+            {isLoggedIn ? (
+              <>
+                {/* User Icon with Dropdown */}
+                <div className="relative">
+                  <button
+                    className="flex items-center text-gray-700 focus:outline-none"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <User className="h-6 w-6 text-gray-800" />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg py-2 z-50">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="flex space-x-4">
+                {/* Login & Sign-Up */}
+                <Link to="/auth">
+                  <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                    Login
+                  </button>
+                </Link>
+                <Link to="/auth">
+                  <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 
