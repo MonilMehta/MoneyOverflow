@@ -24,8 +24,9 @@ app.use(cookieParser())
 
 // import routes
 import userRouter from './routes/user.routes.js';
-
+import quizRouter from './routes/quiz.routes.js';
 // declare routes
-app.use("/api/users", userRouter)
+app.use("/users", userRouter)
+app.use("/quiz",quizRouter);
 
 export { app }
