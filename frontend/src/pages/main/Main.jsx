@@ -20,7 +20,6 @@ const Main = () => {
         <Route  path="/investing" element={<Investing />} />
         <Route  path="/retirement" element={<Retirement />} />
         <Route  path="/saving" element={<Saving />} />
-        
     </Routes>
     </>
   )
