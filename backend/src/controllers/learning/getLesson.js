@@ -16,6 +16,11 @@ const getLesson = async (req, res) => {
             return res.status(404).json({ message: 'Learning path not found' });
         }
 
+        // Check if lessons array exists
+        if (!learningPath.lessons || learningPath.lessons.length === 0) {
+            return res.status(404).json({ message: 'No lessons found for this learning path' });
+        }
+
         // Find the lesson by order
         const lesson = learningPath.lessons.find(lesson => lesson.order === parseInt(order));
         if (!lesson) {
@@ -25,7 +30,7 @@ const getLesson = async (req, res) => {
         // Send the lesson back as the response
         res.json(lesson);
     } catch (error) {
-        console.error(error);
+        console.error(`Error fetching lesson from learning path: ${error.message}`, error);
         res.status(500).json({ message: 'Server error' });
     }
 }

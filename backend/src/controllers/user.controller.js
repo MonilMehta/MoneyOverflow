@@ -226,38 +226,43 @@ const getCurrentUser = asyncHandler(async ( req, res ) => {
     )
 })
 
-const updateAccountDetails = asyncHandler( async ( req, res ) => {
+const updateAccountDetails = asyncHandler(async (req, res) => {
+    const userId = req.user?._id; 
+    const { fullName, email, phone_no, username, date_of_birth} = req.body;
 
-    const { fullName, email } = req.body
-    if(!(fullName || email)){
-        throw new ApiError(400, "At least one field is required")
+    if (!(fullName || email)) {
+        throw new ApiError(400, "At least one field (fullName or email) is required.");
     }
+
     const user = await User.findByIdAndUpdate(
-        req.user?._id,
+        userId, 
         {
             $set: {
-                fullName, 
-                email: email
+                ...(fullName && { fullName }), 
+                ...(email && { email }),
+                ...(phone_no && { phone_no }),
+                ...(username && { username }),
+                ...(date_of_birth && { date_of_birth }),
             }
         },
         {
-            new: true
+            new: true,
+            runValidators: true 
         }
-    ).select("-password")
+    ).select("-password"); 
 
-    if(!user){
-        throw new ApiError(404, "Error updating details")
+
+    if (!user) {
+        throw new ApiError(404, "Error updating account details. User not found.");
     }
 
-    return res
-    .status(200)
-    .json(
+    return res.status(200).json(
         new ApiResponse(
             200,
             user,
             "Account details updated successfully"
         )
-    )
-})
+    );
+});
 
 export { registerUser , loginUser, logoutUser, refreshAccessToken, changeCurrentPassword, getCurrentUser, updateAccountDetails }
