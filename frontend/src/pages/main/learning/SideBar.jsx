@@ -73,7 +73,7 @@ const SideBar = () => {
         'Why Budgeting Matters',
         'Creating a Personal Budget',
         'Different Types of Budgets',
-        'Managing Cash Flow',
+        'Tools for Budgeting ',
       ],
     },
     {
