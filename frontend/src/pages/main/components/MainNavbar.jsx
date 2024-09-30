@@ -63,6 +63,21 @@ const MainNavbar = () => {
         >
           Blog
         </Button>
+        <Button
+          component={Link}
+          to="/main/tools"
+          sx={{
+            color: isActive('/main/tools') ? '#00796b' : '#ffffff', // Darker color for active page
+            textDecoration: 'none',
+            margin: '0 12px',
+            transition: 'color 0.3s ease', // Smooth transition effect
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          Tools
+        </Button>
         {/* <Button
           component={Link}
           to="/main/budgeting"
