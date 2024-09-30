@@ -8,7 +8,7 @@ import Features from './Features';
 import HeroSection from './HeroSection';
 import './landing.css';
 import Footer from './Footer';
-
+import RotationLogo from './RotationLogo';
 const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -51,7 +51,7 @@ const LandingPage = () => {
           </div>
         </div>
       </nav>
-
+      {/* <RotationLogo/> */}
       {/* Hero Section */}
       <HeroSection />
 
@@ -61,6 +61,7 @@ const LandingPage = () => {
       {/* Blog Section */}
       <Blog />
 
+      
       {/* User Testimonial Carousel */}
       <UserTestimonial />
 

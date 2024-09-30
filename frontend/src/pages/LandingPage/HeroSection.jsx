@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-
+// import RotationLogo from './RotationLogo';
 const HeroSection = () => {
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -46,7 +46,7 @@ const HeroSection = () => {
           filter: 'blur(100px)',
         }}
       />
-
+      {/* <RotationLogo/> */}
       <div className="relative z-10">
         {/* Hero Text with spotlight */}
         <h1 className="text-6xl font-bold relative z-10">

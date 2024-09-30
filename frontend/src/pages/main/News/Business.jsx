@@ -24,7 +24,7 @@ const NewsTickerContainer = styled.div`
 const NewsTicker = styled.div`
   display: inline-block;
   white-space: nowrap;
-  animation: ticker 300s linear infinite;
+  animation: ticker 200s linear infinite;
 
   @keyframes ticker {
     0% { transform: translateX(100%); }

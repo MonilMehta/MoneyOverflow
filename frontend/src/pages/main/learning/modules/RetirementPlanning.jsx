@@ -43,7 +43,7 @@ const RetirementPlanning = () => {
     <div className="financial-basic-page" style={{
         width: '100%',
     }}>
-      <h1>Financial Basics</h1>
+      <h1>RetirementPlanning</h1>
       {submodules.map((submodule, index) => (
         <div key={index} className="submodule-section">
           <h2 className="submodule-title">{submodule.title}</h2>
