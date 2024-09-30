@@ -24,7 +24,7 @@ const mcqSchema = new mongoose.Schema({
   section: {
     type: String,
     required: [true, "Section is required"],
-    enum: ["Budgeting", "Saving", "Investing"]
+    enum: ["Budgeting", "Saving", "Investing", "Retirement"]
   },
 }, {
   timestamps: true 
