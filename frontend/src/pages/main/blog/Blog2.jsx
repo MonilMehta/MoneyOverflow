@@ -28,10 +28,10 @@ const BlogPosts = () => {
   }, []);
 
   if (loading) return <p>Loading...</p>;
-  if (error) return <p className="text-red-600">{error}</p>;
+  if (error) return <p className="text-blue-600">{error}</p>;
 
   return (
-    <div className="bg-gradient-to-r from-blue-500 to-purple-500">
+    <div className="bg-gradient-to-r from-blue-500 to-blue-800">
       <div className="blogfull">
         <article>
           <section id="blog" className="blog-area pt-24">
@@ -51,7 +51,7 @@ const BlogPosts = () => {
                     key={index}
                     className="col-lg-4 col-md-7 w-full md:w-1/2 lg:w-1/3 p-4"
                   >
-                    <div className="bg-white single-blog mt-8 transition-transform transform hover:-translate-y-5 hover:border-orange-500 hover:shadow-lg rounded-xl p-5 border border-gray-200 shadow-md">
+                    <div className="bg-white single-blog mt-8 transition-transform transform hover:-translate-y-5 hover:border-blue-500 hover:shadow-lg rounded-xl p-5 border border-gray-200 shadow-md">
                       <div className="blog-image mb-5 flex justify-center">
                         <div>
                           <img
@@ -69,7 +69,7 @@ const BlogPosts = () => {
                         </div>
                         <Link
                           to={`/main/blogs/${blog._id}`}
-                          className="more text-red-600 hover:bg-orange-500 hover:text-white px-4 py-2 inline-block rounded-lg transition duration-300 ease-in-out border border-orange-600"
+                          className="more text-blue-600 hover:bg-blue-500 hover:text-white px-4 py-2 inline-block rounded-lg transition duration-300 ease-in-out border border-blue-600"
                         >
                           Learn More <i className="lni-chevron-right"></i>
                         </Link>
@@ -85,5 +85,4 @@ const BlogPosts = () => {
     </div>
   );
 };
-
 export default BlogPosts;

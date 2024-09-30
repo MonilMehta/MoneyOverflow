@@ -86,7 +86,7 @@ const Blog = () => {
   const blogImage = selectedBlog?.imageUrl || image; // Use optional chaining to avoid accessing imageUrl of null
 
   return (
-    <Box display="flex" justifyContent="space-between" padding={2} className="bg-gradient-to-r from-blue-500 to-purple-500">
+    <Box display="flex" justifyContent="space-between" padding={2} className="bg-gradient-to-r from-blue-500 to-blue-600">
       {/* Blog Cards Section */}
       <Box flex={1} marginRight={2}>
         {currentBlogs.map((blog) => (
@@ -118,7 +118,7 @@ const Blog = () => {
 
         {/* Blog details section */}
         {selectedBlog && (
-          <div ref={blogDetailRef} style={{ marginTop: '40px', padding: '20px', backgroundColor: '#f9f9f9', borderRadius: '8px' }}>
+          <div ref={blogDetailRef} style={{ marginTop: '40px', padding: '20px', backgroundColor: '#2563eb', borderRadius: '8px' }}>
             <Typography variant="h4" sx={{ fontWeight: 'bold', fontSize: '2rem', marginBottom: '20px' }}>
               {selectedBlog.title}
             </Typography>
@@ -129,7 +129,7 @@ const Blog = () => {
       </Box>
 
       {/* Most Popular Blogs Section */}
-      <Box width="300px" padding={2} borderLeft="1px solid #ccc">
+      <Box width="300px" padding={2} borderLeft="1px solid #2563eb">
         <Typography variant="h5" sx={{ fontWeight: 'bold', marginBottom: '20px' }}>
           Most Popular Blogs
         </Typography>

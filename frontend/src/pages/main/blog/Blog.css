@@ -29,8 +29,8 @@
 .single-blog:hover {
   transform: translateY(-20px);
   /* cursor: pointer; */
-  border: 1px solid orange;
-  box-shadow: 0 4px 8px rgb(233, 156, 31);
+  border: 1px solid #2563eb;
+  box-shadow: 0 4px 8px rgb(8, 24, 117);
 }
 
 .reviewtext {
@@ -60,7 +60,7 @@
 }
 .single-blog .blog-content .more {
   font-size: 16px;
-  color: #d32f2f;
+  color: #211881;
   margin-top: 10px;
   transition: 0.8s ease;
 }
@@ -69,7 +69,7 @@
   transform-origin: left;
 }
 .single-blog .blog-content .more:hover {
-  background: orange;
+  background: #2563eb;
   color: white;
   padding: 10px;
   cursor: pointer;

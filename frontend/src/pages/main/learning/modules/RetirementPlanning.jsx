@@ -57,7 +57,6 @@ const RetirementPlanning = () => {
   );
 };
 
-// Add styles to make the page look decent and responsive
 const styles = `
   .financial-basic-page {
     font-size: 14px;
