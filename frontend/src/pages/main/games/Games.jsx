@@ -12,7 +12,7 @@ const Games = () => {
   };
 
   return (
-    <div className='pt-16 bg-blue-600 min-h-screen'>
+    <div className='pt-6 bg-blue-600 min-h-screen'>
       <div className="flex flex-wrap justify-around gap-5 p-5 rounded-lg w-11/12 mx-auto">
         <Quizz onSelectCategory={handleSelectCategory} />
         {/* <Daily /> */}

@@ -21,7 +21,7 @@ const Tools = () => {
   }, []);
 
   return (
-    <div className={`p-6 mt-16 min-h-screen flex items-center justify-center ${bgColor}`}>
+    <div className={`p-6 min-h-screen flex items-center justify-center ${bgColor}`}>
       {showGif ? (
         <img src={tools1} alt="Loading" className="w-[50%] h-auto" /> // Display GIF
       ) : (
