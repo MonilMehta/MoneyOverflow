@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import FinancialBasic from './modules/FinancialBasic';
 import Budgeting from './modules/Budgeting';
@@ -15,10 +15,6 @@ const SideBar = () => {
   const [selectedModule, setSelectedModule] = useState('Financial Basics');
   const [expandedModules, setExpandedModules] = useState([]);
 
-  useEffect(() => {
-    setSelectedModule('Financial Basics');
-  }, []);
-
   const toggleExpand = (module) => {
     if (expandedModules.includes(module)) {
       setExpandedModules(expandedModules.filter(m => m !== module));
@@ -30,7 +26,7 @@ const SideBar = () => {
   const renderModule = () => {
     switch (selectedModule) {
       case 'Financial Basics':
-        return <FinancialBasic />;
+        return <FinancialBasic />;  
       case 'Budgeting':
         return <Budgeting />;
       case 'Saving':
@@ -50,7 +46,7 @@ const SideBar = () => {
       case 'Wealth Building':
         return <WealthBuilding />;
       default:
-        return <FinancialBasic />;
+        return <FinancialBasic />;  // Default to FinancialBasic
     }
   };
 
@@ -128,6 +124,7 @@ const SideBar = () => {
   );
 };
 
+// Add some basic styles for layout and design
 const styles = `
   .app-container {
     display: flex;

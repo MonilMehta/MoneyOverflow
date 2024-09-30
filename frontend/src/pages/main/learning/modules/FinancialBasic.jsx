@@ -1,11 +1,50 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const FinancialBasic = () => {
-  return (
-    <>
-    <h1>Financial Basic</h1>
-    </>
-  )
-}
+  const [submodules, setSubmodules] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-export default FinancialBasic
+  useEffect(() => {
+    const fetchSubmodules = async () => {
+      const learningPathId = "66faae800e014d17ed7a0d8e"; // ID for Financial Basics
+      const submodulesData = [];
+
+      try {
+        // Fetch all 4 submodules (for orders 1 to 4)
+        for (let order = 1; order <= 4; order++) {
+          const response = await axios.post('http://localhost:8000/api/learning/getLesson', {
+            learningPathId,
+            order,
+          });
+          submodulesData.push(response.data); 
+        }
+        setSubmodules(submodulesData); 
+      } catch (error) {
+        console.error("Error fetching submodules:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubmodules();
+  }, []);
+
+  if (loading) {
+    return <p>Loading submodules...</p>;
+  }
+
+  return (
+    <div>
+      <h1>Financial Basics</h1>
+      {submodules.map((submodule, index) => (
+        <div key={index} className="submodule-section">
+          <h2>{submodule.title}</h2>
+          <p>{submodule.content}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default FinancialBasic;

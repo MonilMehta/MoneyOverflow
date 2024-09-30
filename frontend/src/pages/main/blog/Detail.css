@@ -1,0 +1,33 @@
+.blog-detail {
+    padding: 20px;
+  }
+  
+  .blog-header {
+    margin-bottom: 20px;
+  }
+  
+  .blog-title1 {
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+  
+  .blog-image1 {
+    margin-bottom: 20px;
+    max-width: 60vw;
+    margin-left: 5vw;
+    border-radius: 25px;
+  }
+  
+  .blog-description1 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-size: 1rem;
+    width: 80%;
+    margin-left: 5vw;
+  }
+  
+  .blog-subtitle {
+    flex: 1;
+    margin: 0 10px;
+  }
