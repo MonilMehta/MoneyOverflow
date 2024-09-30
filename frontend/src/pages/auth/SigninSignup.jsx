@@ -60,6 +60,7 @@ function SignupSignin() {
         7 * 24 * 60 * 60
       };path=/`;
       console.log("Login successful:", response?.data);
+      navigate('/main');
     } catch (error) {
       console.error("Login failed:", error.response.data);
     }

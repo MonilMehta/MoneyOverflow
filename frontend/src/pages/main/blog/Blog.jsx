@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import BlogCard from './BlogCard'; 
 import { Typography, Box, Button, styled } from '@mui/material';
 import image from './image.jpg';
+import { getBlogs } from "../../../apis/blogs.api";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]); 
@@ -16,7 +17,7 @@ const Blog = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/blog/getBlogs'); 
+        const response = await fetch(getBlogs); 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

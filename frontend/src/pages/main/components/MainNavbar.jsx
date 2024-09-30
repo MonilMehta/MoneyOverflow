@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { DollarSign, User } from 'lucide-react';
 
 const MainNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming user is logged in
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const location = useLocation(); // Get current route path
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     // Add your logout logic here
   };
+
+  // Function to check if the link is active
+  const isActiveLink = (path) => location.pathname === path;
 
   return (
     <>
@@ -26,31 +30,41 @@ const MainNavbar = () => {
             <div className="hidden sm:flex sm:space-x-8">
               <Link
                 to="/main/"
-                className="border-indigo-500 text-gray-900 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:text-indigo-600"
+                className={`${
+                  isActiveLink('/main/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Home
               </Link>
               <Link
                 to="/main/learning"
-                className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+                className={`${
+                  isActiveLink('/main/learning') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Learning Paths
               </Link>
               <Link
                 to="/main/games"
-                className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+                className={`${
+                  isActiveLink('/main/games') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Quiz
               </Link>
               <Link
                 to="/main/blogs"
-                className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+                className={`${
+                  isActiveLink('/main/blogs') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Blogs
               </Link>
               <Link
                 to="/main/tools"
-                className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+                className={`${
+                  isActiveLink('/main/tools') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Tools
               </Link>
