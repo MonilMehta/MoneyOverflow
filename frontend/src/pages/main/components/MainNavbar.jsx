@@ -1,49 +1,106 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import { DollarSign } from 'lucide-react'
-
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { DollarSign, User } from 'lucide-react';
 
 const MainNavbar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming user is logged in
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    // Add your logout logic here
+  };
+
   return (
-    <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <DollarSign className="h-8 w-8 text-indigo-600" />
-                <span className="ml-2 text-xl font-bold text-gray-800">MoneyOverflow</span>
+    <nav className="bg-white border-b-2 border-gray-200 shadow-md fixed top-0 w-full z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16 items-center">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
+            <DollarSign className="h-8 w-8 text-indigo-600" />
+            <span className="ml-2 text-2xl font-bold text-gray-800">MoneyOverflow</span>
+          </div>
+
+          {/* Links */}
+          <div className="hidden sm:flex sm:space-x-8">
+            <Link
+              to="/"
+              className="border-indigo-500 text-gray-900 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:text-indigo-600"
+            >
+              Home
+            </Link>
+            <Link
+              to="/courses"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              Courses
+            </Link>
+            <Link
+              to="/resources"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              Resources
+            </Link>
+            <Link
+              to="/about"
+              className="border-transparent text-gray-500 hover:text-gray-700 inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium hover:border-gray-300"
+            >
+              About
+            </Link>
+          </div>
+
+          {/* Auth/User Section */}
+          <div className="flex items-center space-x-4">
+            {isLoggedIn ? (
+              <>
+                {/* User Icon with Dropdown */}
+                <div className="relative">
+                  <button
+                    className="flex items-center text-gray-700 focus:outline-none"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <User className="h-6 w-6 text-gray-800" />
+                  </button>
+
+                  {/* Dropdown Menu */}
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg py-2 z-50">
+                      <Link
+                        to="/profile"
+                        className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="flex space-x-4">
+                {/* Login & Sign-Up */}
+                <Link to="/auth">
+                  <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                    Login
+                  </button>
+                </Link>
+                <Link to="/auth">
+                  <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    Sign Up
+                  </button>
+                </Link>
               </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link to="/" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Home
-                </Link>
-                <Link to="/courses" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Courses
-                </Link>
-                <Link to="/resources" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Resources
-                </Link>
-                <Link to="/about" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  About
-                </Link>
-              </div>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
-              <Link to="/auth">
-                <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
-                  Login
-                </button>
-              </Link>
-              <Link to="/auth">
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
-                  Sign Up
-                </button>
-              </Link>
-            </div>
+            )}
           </div>
         </div>
-      </nav>
-  )
-}
+      </div>
+    </nav>
+  );
+};
 
-export default MainNavbar
+export default MainNavbar;

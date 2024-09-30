@@ -7,6 +7,7 @@ import Modal from './Modal';
 const Forum = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
+  const [q, setQ] = useState(['']);
 
   const questions = [
     {
@@ -43,6 +44,8 @@ const Forum = () => {
     <div>
       <Card>
         <CardContent>
+            <h2 className="text-3xl font-bold mb-4">Ask the Community</h2>
+            <textarea className="w-full p-3 border rounded-lg mb-4" rows="4" placeholder="What's your question?" value={q} onChange={(e) => setQ(e.target.value)} />
           <Button className="bg-gradient-to-r from-blue-400 to-blue-600 hover:from-blue-500 hover:to-blue-700 text-white px-5 py-2 rounded-full shadow-lg">
             Post Your Question
           </Button>
@@ -50,7 +53,7 @@ const Forum = () => {
       </Card>
 
       {/* Forum Questions */}
-      <div className="space-y-4">
+      <div className="space-y-4 mt-4">
         {questions.map((question) => (
           <Card
             key={question.id}

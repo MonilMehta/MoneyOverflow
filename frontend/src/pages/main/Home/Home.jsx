@@ -14,7 +14,7 @@ const Home = () => {
   const user = "User"; // Replace with dynamic user data
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[75%_25%] gap-6 p-6 bg-gray-50">
+    <div className="grid grid-cols-1 md:grid-cols-[75%_25%] gap-6 p-6 bg-gray-50 mt-16">
       
       {/* Main Content (70%) */}
       <main className="space-y-12">
@@ -24,11 +24,11 @@ const Home = () => {
         <Forum />
       </main>
       {/* Sidebar (30%) */}
-      <aside className="bg-white shadow-lg rounded-lg p-6 space-y-6 sticky top-6">
+      <aside className="bg-white shadow-lg rounded-lg p-6 space-y-6 sticky top-6 mt-10">
         {/* Greeting and Coins */}
         <div className="text-center">
-          <h2 className="text-2xl font-bold">Hello, {user} 👋</h2>
-          <p className="text-gray-500">Keep up the great work!</p>
+          <h2 className="text-2xl font-bold" style={{fontSize:'2rem'}}>Hello, {user} 👋</h2>
+          <p className="text-gray-500 " style={{fontSize:'1.5rem'}}>Keep up the great work!</p>
         </div>
         <div className="flex justify-between items-center bg-blue-100 p-4 rounded-lg">
           <div className="flex items-center">
