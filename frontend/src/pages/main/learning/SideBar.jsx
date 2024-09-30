@@ -57,43 +57,43 @@ const SideBar = () => {
   const modules = [
     {
       name: 'Financial Basics',
-      submodules: ['Intro to Finance', 'Money Management', 'Financial Goals', 'Personal Finance Tips'],
+      submodules: ['Understanding Money', 'Income vs. Expenses', 'Financial Terminology', 'Importance of Financial Literacy'],
     },
     {
       name: 'Budgeting',
-      submodules: ['Types of Budgets', 'Creating a Budget', 'Tracking Expenses', 'Adjusting Budgets'],
+      submodules: ['Why Budgeting Matters', 'Creating a Personal Budget', 'Different Types of Budgets', 'Managing Cash Flow'],
     },
     {
       name: 'Saving',
-      submodules: ['Importance of Saving', 'Saving Methods', 'Emergency Funds', 'Saving Accounts'],
+      submodules: ['Importance of Saving', 'Short-Term vs. Long-Term Savings', 'Emergency Funds', 'Automated Saving Techniques'],
     },
     {
       name: 'Debt Management',
-      submodules: ['Types of Debt', 'Debt Repayment Strategies', 'Debt Consolidation', 'Credit Score Management'],
+      submodules: ['Good vs. Bad Debt', 'Strategies for Paying Off Debt', 'Understanding Credit Scores', 'Avoiding Debt Traps'],
     },
     {
       name: 'Investing',
-      submodules: ['Intro to Investing', 'Investment Types', 'Risk Management', 'Investment Accounts'],
+      submodules: ['Basics of Investing', 'Types of Investments', 'Risk and Return', 'Diversification'],
     },
     {
       name: 'Retirement Planning',
-      submodules: ['Retirement Accounts', 'Pension Plans', 'Investment for Retirement', 'Retirement Withdrawal'],
+      submodules: ['Importance of Early Planning', 'Retirement Accounts', 'Estimating Retirement Needs', 'Social Security'],
     },
     {
       name: 'Insurance and Protection',
-      submodules: ['Types of Insurance', 'Health Insurance', 'Life Insurance', 'Insurance Planning'],
+      submodules: ['Life and Health Insurance', 'Home and Auto Insurance', 'Disability Coverage', 'Protecting Assets'],
     },
     {
       name: 'Taxes and Legal Considerations',
-      submodules: ['Understanding Taxes', 'Tax Filing', 'Tax Deductions', 'Estate Planning'],
+      submodules: ['Basics of Income Tax', 'Tax-Advantaged Accounts', 'Estate Planning', 'Legal Structures for Businesses'],
     },
     {
       name: 'Financial Tools and Resources',
-      submodules: ['Budgeting Tools', 'Investment Platforms', 'Tax Calculators', 'Financial Advisors'],
+      submodules: ['Financial Apps and Platforms', 'Calculators', 'How to Read Financial Statements', 'Finding Financial Advisors'],
     },
     {
       name: 'Wealth Building',
-      submodules: ['Wealth Creation', 'Long-Term Wealth', 'Passive Income', 'Generational Wealth'],
+      submodules: ['Passive Income Strategies', 'Real Estate Investment', 'Entrepreneurship and Startups', 'Wealth Preservation'],
     },
   ];
 
@@ -138,7 +138,7 @@ const styles = `
     color: white;
     width: 250px;
     padding: 16px;
-    overflow-y: auto; /* Add scroll bar */
+    overflow-y: auto;
   }
   .sidebar-content {
     display: flex;
