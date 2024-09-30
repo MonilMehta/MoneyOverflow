@@ -17,7 +17,7 @@ const SideBar = () => {
 
   const toggleExpand = (module) => {
     if (expandedModules.includes(module)) {
-      setExpandedModules(expandedModules.filter(m => m !== module));
+      setExpandedModules(expandedModules.filter((m) => m !== module));
     } else {
       setExpandedModules([...expandedModules, module]);
     }
@@ -26,7 +26,7 @@ const SideBar = () => {
   const renderModule = () => {
     switch (selectedModule) {
       case 'Financial Basics':
-        return <FinancialBasic />;  
+        return <FinancialBasic />;
       case 'Budgeting':
         return <Budgeting />;
       case 'Saving':
@@ -46,50 +46,100 @@ const SideBar = () => {
       case 'Wealth Building':
         return <WealthBuilding />;
       default:
-        return <FinancialBasic />;  // Default to FinancialBasic
+        return <FinancialBasic />;
     }
   };
 
   const modules = [
     {
       name: 'Financial Basics',
-      submodules: ['Understanding Money', 'Income vs. Expenses', 'Financial Terminology', 'Importance of Financial Literacy'],
+      submodules: [
+        'Understanding Money',
+        'Income vs. Expenses',
+        'Financial Terminology',
+        'Importance of Financial Literacy',
+      ],
     },
     {
       name: 'Budgeting',
-      submodules: ['Why Budgeting Matters', 'Creating a Personal Budget', 'Different Types of Budgets', 'Managing Cash Flow'],
+      submodules: [
+        'Why Budgeting Matters',
+        'Creating a Personal Budget',
+        'Different Types of Budgets',
+        'Managing Cash Flow',
+      ],
     },
     {
       name: 'Saving',
-      submodules: ['Importance of Saving', 'Short-Term vs. Long-Term Savings', 'Emergency Funds', 'Automated Saving Techniques'],
+      submodules: [
+        'Importance of Saving',
+        'Short-Term vs. Long-Term Savings',
+        'Emergency Funds',
+        'Automated Saving Techniques',
+      ],
     },
     {
       name: 'Debt Management',
-      submodules: ['Good vs. Bad Debt', 'Strategies for Paying Off Debt', 'Understanding Credit Scores', 'Avoiding Debt Traps'],
+      submodules: [
+        'Good vs. Bad Debt',
+        'Strategies for Paying Off Debt',
+        'Understanding Credit Scores',
+        'Avoiding Debt Traps',
+      ],
     },
     {
       name: 'Investing',
-      submodules: ['Basics of Investing', 'Types of Investments', 'Risk and Return', 'Diversification'],
+      submodules: [
+        'Basics of Investing',
+        'Types of Investments',
+        'Risk and Return',
+        'Diversification',
+      ],
     },
     {
       name: 'Retirement Planning',
-      submodules: ['Importance of Early Planning', 'Retirement Accounts', 'Estimating Retirement Needs', 'Social Security'],
+      submodules: [
+        'Importance of Early Planning',
+        'Retirement Accounts',
+        'Estimating Retirement Needs',
+        'Social Security',
+      ],
     },
     {
       name: 'Insurance and Protection',
-      submodules: ['Life and Health Insurance', 'Home and Auto Insurance', 'Disability Coverage', 'Protecting Assets'],
+      submodules: [
+        'Life and Health Insurance',
+        'Home and Auto Insurance',
+        'Disability Coverage',
+        'Protecting Assets',
+      ],
     },
     {
       name: 'Taxes and Legal Considerations',
-      submodules: ['Basics of Income Tax', 'Tax-Advantaged Accounts', 'Estate Planning', 'Legal Structures for Businesses'],
+      submodules: [
+        'Basics of Income Tax',
+        'Tax-Advantaged Accounts',
+        'Estate Planning',
+        'Legal Structures for Businesses',
+      ],
     },
     {
       name: 'Financial Tools and Resources',
-      submodules: ['Financial Apps and Platforms', 'Calculators', 'How to Read Financial Statements', 'Finding Financial Advisors'],
+      submodules: [
+        'Financial Apps and Platforms',
+        'Calculators',
+        'How to Read Financial Statements',
+        'Finding Financial Advisors',
+      ],
     },
     {
       name: 'Wealth Building',
-      submodules: ['Passive Income Strategies', 'Real Estate Investment', 'Entrepreneurship and Startups', 'Wealth Preservation'],
+      submodules: [
+        'Passive Income Strategies',
+        'Real Estate Investment',
+        'Entrepreneurship and Startups',
+        'Wealth Preservation',
+      ],
     },
   ];
 
@@ -104,14 +154,23 @@ const SideBar = () => {
                 onClick={() => setSelectedModule(module.name)}
               >
                 <span>{module.name}</span>
-                <button className="expand-btn" onClick={() => toggleExpand(module.name)}>
-                  {expandedModules.includes(module.name) ? <ChevronUp className="arrow" /> : <ChevronDown className="arrow" />}
+                <button
+                  className="expand-btn"
+                  onClick={() => toggleExpand(module.name)}
+                >
+                  {expandedModules.includes(module.name) ? (
+                    <ChevronUp className="arrow" />
+                  ) : (
+                    <ChevronDown className="arrow" />
+                  )}
                 </button>
               </div>
               {expandedModules.includes(module.name) && (
                 <div className="submodules">
                   {module.submodules.map((submodule, index) => (
-                    <div key={index} className="submodule">{submodule}</div>
+                    <div key={index} className="submodule">
+                      {submodule}
+                    </div>
                   ))}
                 </div>
               )}
@@ -124,7 +183,7 @@ const SideBar = () => {
   );
 };
 
-// Add some basic styles for layout and design
+// Add sticky sidebar styles
 const styles = `
   .app-container {
     display: flex;
@@ -135,6 +194,10 @@ const styles = `
     color: white;
     width: 250px;
     padding: 16px;
+    position: -webkit-sticky; /* For Safari */
+    position: sticky;
+    top: 0;
+    height: 100vh;
     overflow-y: auto;
   }
   .sidebar-content {
@@ -186,6 +249,7 @@ const styles = `
   .content-area {
     flex-grow: 1;
     padding: 20px;
+    overflow-y: auto;
   }
 `;
 

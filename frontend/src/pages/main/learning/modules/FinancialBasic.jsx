@@ -7,11 +7,10 @@ const FinancialBasic = () => {
 
   useEffect(() => {
     const fetchSubmodules = async () => {
-      const learningPathId = "66faae800e014d17ed7a0d8e"; // ID for Financial Basics
+      const learningPathId = "66faae800e014d17ed7a0d8e"; 
       const submodulesData = [];
 
       try {
-        // Fetch all 4 submodules (for orders 1 to 4)
         for (let order = 1; order <= 4; order++) {
           const response = await axios.post('http://localhost:8000/api/learning/getLesson', {
             learningPathId,
