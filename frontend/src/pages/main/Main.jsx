@@ -12,6 +12,7 @@ import Learning from './learning/Learning';
 import Blog from './blog/Blog';
 import Tools from './tools/Tools';
 import BlogPosts from './blog/Blog2';
+import BlogPage from './blog/BlogPage';
 
 const Main = () => {
   return (
@@ -25,8 +26,9 @@ const Main = () => {
         {/* <Route path="/investing" element={<Investing />} />
         <Route path="/retirement" element={<Retirement />} />
         <Route path="/saving" element={<Saving />} /> */}
-        <Route path="/blogs" element={<Blog />} />
-        <Route path="/blogs2" element={<BlogPosts />} />
+        {/* <Route path="/blogs" element={<Blog />} /> */}
+        <Route path="/blogs" element={<BlogPosts />} />
+        <Route path="/blogs/:id" element={<BlogPage />} />
         <Route path="/tools" element={<Tools />} />
         <Route path="/learning" element={<Learning />} />
       </Routes>

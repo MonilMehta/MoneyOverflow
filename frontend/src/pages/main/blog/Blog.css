@@ -28,7 +28,7 @@
 }
 .single-blog:hover {
   transform: translateY(-20px);
-  cursor: pointer;
+  /* cursor: pointer; */
   border: 1px solid orange;
   box-shadow: 0 4px 8px rgb(233, 156, 31);
 }
@@ -72,6 +72,7 @@
   background: orange;
   color: white;
   padding: 10px;
+  cursor: pointer;
   border-radius: 5px;
 }
 
