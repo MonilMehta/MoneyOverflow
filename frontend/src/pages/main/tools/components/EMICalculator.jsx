@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import tools2 from "../../../../assets/tools2.gif";
+import tools3 from "../../../../assets/tools3.gif";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState('');
@@ -7,6 +9,8 @@ const EMICalculator = () => {
   const [monthlyEMI, setMonthlyEMI] = useState('');
   const [totalPayment, setTotalPayment] = useState('');
   const [totalInterestPaid, setTotalInterestPaid] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const calculateEMI = () => {
     const loan = parseFloat(loanAmount);
@@ -14,26 +18,29 @@ const EMICalculator = () => {
     const tenure = parseFloat(loanTenure);
 
     if (isNaN(loan) || isNaN(interest) || isNaN(tenure)) {
-      alert('Please enter valid input values.');
+      setError('Please enter valid input values.');
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setError('');
+      }, 1500);
       return;
     }
 
-    // Calculate monthly interest rate
-    const monthlyInterestRate = (interest / 12) / 100;
+    setLoading(true);
+    setError('');
 
-    // Calculate EMI
-    const emi = loan * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenure) / (Math.pow(1 + monthlyInterestRate, tenure) - 1);
+    setTimeout(() => {
+      const monthlyInterestRate = (interest / 12) / 100;
+      const emi = loan * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenure) / (Math.pow(1 + monthlyInterestRate, tenure) - 1);
+      const totalPay = emi * tenure;
+      const totalInterest = totalPay - loan;
 
-    // Calculate total payment
-    const totalPay = emi * tenure;
-
-    // Calculate total interest paid
-    const totalInterest = totalPay - loan;
-
-    // Update state with results
-    setMonthlyEMI(emi.toFixed(2));
-    setTotalPayment(totalPay.toFixed(2));
-    setTotalInterestPaid(totalInterest.toFixed(2));
+      setMonthlyEMI(emi.toFixed(2));
+      setTotalPayment(totalPay.toFixed(2));
+      setTotalInterestPaid(totalInterest.toFixed(2));
+      setLoading(false);
+    }, 1500);
   };
 
   const clearAll = () => {
@@ -43,58 +50,52 @@ const EMICalculator = () => {
     setMonthlyEMI('');
     setTotalPayment('');
     setTotalInterestPaid('');
+    setError('');
+    setLoading(false);
   };
 
   return (
-    <div className="container mx-auto mt-10">
-      <div className="header bg-white p-6 shadow-lg rounded-lg">
-        <h3 className="text-2xl font-semibold mb-4">EMI Calculator</h3>
-        <p className="text-gray-600 mb-6">
-          The EMI (Equated Monthly Installment) Calculator assists in calculating the monthly installment amount for a loan based on the loan amount, interest rate, and loan tenure.
-          It provides insights into the total payment and total interest paid over the loan period, helping you plan your finances better.
+    <div className="container mx-auto">
+      <div className="header bg-white p-6">
+        <h3 className="text-2xl font-semibold mb-4 text-center">EMI Calculator</h3>
+        <p className="text-gray-600 mb-6 text-center">
+          Calculate your EMI, total payment, and interest for your loan.
         </p>
 
-        <div className="know-more mb-6">
-          <button className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Know More</button>
-          <div className="bg-gray-100 p-4 mt-4 rounded-lg">
-            <h6 className="text-left mb-2">Here's how it works:</h6>
-            <ol className="list-decimal pl-8">
-              <li><b>Loan Amount</b>: Enter the principal amount of the loan.</li>
-              <li><b>Interest Rate</b>: Specify the annual interest rate.</li>
-              <li><b>Loan Tenure (years)</b>: Enter the loan period in years.</li>
-              <li><b>Calculate EMI</b>: Provides the monthly EMI, total payment, and total interest.</li>
-            </ol>
-          </div>
-        </div>
-
         {/* Input Fields */}
-        <div className="page-container bg-white p-6 shadow-lg rounded-lg">
+        <div className="page-container bg-white">
           <div className="input-container space-y-4">
             <div>
-              <label className="block text-gray-700 font-semibold mb-1">Loan Amount (INR)</label>
+              <label htmlFor='loan' className="block text-gray-700 font-semibold mb-1">Loan Amount (INR)</label>
               <input
-                className="form-input block w-full border border-gray-300 rounded p-2"
+                className="form-input block w-full border border-blue-500 rounded-xl p-2"
                 type="number"
                 value={loanAmount}
+                id='loan'
                 onChange={(e) => setLoanAmount(e.target.value)}
+                placeholder="Enter loan amount"
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-1">Interest Rate (%)</label>
+              <label htmlFor='inte' className="block text-gray-700 font-semibold mb-1">Interest Rate (%)</label>
               <input
-                className="form-input block w-full border border-gray-300 rounded p-2"
+                className="form-input block w-full border border-blue-500 rounded-xl p-2"
                 type="number"
                 value={interestRate}
+                id='inte'
                 onChange={(e) => setInterestRate(e.target.value)}
+                placeholder="Enter annual interest rate"
               />
             </div>
             <div>
-              <label className="block text-gray-700 font-semibold mb-1">Loan Tenure (Months)</label>
+              <label htmlFor='loa' className="block text-gray-700 font-semibold mb-1">Loan Tenure (Months)</label>
               <input
-                className="form-input block w-full border border-gray-300 rounded p-2"
+                className="form-input block w-full border border-blue-500 rounded-xl p-2"
                 type="number"
                 value={loanTenure}
+                id='loa'
                 onChange={(e) => setLoanTenure(e.target.value)}
+                placeholder="Enter loan tenure in months"
               />
             </div>
           </div>
@@ -116,13 +117,18 @@ const EMICalculator = () => {
           </div>
 
           {/* Result */}
-          <div className="result-container bg-gray-100 p-4 mt-6 rounded-lg">
-            <div className="text-gray-700 font-semibold">Result:</div>
-            <div className="mt-2">
-              <div className="mb-2"><b>Monthly EMI:</b> {monthlyEMI && `INR ${monthlyEMI}`}</div>
-              <div className="mb-2"><b>Total Payment:</b> {totalPayment && `INR ${totalPayment}`}</div>
-              <div><b>Total Interest Paid:</b> {totalInterestPaid && `INR ${totalInterestPaid}`}</div>
-            </div>
+          <div className="result-container bg-gray-100 p-4 mt-6 rounded-lg" style={{ minHeight: '200px', maxHeight: '200px' }}>
+            {loading ? (
+              <img src={error ? tools3 : tools2} alt="Loading" className="mx-auto h-40" />
+            ) : (
+              <div className="text-gray-700 font-semibold">
+                <div className="mb-2">Result:</div>
+                {error && <div className="text-red-600 mb-2">{error}</div>}
+                {monthlyEMI && <div className="mb-2"><b>Monthly EMI:</b> INR {monthlyEMI}</div>}
+                {totalPayment && <div className="mb-2"><b>Total Payment:</b> INR {totalPayment}</div>}
+                {totalInterestPaid && <div><b>Total Interest Paid:</b> INR {totalInterestPaid}</div>}
+              </div>
+            )}
           </div>
         </div>
       </div>
