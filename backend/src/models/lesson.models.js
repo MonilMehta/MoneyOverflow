@@ -12,6 +12,9 @@ const lessonSchema = new mongoose.Schema({
     order: { 
         type: Number,
         required: true
+    },
+    image:{
+        type:String
     }
   });
 

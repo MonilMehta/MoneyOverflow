@@ -191,7 +191,7 @@ const styles = `
     postition:sticky;
   }
   .sidebar {
-    background-color: #1f2937;
+    background-color: #2563eb; /* Changed to bg-blue-600 */
     color: white;
     width: 250px;
     padding: 16px;
@@ -219,7 +219,7 @@ const styles = `
     align-items: center;
   }
   .module:hover, .module.active {
-    background-color: #374151;
+    background-color: #1e40af; /* Darker shade for hover and active */
   }
   .expand-btn {
     background: none;
@@ -241,11 +241,11 @@ const styles = `
   .submodule {
     padding: 4px;
     font-size: 14px;
-    background-color: #2d3748;
+    background-color: #1e3a8a; /* Change submodule color */
     border-radius: 4px;
   }
   .submodule:hover {
-    background-color: #4a5568;
+    background-color: #1d4ed8; /* Change hover color for submodules */
   }
   .content-area {
     flex-grow: 1;

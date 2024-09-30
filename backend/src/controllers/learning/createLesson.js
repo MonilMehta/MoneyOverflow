@@ -1,7 +1,7 @@
 import { LearningPath } from "../../models/lesson.models.js";
 
 const createLesson = async(req,resp)=>{
-    const { learningPathId, title, content, order} = req.body;
+    const { learningPathId, title, content, order, image} = req.body;
     try {
         const learningPath = await LearningPath.findById(learningPathId);
         if (!learningPath) {
@@ -10,7 +10,8 @@ const createLesson = async(req,resp)=>{
         const newLesson = {
             title,
             content,
-            order
+            order,
+            image
         };
         learningPath.lessons.push(newLesson);
         await learningPath.save();
