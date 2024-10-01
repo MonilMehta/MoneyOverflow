@@ -29,9 +29,9 @@ const MainNavbar = () => {
             {/* Links */}
             <div className="hidden sm:flex sm:space-x-8">
               <Link
-                to="/main/"
+                to="/main"
                 className={`${
-                  isActiveLink('/main/') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  isActiveLink('/main') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
               >
                 Home
