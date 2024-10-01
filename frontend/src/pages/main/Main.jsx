@@ -15,6 +15,7 @@ import BlogPosts from './blog/Blog2';
 import BlogPage from './blog/BlogPage';
 import BusinessNewsApp from './News/Business';
 import Premium from './premium/Premium';
+import Simulation from './simulation/Simulation';
 const Main = () => {
   return (
     <>
@@ -34,6 +35,7 @@ const Main = () => {
         <Route path="/learning" element={<Learning />} />
         <Route path="/news" element={<BusinessNewsApp />} />
         <Route path="/premium" element={<Premium />} />
+        <Route path="/simulation" element={<Simulation />} />
       </Routes>
     </>
   );

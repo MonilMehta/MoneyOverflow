@@ -4,7 +4,7 @@
   width: 100vw;
   height: 100vh;
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); /* Updated gradient */
   color: white;
   display: flex;
   justify-content: center;
@@ -74,7 +74,7 @@ h1 {
 
 .inpt:focus {
   background: rgba(255, 255, 255, 0.2);
-  border-color: #ffffff;
+  border-color: #3b82f6; /* Updated focus border color */
 }
 
 input::placeholder {
@@ -88,7 +88,7 @@ input::placeholder {
   letter-spacing: 1px;
   border-radius: 25px;
   background: white;
-  color: #764ba2;
+  color: #1d4ed8; /* Updated button text color */
   font-weight: 700;
   border: none;
   cursor: pointer;
@@ -97,7 +97,7 @@ input::placeholder {
 }
 
 .btn:hover {
-  background: #667eea;
+  background: #3b82f6; /* Updated hover background color */
   color: white;
   transform: translateY(-3px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
