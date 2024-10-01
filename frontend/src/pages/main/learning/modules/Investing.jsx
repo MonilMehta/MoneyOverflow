@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 const Investing = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
@@ -25,11 +27,12 @@ const Investing = ({ onNextModule }) => {
         setLoading(false);
       }
     };
-
+    
     fetchSubmodules();
   }, []);
-
+  
   if (loading) {
+    toast.info("Check out our tools for simplified calculations", {toastId: 'invest'})
     return <p>Loading submodules...</p>;
   }
 

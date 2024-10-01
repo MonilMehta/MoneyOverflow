@@ -6,6 +6,8 @@ import SavingsGoalCalculator from "./components/SavingsGoalCalculator";
 import EMICalculator from "./components/EMICalculator";
 import BillSplitCalculator from "./components/BillSplitCalculator";
 import tools1 from "../../../assets/tools1.gif";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 const Tools = () => {
   const [showGif, setShowGif] = useState(true);
@@ -15,6 +17,9 @@ const Tools = () => {
     const timer = setTimeout(() => {
       setShowGif(false);
       setBgColor("bg-gradient-to-r from-blue-500 to-blue-800");
+      setTimeout(() => {
+        toast.info("Check out simulation for real time experience !", {toastId: 'tools'})
+      }, 4000)
     }, 3000);
 
     return () => clearTimeout(timer); 
@@ -22,6 +27,7 @@ const Tools = () => {
 
   return (
     <div className={`p-6 min-h-screen flex items-center justify-center ${bgColor}`}>
+      <ToastContainer/>
       {showGif ? (
         <img src={tools1} alt="Loading" className="w-[50%] h-auto" /> // Display GIF
       ) : (

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import NewsGif from '../../../assets/news1.gif';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 
 const NewsContainer = styled.div`
   display: flex;
@@ -100,14 +102,19 @@ const BusinessNewsApp = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
+
+  
   const fetchNews = async (page) => {
     const API_KEY = process.env.REACT_APP_API_KEY; // Use REACT_APP_ prefix
     const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=us&apikey=${API_KEY}&page=${page}`;
-
+    
     try {
       const response = await axios.get(API_URL);
       setArticles(prevArticles => [...prevArticles, ...response.data.articles]);
       setLoading(false);
+      setTimeout(() => {
+        toast.info("Subscribe to our newsettler for daily news !", {toastId: 'news'})
+      }, 5000)
     } catch (error) {
       console.error('Error fetching news:', error);
       setLoading(false);
@@ -123,6 +130,8 @@ const BusinessNewsApp = () => {
   };
 
   return (
+    <>
+    <ToastContainer/>
     <NewsContainer>
       {loading ? (
         <LoadingGif src={NewsGif} style={{ width: '45%', paddingTop: '0' }} alt="loading gif"/>
@@ -151,6 +160,7 @@ const BusinessNewsApp = () => {
         </>
       )}
     </NewsContainer>
+    </>
   );
 };
 

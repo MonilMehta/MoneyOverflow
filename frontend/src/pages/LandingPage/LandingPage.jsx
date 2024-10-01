@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{ useEffect } from 'react';
 import { DollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FAQSection from './FaqSection';
@@ -9,9 +9,18 @@ import HeroSection from './HeroSection';
 import './landing.css';
 import Footer from './Footer';
 import RotationLogo from './RotationLogo';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles
 const LandingPage = () => {
+
+  useEffect(() => {
+    setTimeout(() => {
+      toast.dark("Don't forget to visit the about page!", {toastId: 'landing'})
+    }, 2000)
+  })
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <ToastContainer/>
       {/* Navbar */}
       <nav className="bg-white shadow-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
