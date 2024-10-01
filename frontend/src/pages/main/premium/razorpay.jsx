@@ -47,6 +47,5 @@ const loadScript =(src)=>{
     const paymentObject = new window.Razorpay(options)
     paymentObject.open()
   }
-  
-  export default displayRazorPay;
-  
+
+export default displayRazorPay
