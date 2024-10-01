@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'; // Import Material-UI components
+import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'; // Import Material-UI components
 import { singleBlog } from '../../../apis/blogs.api';
 
 export default function BlogPage() {
@@ -42,41 +42,84 @@ export default function BlogPage() {
 
   return (
     <div className="container mx-auto p-5">
-      <Card
+      {/* Blog Title */}
+      <Typography
+        variant="h3"
+        component="h1"
+        className="font-bold text-center mb-6"
         sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-          width: '100%',
-          borderRadius: '8px',
-          boxShadow: '0px 4px 8px rgba(37, 99, 235, 0.5)', // Blue shadow color
-          transition: 'box-shadow 0.3s ease', // Smooth transition for hover effect
-          '&:hover': {
-            boxShadow: '0px 8px 16px rgba(37, 99, 235, 0.7)', // Increased blue shadow on hover
-          },
+          fontSize: '2.5rem',
+          color: '#2563EB', // Blue color for title
+          textAlign: 'center',
+          marginBottom: '20px',
         }}
       >
-        {blogDetails.imageUrl && (
-          <CardMedia
-            component="img"
-            image={blogDetails.imageUrl}
-            alt={blogDetails.title}
+        {blogDetails.title}
+      </Typography>
+
+      {/* Blog Image */}
+      {blogDetails.imageUrl && (
+        <CardMedia
+          component="img"
+          image={blogDetails.imageUrl}
+          alt={blogDetails.title}
+          sx={{
+            width: '100%',
+            maxHeight: '500px', // Limiting the height of the image
+            objectFit: 'cover',
+            borderRadius: '8px',
+            marginBottom: '30px',
+          }}
+        />
+      )}
+
+      {/* Blog Content */}
+      <Card
+        sx={{
+          padding: '24px',
+          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Subtle shadow
+          borderRadius: '8px',
+          backgroundColor: '#fff',
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="body2"
+            color="text.secondary"
             sx={{
-              width: { xs: '100%', md: '40%' },
-              height: { xs: '200px', md: 'auto' },
-              objectFit: 'cover',
-            }} 
-          />
-        )}
-        <CardContent sx={{ flex: '1', padding: '24px' }}> {/* Increased padding for better spacing */}
-          <Typography variant="h5" component="div" className="text-center font-bold mb-2">
-            {blogDetails.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" className="text-center mb-4">
+              textAlign: 'center',
+              marginBottom: '20px',
+              fontSize: '0.875rem',
+            }}
+          >
             Published on: {new Date(blogDetails.createdAt).toLocaleDateString()}
           </Typography>
-          <Typography variant="body1" color="text.primary" className="text-justify mb-4">
-            {blogDetails.description}
-          </Typography>
+
+          {/* Blog Description */}
+          <Box sx={{ marginBottom: '20px' }}>
+            <Typography
+              variant="body1"
+              color="text.primary"
+              className="text-justify mb-4"
+              sx={{ fontSize: '1.2rem', lineHeight: '1.6' }}
+            >
+              {blogDetails.description}
+            </Typography>
+          </Box>
+
+          {/* Blog Content Split into Paragraphs */}
+          {blogDetails.content &&
+            blogDetails.content.split('\n').map((paragraph, index) => (
+              <Typography
+                key={index}
+                variant="body1"
+                color="text.primary"
+                paragraph
+                sx={{ fontSize: '1rem', lineHeight: '1.6', marginBottom: '16px' }}
+              >
+                {paragraph}
+              </Typography>
+            ))}
         </CardContent>
       </Card>
     </div>

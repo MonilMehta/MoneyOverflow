@@ -17,11 +17,11 @@ const MainNavbar = () => {
 
   return (
     <>
-      <nav className="bg-white border-b-2 border-gray-200 shadow-md fixed top-0 w-full z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="bg-white border-b-2 border-gray-200 shadow-md fixed top-0 w-full z-50" style={{width:'100vw'}}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{width:'100vw'}}>
           <div className="flex justify-between h-16 items-center">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center">
+            <div className="flex-shrink-0 flex items-center" style={{marginLeft:'-100px'}}>
               <DollarSign className="h-8 w-8 text-indigo-600" />
               <span className="ml-2 text-2xl font-bold text-gray-800">MoneyOverflow</span>
             </div>
@@ -99,7 +99,7 @@ const MainNavbar = () => {
               {isLoggedIn ? (
                 <>
                   {/* User Icon with Dropdown */}
-                  <div className="relative">
+                  <div className="relative" style={{marginRight:'-100px'}}>
                     <button
                       className="flex items-center text-gray-700 focus:outline-none"
                       onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -128,7 +128,6 @@ const MainNavbar = () => {
                 </>
               ) : (
                 <div className="flex space-x-4">
-                  {/* Login & Sign-Up */}
                   <Link to="/auth">
                     <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
                       Login
@@ -146,10 +145,9 @@ const MainNavbar = () => {
         </div>
       </nav>
 
-      {/* Add padding-top to avoid content overlap */}
-      <div className="pt-16">
-        {/* Your page content goes here */}
-      </div>
+      {/* Spacer */}
+      <div className="h-16" />
+
     </>
   );
 };
