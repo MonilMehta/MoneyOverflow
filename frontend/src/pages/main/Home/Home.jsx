@@ -9,6 +9,7 @@ import Calendar from "./Calendar"; // Custom calendar component
 import "./home.css";
 import RedirectPage from "../components/RedirectPage";
 import { currentUser } from "../../../apis/user.api";
+import Newsletter from "./Newsletter";
 import axios from "axios";
 
 const Home = () => {
@@ -46,6 +47,7 @@ const Home = () => {
             <CompletedLearningPaths course={course}/>
             <Blogs />
             <Forum />
+            <Newsletter />
           </main>
           {/* Sidebar (30%) */}
           <aside className="bg-white shadow-lg rounded-lg p-6 space-y-6 sticky top-6 mt-10">
