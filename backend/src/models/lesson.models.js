@@ -15,6 +15,9 @@ const lessonSchema = new mongoose.Schema({
     },
     image:{
         type:String
+    },
+    VideoUrl:{
+        type:String
     }
   });
 
