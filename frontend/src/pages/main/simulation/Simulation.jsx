@@ -226,16 +226,31 @@ export default function Simulation() {
         addAlert('Insufficient shares', 'error');
         return;
       }
-      setPortfolio(prev => ({
-        cash: prev.cash + amount * currentPrice,
-        stocks: {
-          ...prev.stocks,
-          [selectedStock]: {
-            quantity: prev.stocks[selectedStock].quantity - amount,
-            avgPrice: prev.stocks[selectedStock].avgPrice // Keep the average price unchanged
-          }
+      setPortfolio(prev => {
+        const newQuantity = prev.stocks[selectedStock].quantity - amount;
+        const newCash = prev.cash + amount * currentPrice;
+        
+        let newStocks;
+        if (newQuantity === 0) {
+          // If all shares are sold, remove the stock from the portfolio
+          newStocks = { ...prev.stocks };
+          delete newStocks[selectedStock];
+        } else {
+          // If some shares remain, keep the average price unchanged
+          newStocks = {
+            ...prev.stocks,
+            [selectedStock]: {
+              quantity: newQuantity,
+              avgPrice: prev.stocks[selectedStock].avgPrice
+            }
+          };
         }
-      }));
+        
+        return {
+          cash: newCash,
+          stocks: newStocks
+        };
+      });
       addAlert(`Sold ${amount} shares of ${selectedStock}`);
     }
     setQuantity('');
@@ -373,25 +388,23 @@ export default function Simulation() {
             </div>
             <div>
               <h3 className="font-semibold mb-2">Holdings</h3>
-              {Object.entries(portfolio.stocks).map(([stock, { quantity, avgPrice }]) => 
-                quantity > 0 && (
-                  <div key={stock} className="flex justify-between py-1">
-                    <span className="font-medium">{stock}</span>
-                    <div className="text-right">
-                      <div>{quantity} shares</div>
-                      <div className="text-sm text-gray-500">
-                        Avg: ${avgPrice.toFixed(2)}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        Current: ${getCurrentPrice(stock).toFixed(2)}
-                      </div>
-                      <div className={`text-sm ${getCurrentPrice(stock) > avgPrice ? 'text-green-500' : 'text-red-500'}`}>
-                        Profit: ${((getCurrentPrice(stock) - avgPrice) * quantity).toFixed(2)}
-                      </div>
+              {Object.entries(portfolio.stocks).map(([stock, { quantity, avgPrice }]) => (
+                <div key={stock} className="flex justify-between py-1">
+                  <span className="font-medium">{stock}</span>
+                  <div className="text-right">
+                    <div>{quantity} shares</div>
+                    <div className="text-sm text-gray-500">
+                      Avg: ${avgPrice.toFixed(2)}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Current: ${getCurrentPrice(stock).toFixed(2)}
+                    </div>
+                    <div className={`text-sm ${getCurrentPrice(stock) > avgPrice ? 'text-green-500' : 'text-red-500'}`}>
+                      Profit: ${((getCurrentPrice(stock) - avgPrice) * quantity).toFixed(2)}
                     </div>
                   </div>
-                )
-              )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
