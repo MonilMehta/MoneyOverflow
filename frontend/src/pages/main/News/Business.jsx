@@ -144,7 +144,7 @@ const BusinessNewsApp = () => {
               ))}
             </NewsTicker>
           </NewsTickerContainer>
-          <h1>Latest News</h1>
+          <h1 style={{ color:'black'}}>Latest News</h1>
           <NewsGrid>
             {articles.map((article, index) => (
               <NewsCard key={index} onClick={() => window.open(article.url, '_blank')}>
