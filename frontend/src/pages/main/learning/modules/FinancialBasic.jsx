@@ -45,18 +45,27 @@ const FinancialBasic = ({ onNextModule }) => {
     } else {
       console.error("onNextModule is not a function or is not provided");
     }
-  };//aa e ek 
+  };
 
   return (
-    <div className="financial-basic-page" style={{
-        width: '100%',
-    }}>
+    <div className="financial-basic-page">
       <h1>Financial Basics</h1>
       {submodules.map((submodule, index) => (
         <div key={index} className="submodule-section">
           <h2 className="submodule-title">{submodule.title}</h2>
           <div className="submodule-content">
             {formatContent(submodule.content)}
+          </div>
+          <div className="video-container">
+            <iframe 
+              width="560" 
+              height="315" 
+              src={submodule.VideoUrl}
+              title="YouTube video player" 
+              frameBorder="0" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+              allowFullScreen
+            ></iframe>
           </div>
         </div>
       ))}
@@ -94,6 +103,20 @@ const styles = `
   }
   .submodule-paragraph {
     margin-bottom: 12px;
+  }
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
   .next-button {
     display: block;
