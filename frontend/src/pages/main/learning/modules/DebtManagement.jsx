@@ -47,10 +47,14 @@ const DebtManagement = ({ onNextModule }) => {
     }
   };
 
+  // Function to validate and convert YouTube URLs to embed format
+  const formatVideoUrl = (url) => {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  };
+
   return (
-    <div className="financial-basic-page" style={{
-        width: '100%',
-    }}>
+    <div className="financial-basic-page">
       <h1>Debt Management</h1>
       {submodules.map((submodule, index) => (
         <div key={index} className="submodule-section">
@@ -58,16 +62,22 @@ const DebtManagement = ({ onNextModule }) => {
           <div className="submodule-content">
             {formatContent(submodule.content)}
           </div>
-          <img src={submodule.image} alt=" " />
-          <iframe 
-              width="560" 
-              height="315" 
-              src={submodule.VideoUrl}
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-              allowFullScreen
-            ></iframe>
+          {submodule.image && <img src={submodule.image} alt="Submodule visual" />}
+          <div className="video-container">
+            {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
+              <iframe
+                width="560"
+                height="315"
+                src={formatVideoUrl(submodule.VideoUrl)}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            ) : (
+              <p>No valid video available.</p>
+            )}
+          </div>
         </div>
       ))}
       <button className="next-button" onClick={handleNextClick}>Next</button>
@@ -105,6 +115,25 @@ const styles = `
   }
   .submodule-paragraph {
     margin-bottom: 12px;
+  }
+  img {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
   }
   .next-button {
     display: block;

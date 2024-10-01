@@ -47,6 +47,12 @@ const Savings = ({ onNextModule }) => {
     }
   };
 
+  // Function to validate and convert YouTube URLs to embed format
+  const formatVideoUrl = (url) => {
+    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+  };
+
   return (
     <div className="financial-basic-page" style={{
         width: '100%',
@@ -58,15 +64,19 @@ const Savings = ({ onNextModule }) => {
           <div className="submodule-content">
             {formatContent(submodule.content)}
           </div>
-          <iframe 
-              width="560" 
-              height="315" 
-              src={submodule.VideoUrl}
-              title="YouTube video player" 
-              frameBorder="0" 
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
+            <iframe
+              width="560"
+              height="315"
+              src={formatVideoUrl(submodule.VideoUrl)}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
+          ) : (
+            <p>No valid video available.</p>
+          )}
         </div>
       ))}
       <button className="next-button" onClick={handleNextClick}>Next</button>
