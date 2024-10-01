@@ -125,7 +125,7 @@ const BusinessNewsApp = () => {
   return (
     <NewsContainer>
       {loading ? (
-        <LoadingGif src={NewsGif} style={{ width: '800px' }} alt="loading gif"/>
+        <LoadingGif src={NewsGif} style={{ width: '45%', paddingTop: '0' }} alt="loading gif"/>
       ) : (
         <>
           <NewsTickerContainer>

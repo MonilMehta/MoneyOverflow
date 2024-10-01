@@ -4,6 +4,7 @@ import { getQuestion, checkAnswer } from "../../../../apis/quiz.api";
 import { Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css'; // Import styles
+import RedirectPage from "../../components/RedirectPage";
 
 const DifficultySlider = ({ onDifficultyChange }) => {
   const [difficulty, setDifficulty] = useState(1);
@@ -245,7 +246,7 @@ const Questions = ({ category }) => {
               </h2>
             </div>
           )}
-        </div> : <div className="underline"> <Link to='/auth'>Please login first</Link></div>
+        </div> : <RedirectPage/>
       }
     </div>
   );

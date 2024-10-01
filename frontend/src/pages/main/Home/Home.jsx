@@ -14,7 +14,6 @@ import axios from "axios";
 
 const Home = () => {
   const xpBooster = 1.5;
-  const coins = 500;
   const [user, setUser] = useState();
   const [name, setName] = useState();
   const [points, setPoints] = useState();
