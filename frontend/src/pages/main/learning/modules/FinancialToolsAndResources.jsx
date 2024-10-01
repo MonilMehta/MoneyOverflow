@@ -65,8 +65,9 @@ const FinancialToolsAndResources = ({ onNextModule }) => {
             {formatContent(submodule.content)}
           </div>
           {submodule.image && <img src={submodule.image} alt="Submodule visual" />}
-          <div className="video-container">
-            {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
+          {/* Only render the video container if there's a valid video URL */}
+          {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) && (
+            <div className="video-container">
               <iframe
                 width="560"
                 height="315"
@@ -76,10 +77,8 @@ const FinancialToolsAndResources = ({ onNextModule }) => {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>
-            ) : (
-              <p>No valid video available.</p>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       ))}
       <button className="next-button" onClick={handleNextClick}>Next</button>
