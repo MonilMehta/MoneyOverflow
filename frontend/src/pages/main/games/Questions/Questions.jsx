@@ -130,12 +130,21 @@ const Questions = ({ category }) => {
   const checktheAnswer = async (questionId, selectedOptionIndex) => {
     try {
       const response = await axios.post(checkAnswer, {questionId, selectedAnswer: selectedOptionIndex, userId: user});
-      console.log(response);
-      setAnswerSubmitted(true);
+      
+      const { isCorrect, correctAnswer } = response.data;
+  
+      if (isCorrect) {
+        alert("Correct! Good job.");
+      } else {
+        alert(`Wrong! The correct answer was option ${correctAnswer + 1}`);
+      }
+  
+      setAnswerSubmitted(true); // Allow moving to the next question after answer is submitted
     } catch (error) {
       console.error("Error checking answer:", error);
     }
   };
+  
 
   const handleAnswerSelect = (optionIndex) => {
     const updatedAnswers = [...selectedAnswers];
