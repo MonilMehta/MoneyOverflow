@@ -104,7 +104,7 @@ const BusinessNewsApp = () => {
   const [country, setCountry] = useState('us'); // Initial country
 
   const fetchNews = async (page, country) => {
-    const API_KEY = '738f992c50624b6473adcfc351095f59'; // Use REACT_APP_ prefix
+    const API_KEY = process.env.REACT_APP_API_KEY;
     const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=${country}&apikey=${API_KEY}&page=${page}`;
     try {
       const response = await axios.get(API_URL);
