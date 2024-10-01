@@ -41,7 +41,6 @@
   height: 4.2em;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   margin-bottom: 15px;
   transition: 0.25s ease;
