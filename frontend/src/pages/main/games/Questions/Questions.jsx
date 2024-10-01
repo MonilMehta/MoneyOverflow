@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { getQuestion, checkAnswer } from "../../../../apis/quiz.api";
 import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css'; // Import styles
+import RedirectPage from "../../components/RedirectPage";
 
 const DifficultySlider = ({ onDifficultyChange }) => {
   const [difficulty, setDifficulty] = useState(1);
@@ -54,30 +57,6 @@ const DifficultySlider = ({ onDifficultyChange }) => {
           </span>
         </div>
       </div>
-
-      <style jsx>{`
-        input[type="range"]::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: white;
-          border: 2px solid #f59e0b; /* Change border color to match the slider */
-          cursor: pointer;
-          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-
-        input[type="range"]::-moz-range-thumb {
-          width: 20px;
-          height: 20px;
-          border-radius: 50%;
-          background: white;
-          border: 2px solid #f59e0b; /* Change border color to match the slider */
-          cursor: pointer;
-          box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-        }
-      `}</style>
     </div>
   );
 };
@@ -121,7 +100,7 @@ const Questions = ({ category }) => {
       setAnswerSubmitted(false);
     } catch (error) {
       console.error(error);
-      alert("Error fetching questions");
+      toast.error("Error fetching questions");
     } finally {
       setLoading(false);
     }
@@ -134,17 +113,17 @@ const Questions = ({ category }) => {
       const { isCorrect, correctAnswer } = response.data;
   
       if (isCorrect) {
-        alert("Correct! Good job.");
+        toast.success("Correct! Good job.");
       } else {
-        alert(`Wrong! The correct answer was option ${correctAnswer + 1}`);
+        toast.error(`Wrong! The correct answer was option ${correctAnswer + 1}`);
       }
   
       setAnswerSubmitted(true); // Allow moving to the next question after answer is submitted
     } catch (error) {
       console.error("Error checking answer:", error);
+      toast.error("Error checking answer");
     }
   };
-  
 
   const handleAnswerSelect = (optionIndex) => {
     const updatedAnswers = [...selectedAnswers];
@@ -160,7 +139,7 @@ const Questions = ({ category }) => {
       console.log(currentQuestionId, selectedAnswer);
       checktheAnswer(currentQuestionId, selectedAnswer); // Call API to check the selected answer
     } else {
-      alert("Please select an answer before submitting!");
+      toast.warn("Please select an answer before submitting!");
     }
   };
 
@@ -173,9 +152,7 @@ const Questions = ({ category }) => {
         handleSubmit(); // If last question, submit the quiz
       }
     } else {
-      alert(
-        "Please submit your answer before proceeding to the next question."
-      );
+      toast.warn("Please submit your answer before proceeding to the next question.");
     }
   };
 
@@ -196,6 +173,7 @@ const Questions = ({ category }) => {
 
   return (
     <div id="questions" className="w-full">
+      <ToastContainer /> {/* Toast container to display toasts */}
       {user !== ''?
         <div className="w-full p-5">
           <h2 className="text-5xl font-mono mb-8 font-bold text-[#dbf4ff] text-center w-full">
@@ -217,7 +195,7 @@ const Questions = ({ category }) => {
             <div className="transition-opacity duration-500 ease-in-out w-1/2 mx-auto mt-5">
               <div className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
                 <h3 className="text-xl mb-2">
-                  {`${currentQuestionIndex + 1}. ${questions[currentQuestionIndex].question}`}
+                  {`${currentQuestionIndex + 1}/${questions.length}. ${questions[currentQuestionIndex].question}`}
                 </h3>
                 <div className="mt-2">
                   {questions[currentQuestionIndex].options.map(
@@ -268,7 +246,7 @@ const Questions = ({ category }) => {
               </h2>
             </div>
           )}
-        </div> : <div className="underline"> <Link to='/auth'>Please login first</Link></div>
+        </div> : <RedirectPage/>
       }
     </div>
   );

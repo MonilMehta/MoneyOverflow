@@ -11,10 +11,8 @@ import RedirectPage from "../components/RedirectPage";
 import { currentUser } from "../../../apis/user.api";
 import Newsletter from "./Newsletter";
 import axios from "axios";
-
 const Home = () => {
   const xpBooster = 1.5;
-  const coins = 500;
   const [user, setUser] = useState();
   const [name, setName] = useState();
   const [points, setPoints] = useState();
@@ -43,6 +41,7 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-[75%_25%] gap-6 p-6 bg-gray-50 mt-16">
           {/* Main Content (70%) */}
           <main className="space-y-12">
+            
             <ContinueLearning course={course}/>
             <CompletedLearningPaths course={course}/>
             <Blogs />

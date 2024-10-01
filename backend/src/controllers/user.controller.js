@@ -230,7 +230,7 @@ const updateAccountDetails = asyncHandler(async (req, res) => {
     const userId = req.user?._id; 
     const { fullName, email, phone_no, username, date_of_birth} = req.body;
 
-    if (!(fullName || email)) {
+    if (!(fullName || email || phone_no || username || date_of_birth)) {
         throw new ApiError(400, "At least one field (fullName or email) is required.");
     }
 
