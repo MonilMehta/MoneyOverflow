@@ -101,67 +101,70 @@ const BusinessNewsApp = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [country, setCountry] = useState('us'); // Initial country
 
-
-  
-  const fetchNews = async (page) => {
-    const API_KEY = process.env.REACT_APP_API_KEY; // Use REACT_APP_ prefix
-    const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=us&apikey=${API_KEY}&page=${page}`;
-    
+  const fetchNews = async (page, country) => {
+    const API_KEY = '738f992c50624b6473adcfc351095f59'; // Use REACT_APP_ prefix
+    const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=${country}&apikey=${API_KEY}&page=${page}`;
     try {
       const response = await axios.get(API_URL);
       setArticles(prevArticles => [...prevArticles, ...response.data.articles]);
       setLoading(false);
       setTimeout(() => {
-        toast.info("Subscribe to our newsettler for daily news !", {toastId: 'news'})
-      }, 5000)
+        toast.info("Subscribe to our newsletter for daily news!", { toastId: 'news' });
+      }, 5000);
     } catch (error) {
       console.error('Error fetching news:', error);
       setLoading(false);
     }
-  };
-
-  useEffect(() => {
-    fetchNews(page);
-  }, [page]);
-
-  const loadMoreArticles = () => {
-    setPage(prevPage => prevPage + 1);
-  };
-
-  return (
-    <>
-    <ToastContainer/>
-    <NewsContainer>
-      {loading ? (
-        <LoadingGif src={NewsGif} style={{ width: '45%', paddingTop: '0' }} alt="loading gif"/>
-      ) : (
-        <>
-          <NewsTickerContainer>
-            <NewsTicker>
-              {articles.map((article, index) => (
-                <span key={index}>{article.title} &nbsp;&nbsp;&nbsp;</span>
-              ))}
-            </NewsTicker>
-          </NewsTickerContainer>
-          <h1>Latest News</h1>
-          <NewsGrid>
-            {articles.map((article, index) => (
-              <NewsCard key={index} onClick={() => window.open(article.url, '_blank')}>
-                <NewsImage src={article.image} alt={article.title} />
-                <NewsContent>
-                  <NewsTitle>{article.title}</NewsTitle>
-                  <NewsDescription>{article.description}</NewsDescription>
-                </NewsContent>
-              </NewsCard>
-            ))}
-          </NewsGrid>
-          <LoadMoreButton onClick={loadMoreArticles}>Load More</LoadMoreButton>
-        </>
-      )}
-    </NewsContainer>
-    </>
-  );
-};
+    };
+    
+    useEffect(() => {
+      fetchNews(page, country);
+    }, [page, country]);
+    
+    const countries = ['us', 'ca', 'in', 'eu', 'de', 'au']; // List of countries
+    const loadMoreArticles = () => {
+      setPage(prevPage => prevPage + 1);
+      setCountry(prevCountry => {
+        const currentIndex = countries.indexOf(prevCountry);
+        const nextIndex = (currentIndex + 1) % countries.length;
+        return countries[nextIndex];
+      });
+    };
+    
+    return (
+      <>
+        <ToastContainer />
+        <NewsContainer>
+          {loading ? (
+            <LoadingGif src={NewsGif} style={{ width: '45%', paddingTop: '0' }} alt="loading gif" />
+          ) : (
+            <>
+              <NewsTickerContainer>
+                <NewsTicker>
+                  {articles.map((article, index) => (
+                    <span key={index}>{article.title} &nbsp;&nbsp;&nbsp;</span>
+                  ))}
+                </NewsTicker>
+              </NewsTickerContainer>
+              <h1>Latest News</h1>
+              <NewsGrid>
+                {articles.map((article, index) => (
+                  <NewsCard key={index} onClick={() => window.open(article.url, '_blank')}>
+                    <NewsImage src={article.image} alt={article.title} />
+                    <NewsContent>
+                      <NewsTitle>{article.title}</NewsTitle>
+                      <NewsDescription>{article.description}</NewsDescription>
+                    </NewsContent>
+                  </NewsCard>
+                ))}
+              </NewsGrid>
+              <LoadMoreButton onClick={loadMoreArticles}>Load More</LoadMoreButton>
+            </>
+          )}
+        </NewsContainer>
+      </>
+              )};
 
 export default BusinessNewsApp;

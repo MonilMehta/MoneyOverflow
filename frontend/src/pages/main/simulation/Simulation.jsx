@@ -274,6 +274,7 @@ export default function Simulation() {
   const [alerts, setAlerts] = useState([]);
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [portfolioValue, setPortfolioValue] = useState(100000);
 
   const [user, setUser] = useState();
   const fetchData = async () => {
@@ -325,7 +326,10 @@ export default function Simulation() {
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => updateStockPrices(), 2000); // Changed to 2 seconds
+    const interval = setInterval(() => {
+      updateStockPrices();
+      updatePortfolioValue();
+    }, 2000);
     return () => clearInterval(interval);
   }, [updateStockPrices]);
 
@@ -333,6 +337,17 @@ export default function Simulation() {
     const priceData = stockData[stock];
     return priceData[priceData.length - 1].y;
   };
+
+  const updatePortfolioValue = useCallback(() => {
+    const stocksValue = Object.entries(portfolio.stocks).reduce((sum, [stock, { quantity }]) => 
+      sum + (quantity * getCurrentPrice(stock)), 0);
+    const newPortfolioValue = portfolio.cash + stocksValue;
+    setPortfolioValue(newPortfolioValue);
+  }, [portfolio, stockData]);
+
+  useEffect(() => {
+    updatePortfolioValue();
+  }, [portfolio, updatePortfolioValue]);
 
   const handleTrade = (action) => {
     const amount = parseInt(quantity);
@@ -354,8 +369,9 @@ export default function Simulation() {
             (prev.stocks[selectedStock].avgPrice || 0) +
           amount * currentPrice;
         const newAvgPrice = newTotalCost / newQuantity;
+        const newCash = prev.cash - amount * currentPrice;
         return {
-          cash: prev.cash - amount * currentPrice,
+          cash: newCash,
           stocks: {
             ...prev.stocks,
             [selectedStock]: { quantity: newQuantity, avgPrice: newAvgPrice },
@@ -399,20 +415,9 @@ export default function Simulation() {
       });
       addAlert(`Sold ${amount} shares of ${selectedStock}`);
     }
-    setQuantity("");
+    setQuantity('');
+    updatePortfolioValue();
   };
-
-  const calculatePortfolioValue = () => {
-    return (
-      portfolio.cash +
-      Object.entries(portfolio.stocks).reduce(
-        (sum, [stock, { quantity }]) => sum + quantity * getCurrentPrice(stock),
-        0
-      )
-    );
-  };
-
-  const portfolioValue = calculatePortfolioValue();
 
   const filteredStocks = Object.keys(STOCKS).filter((stock) =>
     stock.toLowerCase().includes(searchTerm.toLowerCase())
@@ -433,6 +438,7 @@ export default function Simulation() {
       updateStockPrices(false);
     }
     setShowQuiz(false);
+    updatePortfolioValue();
   };
 
   return (
