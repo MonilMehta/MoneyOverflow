@@ -17,6 +17,7 @@ const Home = () => {
   const [user, setUser] = useState();
   const [name, setName] = useState();
   const [points, setPoints] = useState();
+  const [course, setCourse] = useState();
 
   useEffect(() => {
     // let userId = document.cookie.split("userId=")[1]?.split(";")[0];
@@ -30,6 +31,7 @@ const Home = () => {
       setUser(res?.data?.data?.username);
       setName(res?.data?.data?.fullName);
       setPoints(res?.data?.data?.points);
+      setCourse(res?.data?.data?.highestCompletedIndex);
     }
     fetchData();
   });
@@ -40,8 +42,8 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-[75%_25%] gap-6 p-6 bg-gray-50 mt-16">
           {/* Main Content (70%) */}
           <main className="space-y-12">
-            <ContinueLearning />
-            <CompletedLearningPaths />
+            <ContinueLearning course={course}/>
+            <CompletedLearningPaths course={course}/>
             <Blogs />
             <Forum />
           </main>
