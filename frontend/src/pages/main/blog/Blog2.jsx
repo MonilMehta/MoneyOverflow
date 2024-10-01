@@ -44,7 +44,7 @@ const BlogPosts = () => {
                   <div className="section-title pb-4">
                     <div className="line"></div>
                     <h3 className="title text-4xl font-bold pl-8 text-white ">
-                      <span>Blog Posts</span>
+                      <span>Case Study Posts</span>
                       <div className="border-4 mt-8 w-64 rounded-full"></div>
                     </h3>
                   </div>
