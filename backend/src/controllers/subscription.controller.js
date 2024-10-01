@@ -49,24 +49,24 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
         <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4;">
             <tr>
-                <td style="padding: 20px; text-align: center; background-color: #1a5f7a;">
+                <td style="padding: 20px; text-align: center; background-color: #1a5f7a;margin:20px;">
                     <h1 style="color: white;">Subscription Confirmation</h1>
                 </td>
             </tr>
             <tr>
-                <td style="padding: 20px; background-color: white;">
+                <td style="padding: 20px; background-color: white; margin:20px;">
                     <p>Thank you for subscribing to our newsletter. We're excited to keep you updated with the latest financial news and insights.</p>
                 </td>
             </tr>
             <tr>
-                <td style="padding: 20px; background-color: #e9ecef;">
+                <td style="padding: 20px; background-color: #e9ecef; margin:20px;">
                     <h2 style="color: #1a5f7a;">Latest Financial News</h2>
                 </td>
             </tr>
             ${newsHtml}
             <tr>
                 <td style="padding: 20px; text-align: center; background-color: #1a5f7a; color: white;">
-                    <p>&copy; 2024 Your Company Name. All rights reserved.</p>
+                    <p>&copy; 2024 MoneyOverflow. All rights reserved.</p>
                 </td>
             </tr>
         </table>
