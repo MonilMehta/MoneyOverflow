@@ -62,7 +62,7 @@ function SignupSignin() {
       console.log("Login successful:", response?.data);
       navigate('/main');
     } catch (error) {
-      console.error("Login failed:", error.response.data);
+      console.error("Login failed:", error.response);
     }
   };
 
@@ -85,7 +85,7 @@ function SignupSignin() {
       console.log("Signup successful:", response?.data);
       flip(); // Switch to login after signup
     } catch (error) {
-      console.error("Signup failed:", error.response.data);
+      console.error("Signup failed:", error);
     }
   };
 
