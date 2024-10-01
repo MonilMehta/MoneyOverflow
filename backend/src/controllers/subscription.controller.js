@@ -24,7 +24,7 @@ const subscribeNewsletter = asyncHandler(async (req, res) => {
     const API_KEY = process.env.NEWS_API_KEY;
     const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=us&apikey=${API_KEY}`;
     const newsResponse = await axios.get(API_URL);
-    const articles = newsResponse.data.articles.slice(0, 5); // Get top 5 articles
+    const articles = newsResponse.data.articles.slice(0, 7); // Get top 5 articles
 
     const newsHtml = articles.map(article => `
         <tr>
