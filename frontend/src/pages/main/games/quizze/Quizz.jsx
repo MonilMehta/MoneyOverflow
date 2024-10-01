@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 
 const Quizz = ({ onSelectCategory }) => {
   const [quizCounters, setQuizCounters] = useState({
-    savings: { solved: 0, total: 0 },
-    retirement: { solved: 0, total: 0 },
-    investing: { solved: 0, total: 0 },
-    budgeting: { solved: 0, total: 0 },
+    savings: { solved: 0, total: 20 },
+    retirement: { solved: 0, total: 20 },
+    investing: { solved: 0, total: 20 },
+    budgeting: { solved: 0, total: 20 },
   });
 
   // Array of image URLs for each category
