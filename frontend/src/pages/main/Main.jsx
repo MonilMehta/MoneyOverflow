@@ -16,7 +16,7 @@ import BlogPage from './blog/BlogPage';
 import BusinessNewsApp from './News/Business';
 import Premium from './premium/Premium';
 import Simulation from './simulation/Simulation';import Chatbot from './components/Chatbot';
-
+import FAQ from './about/FAQ';
 const Main = () => {
   return (
     <>
@@ -37,6 +37,7 @@ const Main = () => {
         <Route path="/news" element={<BusinessNewsApp />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/simulation" element={<Simulation />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
       <Chatbot /> 
     </>
