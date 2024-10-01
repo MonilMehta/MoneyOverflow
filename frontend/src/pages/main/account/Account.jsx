@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Camera, Mail, Phone, Cake, Edit2, Save, X, AlertCircle, Calendar } from 'lucide-react';
-import Badge from './Badge/Badge';
-import { currentUser } from "../../../apis/user.api";
+import { Mail, Phone, Cake, Edit2, Save, X, Calendar } from 'lucide-react';
+import { currentUser, updateDetails } from "../../../apis/user.api"; // Assuming you have an updateUser endpoint
 
 const Alert = ({ children, onClose }) => {
   useEffect(() => {
@@ -11,7 +10,7 @@ const Alert = ({ children, onClose }) => {
   }, [onClose]);
 
   return (
-    <div className="fixed bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+    <div className="bottom-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
       <span className="block sm:inline">{children}</span>
       <span className="absolute top-0 bottom-0 right-0 px-4 py-3" onClick={onClose}>
         <X className="h-6 w-6 text-green-500" />
@@ -20,7 +19,7 @@ const Alert = ({ children, onClose }) => {
   );
 };
 
-const ProfileField = ({ label, value, icon, isEditing, onChange, type = "text" }) => (
+const ProfileField = ({ label, value, icon, isEditing, onChange, name, type = "text" }) => (
   <div className="flex flex-col space-y-1">
     <label className="text-sm font-medium text-gray-700">{label}</label>
     <div className="relative">
@@ -29,6 +28,7 @@ const ProfileField = ({ label, value, icon, isEditing, onChange, type = "text" }
       </span>
       <input
         type={type}
+        name={name}  // Explicitly pass name prop
         value={value}
         onChange={onChange}
         disabled={!isEditing}
@@ -52,28 +52,28 @@ const Account = () => {
     username: '',
     fullName: '',
     email: '',
-    phone: '',
-    dateOfBirth: '',
+    phone_no: '',
+    date_of_birth: '',
     points: 0,
+    newsettler: 'No',
+    courses: 0
   });
 
-  const fileInputRef = useRef(null);
-
-  // Fetch current user data from backend
   const fetchCurrentUser = async () => {
     try {
       let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
       const res = await axios.get(currentUser, { headers: { Authorization: `Bearer ${accessToken}` } });
       const userData = res?.data?.data;
 
-      // Update formData with fetched user data
       setFormData({
         username: userData.username || '',
         fullName: userData.fullName || '',
         email: userData.email || '',
-        phone: userData.phone_no || '',
-        dateOfBirth: userData.date_of_birth ? userData.date_of_birth.split('T')[0] : '',
-        points: userData.points || 0
+        phone_no: userData.phone_no || '',
+        date_of_birth: userData.date_of_birth ? userData.date_of_birth.split('T')[0] : '',
+        points: userData.points || 0,
+        newsettler: userData.isSubscribed === false ? "No" : "Yes",
+        courses: userData.highestCompletedIndex + 1
       });
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -88,25 +88,24 @@ const Account = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    setShowAlert(true);
-  };
+  const handleSave = async () => {
+    try {
+      let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
+      const response = await axios.patch(updateDetails, formData, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+      console.log(response);
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFormData({ ...formData, profileImage: reader.result });
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const triggerImageUpload = () => {
-    if (isEditing) {
-      fileInputRef.current.click();
+      if (response.status === 200) {
+        setShowAlert(true);  // Show success alert
+      } else {
+        // Handle error response
+        console.error("Failed to update profile:", response);
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    } finally {
+      setIsEditing(false);  // Disable editing mode after save
     }
   };
 
@@ -125,41 +124,56 @@ const Account = () => {
                   value={formData.username}
                   icon={<Mail className="h-5 w-5" />}
                   isEditing={isEditing}
-                  onChange={(e) => handleInputChange({ target: { name: 'username', value: e.target.value } })}
+                  onChange={handleInputChange}
+                  name="username" // Explicitly set name
                 />
                 <ProfileField
                   label="Full Name"
                   value={formData.fullName}
                   icon={<Edit2 className="h-5 w-5" />}
                   isEditing={isEditing}
-                  onChange={(e) => handleInputChange({ target: { name: 'fullName', value: e.target.value } })}
+                  onChange={handleInputChange}
+                  name="fullName" // Explicitly set name
                 />
                 <ProfileField
                   label="Email"
                   value={formData.email}
                   icon={<Mail className="h-5 w-5" />}
                   isEditing={isEditing}
-                  onChange={(e) => handleInputChange({ target: { name: 'email', value: e.target.value } })}
+                  onChange={handleInputChange}
+                  name="email" // Explicitly set name
                 />
                 <ProfileField
                   label="Phone"
-                  value={formData.phone}
+                  value={formData.phone_no}
                   icon={<Phone className="h-5 w-5" />}
                   isEditing={isEditing}
-                  onChange={(e) => handleInputChange({ target: { name: 'phone', value: e.target.value } })}
+                  onChange={handleInputChange}
+                  name="phone_no" // Explicitly set name
                 />
                 <ProfileField
                   label="Date of Birth"
-                  value={formData.dateOfBirth}
+                  value={formData.date_of_birth}
                   icon={<Cake className="h-5 w-5" />}
                   isEditing={isEditing}
-                  onChange={(e) => handleInputChange({ target: { name: 'dateOfBirth', value: e.target.value } })}
+                  onChange={handleInputChange}
+                  name="date_of_birth" // Explicitly set name
                   type="date"
                 />
                 <ProfileField
                   label="Points"
                   value={formData.points}
                   isEditing={false} // Points are read-only
+                />
+                <ProfileField
+                  label="Subscribed to Newsettler?"
+                  value={formData.newsettler}
+                  isEditing={false} // Read-only
+                />
+                <ProfileField
+                  label="Learning Path Progress"
+                  value={`${formData.courses * 10} %`}
+                  isEditing={false} // Read-only
                 />
               </div>
             </div>
