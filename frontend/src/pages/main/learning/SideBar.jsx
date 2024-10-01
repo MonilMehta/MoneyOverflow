@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ChevronDown, ChevronUp, Lock, Unlock } from 'lucide-react'; // Import lock and unlock icons
 import FinancialBasic from './modules/FinancialBasic';
 import Budgeting from './modules/Budgeting';
 import Saving from './modules/Saving';
@@ -10,10 +10,45 @@ import InsuranceAndProtection from './modules/InsuranceAndProtection';
 import TaxesAndLegalConsideration from './modules/TaxesAndLegalConsideration';
 import FinancialToolsAndResources from './modules/FinancialToolsAndResources';
 import WealthBuilding from './modules/WealthBuilding';
+import axios from 'axios';
+import { currentUser } from '../../../apis/user.api';
+import { isUnlock, mark } from '../../../apis/learning.api';
 
 const SideBar = () => {
   const [selectedModule, setSelectedModule] = useState('Financial Basics');
   const [expandedModules, setExpandedModules] = useState([]);
+  const [course, setCourse] = useState();
+  const [user, setUser] = useState();
+  const fetchData = async () => {
+    let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
+    const res = await axios.get(currentUser, { headers: { Authorization: `Bearer ${accessToken}` } })
+    console.log(res?.data?.data)
+    setCourse(res?.data?.data?.highestCompletedIndex);
+    setUser(res?.data?.data?._id);
+  }
+  useEffect(() => {
+    fetchData();
+  });
+
+  const checkUnlock = async (module) => {
+    try{
+      const res = await axios.post(isUnlock, {id: module.id, userId: user});
+      console.log(res);
+      setSelectedModule(module.name);
+    } catch(error){
+      console.error(error);
+    }
+  
+  }
+  const checkMark = async (id) => {
+    try{
+      const res = await axios.post(mark, {id: id, userId: user});
+      console.log(res);
+      fetchData();
+    } catch(error){
+      console.error(error);
+    }
+  }
 
   const toggleExpand = (module) => {
     if (expandedModules.includes(module)) {
@@ -27,6 +62,7 @@ const SideBar = () => {
     const currentIndex = modules.findIndex(module => module.name === selectedModule);
     if (currentIndex < modules.length - 1) {
       setSelectedModule(modules[currentIndex + 1].name);
+      checkMark(modules[currentIndex + 1].id);
     }
   };
 
@@ -58,108 +94,31 @@ const SideBar = () => {
   };
 
   const modules = [
-    {
-      name: 'Financial Basics',
-      submodules: [
-        'Understanding Money',
-        'Income vs. Expenses',
-        'Financial Terminology',
-        'Importance of Financial Literacy',
-      ],
-    },
-    {
-      name: 'Budgeting',
-      submodules: [
-        'Why Budgeting Matters',
-        'Creating a Personal Budget',
-        'Different Types of Budgets',
-        'Tools for Budgeting ',
-      ],
-    },
-    {
-      name: 'Saving',
-      submodules: [
-        'Importance of Saving',
-        'Short-Term vs. Long-Term Savings',
-        'Emergency Funds',
-        'Automated Saving Techniques',
-      ],
-    },
-    {
-      name: 'Debt Management',
-      submodules: [
-        'Good vs. Bad Debt',
-        'Strategies for Paying Off Debt',
-        'Understanding Credit Scores',
-        'Avoiding Debt Traps',
-      ],
-    },
-    {
-      name: 'Investing',
-      submodules: [
-        'Basics of Investing',
-        'Types of Investments',
-        'Risk and Return',
-        'Diversification',
-      ],
-    },
-    {
-      name: 'Retirement Planning',
-      submodules: [
-        'Importance of Early Planning',
-        'Retirement Accounts',
-        'Estimating Retirement Needs',
-        'Social Security',
-      ],
-    },
-    {
-      name: 'Insurance and Protection',
-      submodules: [
-        'Life and Health Insurance',
-        'Home and Auto Insurance',
-        'Disability Coverage',
-        'Protecting Assets',
-      ],
-    },
-    {
-      name: 'Taxes and Legal Considerations',
-      submodules: [
-        'Basics of Income Tax',
-        'Tax-Advantaged Accounts',
-        'Estate Planning',
-        'Legal Structures for Businesses',
-      ],
-    },
-    {
-      name: 'Financial Tools and Resources',
-      submodules: [
-        'Financial Apps and Platforms',
-        'Calculators',
-        'How to Read Financial Statements',
-        'Finding Financial Advisors',
-      ],
-    },
-    {
-      name: 'Wealth Building',
-      submodules: [
-        'Passive Income Strategies',
-        'Real Estate Investment',
-        'Entrepreneurship and Startups',
-        'Wealth Preservation',
-      ],
-    },
+    { name: 'Financial Basics', submodules: ['Understanding Money', 'Income vs. Expenses', 'Financial Terminology', 'Importance of Financial Literacy'], id: '66faae800e014d17ed7a0d8e' },
+    { name: 'Budgeting', submodules: ['Why Budgeting Matters', 'Creating a Personal Budget', 'Different Types of Budgets', 'Tools for Budgeting '], id: '66faa0841e549319649a8efc' },
+    { name: 'Saving', submodules: ['Importance of Saving', 'Short-Term vs. Long-Term Savings', 'Emergency Funds', 'Automated Saving Techniques'], id: '66faa07b1e549319649a8efa' },
+    { name: 'Debt Management', submodules: ['Good vs. Bad Debt', 'Strategies for Paying Off Debt', 'Understanding Credit Scores', 'Avoiding Debt Traps'], id: '66faf8377fde7cf93c2ba6e4' },
+    { name: 'Investing', submodules: ['Basics of Investing', 'Types of Investments', 'Risk and Return', 'Diversification'], id: '66faa0ba1e549319649a8f00' },
+    { name: 'Retirement Planning', submodules: ['Importance of Early Planning', 'Retirement Accounts', 'Estimating Retirement Needs', 'Social Security'], id: '66faa0b21e549319649a8efe' },
+    { name: 'Insurance and Protection', submodules: ['Life and Health Insurance', 'Home and Auto Insurance', 'Disability Coverage', 'Protecting Assets'], id: '66faf9c77fde7cf93c2ba6f8' },
+    { name: 'Taxes and Legal Considerations', submodules: ['Basics of Income Tax', 'Tax-Advantaged Accounts', 'Estate Planning', 'Legal Structures for Businesses'], id: '66faf9d17fde7cf93c2ba6fa' },
+    { name: 'Financial Tools and Resources', submodules: ['Financial Apps and Platforms', 'Calculators', 'How to Read Financial Statements', 'Finding Financial Advisors'], id: '66faf9dc7fde7cf93c2ba6fc' },
+    { name: 'Wealth Building', submodules: ['Passive Income Strategies', 'Real Estate Investment', 'Entrepreneurship and Startups', 'Wealth Preservation'], id: '66fafd517fde7cf93c2ba72e' },
   ];
 
   return (
     <div className="app-container">
       <div className="sidebar">
         <div className="sidebar-content">
-          {modules.map((module) => (
+          {modules.map((module, index) => (
             <div key={module.name} className="module-wrapper">
               <div
                 className={`module ${selectedModule === module.name ? 'active' : ''}`}
-                onClick={() => setSelectedModule(module.name)}
+                onClick={() => checkUnlock(module)}
               >
+                <div className="icon-container">
+                  {index <= course ? <Unlock className="icon" /> : <Lock className="icon" />} {/* Conditional icon */}
+                </div>
                 <span>{module.name}</span>
                 <button
                   className="expand-btn"
@@ -168,19 +127,13 @@ const SideBar = () => {
                     toggleExpand(module.name);
                   }}
                 >
-                  {expandedModules.includes(module.name) ? (
-                    <ChevronUp className="arrow" />
-                  ) : (
-                    <ChevronDown className="arrow" />
-                  )}
+                  {expandedModules.includes(module.name) ? <ChevronUp className="arrow" /> : <ChevronDown className="arrow" />}
                 </button>
               </div>
               {expandedModules.includes(module.name) && (
                 <div className="submodules">
                   {module.submodules.map((submodule, index) => (
-                    <div key={index} className="submodule">
-                      {submodule}
-                    </div>
+                    <div key={index} className="submodule">{submodule}</div>
                   ))}
                 </div>
               )}
@@ -227,6 +180,16 @@ const styles = `
   }
   .module:hover, .module.active {
     background-color: #1e40af;
+  }
+  .icon-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+  }
+  .icon {
+    height: 20px; /* Ensure uniform size */
+    width: 20px; /* Ensure uniform size */
+    color: white;
   }
   .expand-btn {
     background: none;
