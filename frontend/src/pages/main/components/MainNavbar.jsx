@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { DollarSign, User } from 'lucide-react';
+import { DollarSign, Search, User } from 'lucide-react';
 
 const MainNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming user is logged in

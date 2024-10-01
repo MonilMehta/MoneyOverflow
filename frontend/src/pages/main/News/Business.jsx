@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
+import NewsGif from '../../../assets/news1.gif';
 
 const NewsContainer = styled.div`
   display: flex;
@@ -89,17 +90,19 @@ const LoadMoreButton = styled.button`
   }
 `;
 
-const countries = ['us', 'ca', 'gb', 'au', 'in']; // List of country codes
+const LoadingGif = styled.img`
+  display: block;
+  margin: 50px auto;
+`;
 
 const BusinessNewsApp = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [countryIndex, setCountryIndex] = useState(0);
 
-  const fetchNews = async (page, country) => {
+  const fetchNews = async (page) => {
     const API_KEY = process.env.REACT_APP_API_KEY; // Use REACT_APP_ prefix
-    const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=${country}&apikey=${API_KEY}&page=${page}`;
+    const API_URL = `https://gnews.io/api/v4/top-headlines?category=business&lang=en&country=us&apikey=${API_KEY}&page=${page}`;
 
     try {
       const response = await axios.get(API_URL);
@@ -112,40 +115,41 @@ const BusinessNewsApp = () => {
   };
 
   useEffect(() => {
-    fetchNews(page, countries[countryIndex]);
-  }, [page, countryIndex]);
+    fetchNews(page);
+  }, [page]);
 
   const loadMoreArticles = () => {
     setPage(prevPage => prevPage + 1);
-    setCountryIndex(prevIndex => (prevIndex + 1) % countries.length);
   };
-
-  if (loading && page === 1) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <NewsContainer>
-      <NewsTickerContainer>
-        <NewsTicker>
-          {articles.map((article, index) => (
-            <span key={index}>{article.title} &nbsp;&nbsp;&nbsp;</span>
-          ))}
-        </NewsTicker>
-      </NewsTickerContainer>
-      <h1>Latest News</h1>
-      <NewsGrid>
-        {articles.map((article, index) => (
-          <NewsCard key={index} onClick={() => window.open(article.url, '_blank')}>
-            <NewsImage src={article.image} alt={article.title} />
-            <NewsContent>
-              <NewsTitle>{article.title}</NewsTitle>
-              <NewsDescription>{article.description}</NewsDescription>
-            </NewsContent>
-          </NewsCard>
-        ))}
-      </NewsGrid>
-      <LoadMoreButton onClick={loadMoreArticles}>Load More</LoadMoreButton>
+      {loading ? (
+        <LoadingGif src={NewsGif} style={{ width: '800px' }} alt="loading gif"/>
+      ) : (
+        <>
+          <NewsTickerContainer>
+            <NewsTicker>
+              {articles.map((article, index) => (
+                <span key={index}>{article.title} &nbsp;&nbsp;&nbsp;</span>
+              ))}
+            </NewsTicker>
+          </NewsTickerContainer>
+          <h1>Latest News</h1>
+          <NewsGrid>
+            {articles.map((article, index) => (
+              <NewsCard key={index} onClick={() => window.open(article.url, '_blank')}>
+                <NewsImage src={article.image} alt={article.title} />
+                <NewsContent>
+                  <NewsTitle>{article.title}</NewsTitle>
+                  <NewsDescription>{article.description}</NewsDescription>
+                </NewsContent>
+              </NewsCard>
+            ))}
+          </NewsGrid>
+          <LoadMoreButton onClick={loadMoreArticles}>Load More</LoadMoreButton>
+        </>
+      )}
     </NewsContainer>
   );
 };
