@@ -1,7 +1,11 @@
 import React from 'react';
 import { BookOpen, TrendingUp, Target, CheckCircle, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import displayRazorPay from './razorpay';
 
 const FinancialLiteracyPlans = () => {
+  const navigate = useNavigate(); // Initialize useNavigate for redirection
+
   const plans = [
     {
       title: "Basic Learner",
@@ -17,7 +21,7 @@ const FinancialLiteracyPlans = () => {
     },
     {
       title: "Smart Saver",
-      price: "$9.99/month",
+      price: 3000, // Price in INR (Rupees)
       description: "Enhance your financial knowledge",
       features: [
         "All Basic Learner features",
@@ -30,7 +34,7 @@ const FinancialLiteracyPlans = () => {
     },
     {
       title: "Financial Master",
-      price: "$19.99/month",
+      price: 6000, // Price in INR (Rupees)
       description: "Comprehensive financial empowerment",
       features: [
         "All Smart Saver features",
@@ -42,6 +46,16 @@ const FinancialLiteracyPlans = () => {
       icon: Target
     }
   ];
+
+  // Handle the payment process
+  const handlePayment = (plan) => {
+    if (plan.price === "Free") {
+      // Redirect to the main page for free plan
+      navigate('/main'); // Redirect to http://localhost:3000/main
+    } else {
+      displayRazorPay(plan.price); // Pass the price directly in INR for Razorpay
+    }
+  };
 
   return (
     <div className="p-6 bg-gradient-to-b from-blue-50 to-white">
@@ -58,7 +72,9 @@ const FinancialLiteracyPlans = () => {
               <p className="text-gray-600">{plan.description}</p>
             </div>
             <div className="p-6 flex-grow">
-              <p className="text-3xl font-bold mb-4 text-blue-700">{plan.price}</p>
+              <p className="text-3xl font-bold mb-4 text-blue-700">
+                {plan.price === "Free" ? plan.price : `₹${plan.price}`} {/* Display price in INR */}
+              </p>
               <ul className="space-y-2">
                 {plan.features.map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-center text-gray-700">
@@ -69,7 +85,10 @@ const FinancialLiteracyPlans = () => {
               </ul>
             </div>
             <div className="p-6">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
+              <button 
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded"
+                onClick={() => handlePayment(plan)} // Call the handlePayment function when clicked
+              >
                 Start Learning
               </button>
             </div>
