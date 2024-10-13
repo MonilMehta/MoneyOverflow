@@ -445,7 +445,7 @@ export default function Simulation() {
     <>
       {user ? (
         <div className="p-4 max-w-6xl mx-auto">
-          <h1 className="text-2xl font-bold mb-4">Stock Market Quiz Game</h1>
+          <h1 className="text-6xl font-bold mb-4">Stock Market Simulation</h1>
 
           <div className="fixed top-4 right-4 z-50 space-y-2">
             {alerts.map((alert) => (
@@ -461,12 +461,15 @@ export default function Simulation() {
               </div>
             ))}
           </div>
-
+          <div className="mb-10 ml-24 flex align-center justify-between">
+          <h2 className=" font-semibold" style={{fontSize:'4rem'}}>Stock Market <span className="text-blue-500">Simulation</span></h2>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2 space-y-4">
               <div className="bg-white rounded-lg shadow p-4">
+             
                 <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-lg font-semibold">Live Trading</h2>
+                <h2 className="font-semibold">Answer the quiz to affect stock prices</h2>
                   <div className="flex items-center space-x-2">
                     <Search className="h-4 w-4 text-gray-500" />
                     <input

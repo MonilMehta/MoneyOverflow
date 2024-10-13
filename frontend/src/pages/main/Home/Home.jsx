@@ -13,6 +13,7 @@ import Newsletter from "./Newsletter";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import styles
+import Insta from "./Insta";
 const Home = () => {
   const xpBooster = 1.5;
   const [user, setUser] = useState();
@@ -54,6 +55,7 @@ const Home = () => {
             <main className="space-y-12">
               <ContinueLearning course={course} />
               <CompletedLearningPaths course={course} />
+              <Insta  />
               <Blogs />
               <Forum />
               <Newsletter />
