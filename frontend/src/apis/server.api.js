@@ -1,2 +1,2 @@
-const API = "http://localhost:8000/api";
+const API = "https://moneyoverflow.onrender.com";
 export default API;
