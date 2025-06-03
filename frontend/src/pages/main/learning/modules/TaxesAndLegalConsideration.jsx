@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import API from "./server.api.js";
+import API from "../../../../apis/server.api.js";
 const TaxesAndLegalConsideration = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
