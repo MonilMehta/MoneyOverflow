@@ -139,28 +139,30 @@ const Chatbot = () => {
 
     try {
       const API_KEY = process.env.REACT_APP_GEMINI_API_KEY;
-      const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: `You are an AI assistant for MoneyOverflow, a platform for learning about personal finance and investments. 
-                  Respond to the following user query:
-                  ${text}
-                  
-                  Provide a helpful, informative response related to personal finance, investing, or money management. 
-                  If the query is not related to these topics, politely steer the conversation back to financial matters. Try limiting the answer to 5-6 lines max, and also do not use icons like ** or _ to format the text.`
-                }
-              ]
-            }
-          ]
-        }),
-      });
+      const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: 'user',
+                parts: [
+                  {
+                    text: `You are a concise and helpful AI assistant on MoneyOverflow, a platform dedicated to financial literacy and investment education.
+        
+        A user asks: "${text}"
+        
+        Reply with clear and accurate advice related to personal finance, investing, saving, or budgeting. If the question is off-topic, gently steer the conversation back to finance-related subjects.
+        
+        Keep the response under 6 lines and avoid any formatting (like bold, italics, or emojis).Reply in such a manner that can be directly passed to chatbot as reply.`
+                  }
+                ]
+              }
+            ]
+          }),
+        });
 
       if (!response.ok) {
         throw new Error(`Error: ${response.status} ${response.statusText}`);
