@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"; // Import toast styles
-
+import API from "./server.api.js";
 const Investing = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
