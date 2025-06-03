@@ -12,7 +12,7 @@ const TaxesAndLegalConsideration = ({ onNextModule }) => {
 
       try {
         for (let order = 1; order <= 4; order++) {
-          const response = await axios.post('http://localhost:8000/api/learning/getLesson', {
+          const response = await axios.post(`${API}/learning/getLesson`, {
             learningPathId,
             order,
           });
