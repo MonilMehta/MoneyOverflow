@@ -60,7 +60,7 @@ MoneyOverflow bridges the gap by providing a unified platform for financial educ
 
 ```bash
 # Clone the repository
-git clone https://github.com/ParamShukla007/MoneyOverflow.git
+https://github.com/MonilMehta/MoneyOverflow.git
 
 # Navigate to the project directory
 cd MoneyOverflow
