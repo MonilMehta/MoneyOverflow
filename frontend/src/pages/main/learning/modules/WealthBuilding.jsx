@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-
+import API from "./server.api.js";
 const WealthBuilding = () => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
