@@ -1,14 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardContent, CardMedia, Typography, Box } from '@mui/material'; // Import Material-UI components
 import { singleBlog } from '../../../apis/blogs.api';
 
 export default function BlogPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [blogDetails, setBlogDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Same color schemes as FinLEARN component
+  const selectedColors = [
+    {
+      bg: "#ff5722",
+      text: "#000000",
+      accent: "#ff7043",
+      highlight: "Featured Story"
+    },
+    {
+      bg: "#e8ddd4",
+      text: "#000000",
+      accent: "#d7c4b0",
+      highlight: "Deep Dive"
+    },
+    {
+      bg: "#000000",
+      text: "#ffffff",
+      accent: "#333333",
+      highlight: "Case Study"
+    },
+    {
+      bg: "#ffffff",
+      text: "#000000",
+      accent: "#f5f5f5",
+      highlight: "Insights"
+    }
+  ];
+
+  // Generate a consistent color scheme based on the blog ID
+  const getColorScheme = (blogId) => {
+    if (!blogId) return selectedColors[0];
+    const hash = blogId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return selectedColors[hash % selectedColors.length];
+  };
 
   useEffect(() => {
     const fetchBlogDetails = async () => {
@@ -29,99 +64,252 @@ export default function BlogPage() {
   }, [id]);
 
   if (loading) {
-    return <div className="text-center text-xl">Loading...</div>;
+    return (
+      <div className="bg-[#f6f6f6] min-h-screen flex items-center justify-center relative overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-20">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+              backgroundSize: '30px 30px',
+              backgroundPosition: '0 0'
+            }}
+          />
+        </div>
+        <div className="text-6xl font-black text-[#ff5722] italic" style={{ fontFamily: 'Arial, sans-serif' }}>
+          Loading...
+        </div>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
+    return (
+      <div className="bg-[#f6f6f6] min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl font-black text-[#ff5722] italic mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
+            ERROR
+          </div>
+          <p className="text-lg text-gray-700">{error}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!blogDetails) {
-    return <div className="text-center">No blog details found</div>;
+    return (
+      <div className="bg-[#f6f6f6] min-h-screen flex items-center justify-center">
+        <div className="text-6xl font-black text-[#000000] italic" style={{ fontFamily: 'Arial, sans-serif' }}>
+          No Blog Found
+        </div>
+      </div>
+    );
   }
 
-  return (
-    <div className="container mx-auto p-5">
-      {/* Blog Title */}
-      <Typography
-        variant="h3"
-        component="h1"
-        className="font-bold text-center mb-6"
-        sx={{
-          fontSize: '2.5rem',
-          color: '#2563EB', // Blue color for title
-          textAlign: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        {blogDetails.title}
-      </Typography>
+  const colorScheme = getColorScheme(blogDetails._id);
+  const isOrange = colorScheme.bg === "#ff5722";
+  const isBeige = colorScheme.bg === "#e8ddd4";
+  const isBlack = colorScheme.bg === "#000000";
+  const isWhite = colorScheme.bg === "#ffffff";
 
-      {/* Blog Image */}
-      {blogDetails.imageUrl && (
-        <CardMedia
-          component="img"
-          image={blogDetails.imageUrl}
-          alt={blogDetails.title}
-          sx={{
-            width: '100%',
-            maxHeight: '500px', // Limiting the height of the image
-            objectFit: 'cover',
-            borderRadius: '8px',
-            marginBottom: '30px',
+  return (
+    <div className="bg-[#f6f6f6] min-h-screen py-12 px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden">
+      {/* Dotted Grid Background */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+            backgroundSize: '30px 30px',
+            backgroundPosition: '0 0'
           }}
         />
-      )}
+      </div>
+      
+      {/* Vertical Lines */}
+      <div className="absolute inset-0 opacity-10">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={`v-${i}`}
+            className="absolute h-full border-l border-dotted border-black"
+            style={{ left: `${i * 10}%` }}
+          />
+        ))}
+      </div>
+      
+      {/* Horizontal Lines */}
+      <div className="absolute inset-0 opacity-10">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={`h-${i}`}
+            className="absolute w-full border-t border-dotted border-black"
+            style={{ top: `${i * 12.5}%` }}
+          />
+        ))}
+      </div>
 
-      {/* Blog Content */}
-      <Card
-        sx={{
-          padding: '24px',
-          boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Subtle shadow
-          borderRadius: '8px',
-          backgroundColor: '#fff',
-        }}
-      >
-        <CardContent>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{
-              textAlign: 'center',
-              marginBottom: '20px',
-              fontSize: '0.875rem',
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header Section */}
+        <div className="mb-10 text-left">
+          <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <span className="block italic">Blog</span>
+            <span className="block text-[#ff5722] italic">DETAILS</span>
+          </h2>
+          <div className="mt-4 flex items-center gap-4">
+            <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold">
+              {colorScheme.highlight}
+            </div>
+            <div className="text-2xl">*</div>
+          </div>
+        </div>
+
+        {/* Blog Content Card */}
+        <div className="max-w-none mx-auto">
+                      <div
+            className="rounded-[16px] overflow-hidden shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl relative"
+            style={{
+              backgroundColor: colorScheme.bg,
+              color: colorScheme.text,
+              border: `2px solid ${colorScheme.accent}`,
+              fontFamily: 'Arial, sans-serif'
             }}
           >
-            Published on: {new Date(blogDetails.createdAt).toLocaleDateString()}
-          </Typography>
-
-          {/* Blog Description */}
-          <Box sx={{ marginBottom: '20px' }}>
-            <Typography
-              variant="body1"
-              color="text.primary"
-              className="text-justify mb-4"
-              sx={{ fontSize: '1.2rem', lineHeight: '1.6' }}
-            >
-              {blogDetails.description}
-            </Typography>
-          </Box>
-
-          {/* Blog Content Split into Paragraphs */}
-          {blogDetails.content &&
-            blogDetails.content.split('\n').map((paragraph, index) => (
-              <Typography
-                key={index}
-                variant="body1"
-                color="text.primary"
-                paragraph
-                sx={{ fontSize: '1rem', lineHeight: '1.6', marginBottom: '16px' }}
+            {/* Go Back Button */}
+            <div className="absolute top-6 left-6 z-20">
+              <button
+                onClick={() => navigate(-1)}
+                className="bg-black bg-opacity-20 hover:bg-opacity-40 transition-all duration-200 rounded-full p-3 flex items-center justify-center backdrop-blur-sm"
               >
-                {paragraph}
-              </Typography>
-            ))}
-        </CardContent>
-      </Card>
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div className="p-8 md:p-12 relative">
+              {/* Blog Title Section */}
+              <div className="mb-8 mt-8">
+                <div className={`text-xs font-bold uppercase mb-4 opacity-70 ${isWhite ? 'text-black' : ''}`}>
+                  {colorScheme.highlight}
+                </div>
+                <h1 className={`text-4xl md:text-5xl font-black leading-tight tracking-wide uppercase mb-6 ${isWhite ? 'text-black' : ''}`}>
+                  {blogDetails.title}
+                </h1>
+                
+                {isOrange && (
+                  <div className="text-3xl font-black text-white mb-4">
+                    READ & LEARN
+                  </div>
+                )}
+              </div>
+
+              {/* Blog Description */}
+              {blogDetails.description && (
+                <div className="mb-10">
+                  {isBeige && (
+                    <div className="text-xl font-bold text-black mb-6">
+                      {blogDetails.description}
+                    </div>
+                  )}
+                  {isBlack && (
+                    <div className="mb-6">
+                      <div className="bg-orange-500 text-black px-4 py-2 rounded text-sm font-bold mb-4 inline-block">
+                        FEATURED CONTENT
+                      </div>
+                      <p className="text-white text-lg font-medium leading-relaxed">
+                        {blogDetails.description}
+                      </p>
+                    </div>
+                  )}
+                  {!isBeige && !isBlack && (
+                    <div className="mb-6">
+                      <p className={`text-lg leading-relaxed opacity-90 font-medium ${isWhite ? 'text-black' : ''}`}>
+                        {blogDetails.description}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Divider */}
+              {blogDetails.description && blogDetails.content && (
+                <div className="w-full h-px bg-current opacity-20 mb-10"></div>
+              )}
+
+              {/* Blog Content */}
+              {blogDetails.content && (
+                <div className="space-y-6">
+                  {blogDetails.content.split('\n').map((paragraph, index) => (
+                    paragraph.trim() && (
+                      <p
+                        key={index}
+                        className={`text-base md:text-lg leading-relaxed opacity-90 text-justify ${isWhite ? 'text-black' : ''}`}
+                      >
+                        {paragraph}
+                      </p>
+                    )
+                  ))}
+                </div>
+              )}
+
+              {/* Bottom Action Section */}
+              <div className="mt-12 flex justify-between items-center">
+                {isBeige && (
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-2">
+                      <div className="w-8 h-8 bg-gray-400 rounded-full border-2 border-white"></div>
+                      <div className="w-8 h-8 bg-gray-500 rounded-full border-2 border-white"></div>
+                      <div className="w-8 h-8 bg-gray-600 rounded-full border-2 border-white"></div>
+                    </div>
+                    <div className="text-sm font-medium ml-2">
+                      Share Article
+                    </div>
+                  </div>
+                )}
+                
+                {!isBeige && (
+                  <button 
+                    onClick={() => navigate(-1)}
+                    className="bg-transparent border border-current px-6 py-3 rounded text-sm font-bold hover:bg-opacity-20 hover:bg-current transition-all duration-200"
+                  >
+                    BACK TO BLOGS →
+                  </button>
+                )}
+              </div>
+
+              {/* Decorative Elements */}
+              {isOrange && (
+                <div className="absolute bottom-6 right-6 opacity-20">
+                  <div className="w-12 h-12 border-4 border-white rounded-full"></div>
+                </div>
+              )}
+              
+              {/* Background Pattern */}
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
+                <div 
+                  className="w-full h-full"
+                  style={{
+                    backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
+                    backgroundSize: '10px 10px',
+                    backgroundPosition: '0 0, 0 5px'
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

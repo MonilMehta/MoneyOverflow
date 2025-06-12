@@ -19,7 +19,7 @@ import Simulation from './simulation/Simulation';import Chatbot from './componen
 import FAQ from './about/FAQ';
 const Main = () => {
   return (
-    <>
+    <> 
       <MainNavbar />
       <Routes>
         <Route path="/" element={<Home />} />

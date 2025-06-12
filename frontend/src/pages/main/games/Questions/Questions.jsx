@@ -27,30 +27,59 @@ const DifficultySlider = ({ onDifficultyChange }) => {
           max="2"
           value={difficulty}
           onChange={handleSliderChange}
-          className="slider w-64 h-3 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-lg appearance-none cursor-pointer"
+          className="slider w-64 h-3 bg-gradient-to-r from-green-300 to-green-500 rounded-lg appearance-none cursor-pointer"
           style={{
             backgroundSize: `${(difficulty / 2) * 100}% 100%`,
             transition: "background-size 0.3s ease",
+            WebkitAppearance: 'none',
           }}
         />
+        <style>
+          {`
+            .slider::-webkit-slider-thumb {
+              -webkit-appearance: none;
+              appearance: none;
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: rgb(31 41 55); /* gray-800 */
+              cursor: pointer;
+              border: 2px solid rgb(134 239 172); /* border color: green-300 */
+            }
+            .slider::-moz-range-thumb {
+              width: 20px;
+              height: 20px;
+              border-radius: 50%;
+              background: rgb(31 41 55);
+              cursor: pointer;
+              border: 2px solid rgb(134 239 172);
+            }
+          `}
+        </style>
         <div className="flex justify-between w-64 text-sm text-gray-200">
           <span
             className={
-              difficulty === 0 ? "text-white font-bold" : "text-gray-100"
+              difficulty === 0 
+                ? "text-green-300 font-bold" 
+                : "text-gray-100"
             }
           >
             Easy
           </span>
           <span
             className={
-              difficulty === 1 ? "text-white font-bold" : "text-gray-100"
+              difficulty === 1 
+                ? "text-green-400 font-bold" 
+                : "text-gray-100"
             }
           >
             Medium
           </span>
           <span
             className={
-              difficulty === 2 ? "text-white font-bold" : "text-gray-100"
+              difficulty === 2 
+                ? "text-green-500 font-bold" 
+                : "text-gray-100"
             }
           >
             Hard
@@ -172,28 +201,30 @@ const Questions = ({ category }) => {
   }
 
   return (
-    <div id="questions" className="w-full">
-      <ToastContainer /> {/* Toast container to display toasts */}
-      {user !== ''?
+    <div id="questions" className="w-full bg-gray-800">
+      <ToastContainer />
+      {user !== '' ? (
         <div className="w-full p-5">
-          <h2 className="text-5xl font-mono mb-8 font-bold text-[#dbf4ff] text-center w-full">
-            {category.toUpperCase()}
-          </h2>
+          <div className="flex flex-col pl-8">
+            <h2 className="text-5xl font-mono font-bold text-[#dbf4ff] mb-4">
+              {category.toUpperCase()}
+            </h2>
 
-          <div className="flex justify-between w-11/12">
-            <DifficultySlider onDifficultyChange={setDifficulty} />
-            <button
-              onClick={fetchQuestions}
-              className="bg-yellow-500 text-white text-lg font-bold rounded-xl py-3 px-5 mb-4 transition duration-300 hover:bg-yellow-600 hover:border-yellow-600 border-yellow-400 border-2"
-              disabled={loading}
-            >
-              {loading ? "Loading..." : "Start Test"}
-            </button>
+            <div className="flex items-center w-11/12 justify-between">
+              <DifficultySlider onDifficultyChange={setDifficulty} />
+              <button
+                onClick={fetchQuestions}
+                className="bg-green-300 text-black hover:text-white text-lg font-bold rounded-xl py-3 px-5 transition duration-300 hover:bg-gray-700 hover:border-gray-700 border-green-300 border-2"
+                disabled={loading}
+              >
+                {loading ? "Loading..." : "Start Test"}
+              </button>
+            </div>
           </div>
 
           {render && !showResults && questions.length > 0 && (
             <div className="transition-opacity duration-500 ease-in-out w-1/2 mx-auto mt-5">
-              <div className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
+              <div className="bg-gray-700 border border-gray-600 rounded-lg shadow-md p-4 text-white">
                 <h3 className="text-xl mb-2">
                   {`${currentQuestionIndex + 1}/${questions.length}. ${questions[currentQuestionIndex].question}`}
                 </h3>
@@ -203,12 +234,11 @@ const Questions = ({ category }) => {
                       <button
                         key={optionIndex}
                         className={`border rounded-lg py-2 px-4 w-full mb-2 transition duration-300 
-                              ${
-                                selectedAnswers[currentQuestionIndex] ===
-                                optionIndex
-                                  ? "bg-yellow-500 text-white"
-                                  : "border-yellow-300 text-red-800"
-                              }`}
+                            ${
+                              selectedAnswers[currentQuestionIndex] === optionIndex
+                                ? "bg-yellow-500 text-white"
+                                : "border-gray-500 text-gray-100 hover:bg-gray-600"
+                            }`}
                         onClick={() => handleAnswerSelect(optionIndex)}
                       >
                         {option}
@@ -240,14 +270,16 @@ const Questions = ({ category }) => {
           )}
 
           {showResults && (
-            <div className="mt-5 text-xl font-bold">
+            <div className="mt-5 text-xl font-bold text-white">
               <h2>
                 Your Score: {score} / {questions.length}
               </h2>
             </div>
           )}
-        </div> : <RedirectPage/>
-      }
+        </div>
+      ) : (
+        <RedirectPage />
+      )}
     </div>
   );
 };

@@ -14,11 +14,11 @@ export default function StockChart({ data, symbol }) {
           />
           <YAxis
             domain={['dataMin', 'dataMax']}
-            tickFormatter={(value) => `$${value.toFixed(2)}`}
+            tickFormatter={(value) => `₹${value.toFixed(2)}`}
           />
           <Tooltip
             labelFormatter={(label) => new Date(label).toLocaleTimeString()}
-            formatter={(value) => [`$${value.toFixed(2)}`, symbol]}
+            formatter={(value) => [`₹${value.toFixed(2)}`, symbol]}
           />
           <Line 
             type="monotone" 

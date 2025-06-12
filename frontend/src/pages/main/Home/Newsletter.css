@@ -1,81 +1,176 @@
 /* Newsletter.css */
 
 .newsletter-container {
-    width: 100%;
-    padding: 16px;
-    background-color: #9ad9ef;
-    color: white;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  padding: 32px 16px;
+  background-color: #9ad9ef;
+  color: white;
+  border-radius: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+}
+
+.newsletter-content {
+  max-width: 1240px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.newsletter-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.newsletter-text h1 {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #03010a;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+
+.newsletter-text p {
+  color: #000000;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 400px;
+  gap: 20px;
+}
+
+.email-input {
+  padding: 16px 20px;
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  color: #333;
+  background-color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.email-input:focus {
+  outline: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.email-input::placeholder {
+  color: #888;
+}
+
+.subscribe-button {
+  background-color: #333;
+  color: #9ad9ef;
+  padding: 16px 32px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.subscribe-button:hover {
+  background-color: #1a1a1a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.subscribe-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.success-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 20px;
+}
+
+.success-gif {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+}
+
+.success-message p {
+  color: #03010a;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .newsletter-container {
+    padding: 24px 16px;
   }
   
   .newsletter-content {
-    max-width: 1240px;
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  
-  .newsletter-text {
-    margin: 16px 0;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
   }
   
   .newsletter-text h1 {
     font-size: 2rem;
-    font-weight: bold;
-    color: #03010a;
-    padding-bottom: 8px;
-  }
-  
-  .newsletter-text p {
-    color: #000000;
-  }
-  
-  .newsletter-form {
-    margin: 16px 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
   }
   
   .form-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 350px;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .newsletter-container {
+    padding: 20px 12px;
+    border-radius: 20px;
   }
   
-  .email-input {
-    padding: 12px;
-    width: 100%;
-    border-radius: 8px;
-    margin-bottom: 16px;
-    color: black;
+  .newsletter-text h1 {
+    font-size: 1.75rem;
   }
   
+  .newsletter-text p {
+    font-size: 1rem;
+  }
+  
+  .form-content {
+    max-width: 100%;
+    gap: 16px;
+  }
+  
+  .email-input,
   .subscribe-button {
-    background-color: #007bff;
-    color: white;
-    padding: 12px 24px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    padding: 14px 18px;
+    font-size: 15px;
   }
-  
-  .subscribe-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .success-message {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .success-gif {
-    width: 128px;
-    height: 128px;
-  }
+}

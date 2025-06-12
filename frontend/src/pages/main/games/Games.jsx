@@ -20,7 +20,7 @@ const Games = () => {
   };
 
   return (
-    <div className='pt-6 bg-gradient-to-r from-blue-500 to-blue-800 min-h-screen'>
+    <div className='pt-6 bg-gray-800 min-h-screen'>
       {loading? <img src={quiz1} className='w-[45%] mx-auto' /> :
       <div className="flex flex-wrap justify-around gap-5 p-5 rounded-lg w-11/12 mx-auto">
         <Quizz onSelectCategory={handleSelectCategory} />

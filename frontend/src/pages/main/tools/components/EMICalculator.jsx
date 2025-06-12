@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import tools2 from "../../../../assets/tools2.gif";
-import tools3 from "../../../../assets/tools3.gif";
 
 const EMICalculator = () => {
   const [loanAmount, setLoanAmount] = useState('');
@@ -17,8 +15,8 @@ const EMICalculator = () => {
     const interest = parseFloat(interestRate);
     const tenure = parseFloat(loanTenure);
 
-    if (isNaN(loan) || isNaN(interest) || isNaN(tenure)) {
-      setError('Please enter valid input values.');
+    if (isNaN(loan) || isNaN(interest) || isNaN(tenure) || loan <= 0 || interest <= 0 || tenure <= 0) {
+      setError('Please enter valid positive values.');
       setLoading(true);
       setTimeout(() => {
         setLoading(false);
@@ -55,80 +53,166 @@ const EMICalculator = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className="header bg-white p-6">
-        <h3 className="text-2xl font-semibold mb-4 text-center">EMI Calculator</h3>
-        <p className="text-gray-600 mb-6 text-center">
-          Calculate your EMI, total payment, and interest for your loan.
-        </p>
+    <div className="bg-[#f6f6f6] py-12 px-4 sm:px-6 lg:px-8 font-sans relative overflow-hidden">
+      {/* Dotted Grid Background */}
+      <div className="absolute inset-0 opacity-20">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+            backgroundSize: '30px 30px',
+            backgroundPosition: '0 0'
+          }}
+        />
+      </div>
+      
+      {/* Vertical Lines */}
+      <div className="absolute inset-0 opacity-10">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={`v-${i}`}
+            className="absolute h-full border-l border-dotted border-black"
+            style={{ left: `${i * 10}%` }}
+          />
+        ))}
+      </div>
+      
+      {/* Horizontal Lines */}
+      <div className="absolute inset-0 opacity-10">
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={`h-${i}`}
+            className="absolute w-full border-t border-dotted border-black"
+            style={{ top: `${i * 12.5}%` }}
+          />
+        ))}
+      </div>
 
-        {/* Input Fields */}
-        <div className="page-container bg-white">
-          <div className="input-container space-y-4">
-            <div>
-              <label htmlFor='loan' className="block text-gray-700 font-semibold mb-1">Loan Amount (INR)</label>
-              <input
-                className="form-input block w-full border border-blue-500 rounded-xl p-2"
-                type="number"
-                value={loanAmount}
-                id='loan'
-                onChange={(e) => setLoanAmount(e.target.value)}
-                placeholder="Enter loan amount"
-              />
+      <div className="max-w-4xl mx-auto relative z-10">
+        {/* Header Section */}
+        <div className="mb-10 text-left">
+          <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <span className="block italic">EMI</span>
+            <span className="block text-[#000000] italic">CALCULATOR</span>
+          </h2>
+          <p className="mt-4 text-lg text-gray-700 max-w-xl font-medium">
+            Calculate your EMI, total payment, and interest for your loan with precision.
+          </p>
+          <div className="mt-4 flex items-center gap-4">
+            <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold">
+              EMI Calculator
             </div>
-            <div>
-              <label htmlFor='inte' className="block text-gray-700 font-semibold mb-1">Interest Rate (%)</label>
-              <input
-                className="form-input block w-full border border-blue-500 rounded-xl p-2"
-                type="number"
-                value={interestRate}
-                id='inte'
-                onChange={(e) => setInterestRate(e.target.value)}
-                placeholder="Enter annual interest rate"
-              />
-            </div>
-            <div>
-              <label htmlFor='loa' className="block text-gray-700 font-semibold mb-1">Loan Tenure (Months)</label>
-              <input
-                className="form-input block w-full border border-blue-500 rounded-xl p-2"
-                type="number"
-                value={loanTenure}
-                id='loa'
-                onChange={(e) => setLoanTenure(e.target.value)}
-                placeholder="Enter loan tenure in months"
-              />
-            </div>
+            <div className="text-2xl">*</div>
           </div>
+        </div>
 
-          {/* Buttons */}
-          <div className="btn-calculate flex space-x-4 mt-6">
-            <button
-              onClick={calculateEMI}
-              className="bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-600"
-            >
-              Calculate
-            </button>
-            <button
-              onClick={clearAll}
-              className="bg-gray-500 text-white font-semibold py-2 px-4 rounded hover:bg-gray-600"
-            >
-              Clear
-            </button>
-          </div>
-
-          {/* Result */}
-          <div className="result-container bg-gray-100 p-4 mt-6 rounded-lg" style={{ minHeight: '200px', maxHeight: '200px' }}>
-            {loading ? (
-              <img src={error ? tools3 : tools2} alt="Loading" className="mx-auto h-40" />
-            ) : (
-              <div className="text-gray-700 font-semibold">
-                <div className="mb-2">Result:</div>
-                {error && <div className="text-red-600 mb-2">{error}</div>}
-                {monthlyEMI && <div className="mb-2"><b>Monthly EMI:</b> INR {monthlyEMI}</div>}
-                {totalPayment && <div className="mb-2"><b>Total Payment:</b> INR {totalPayment}</div>}
-                {totalInterestPaid && <div><b>Total Interest Paid:</b> INR {totalInterestPaid}</div>}
+        {/* Main Calculator Card */}
+        <div 
+          className="rounded-[16px] overflow-hidden shadow-lg transition-transform hover:-translate-y-2 hover:shadow-xl"
+          style={{
+            backgroundColor: "#000000",
+            color: "#ffffff",
+            border: "2px solid #333333",
+            fontFamily: 'Arial, sans-serif'
+          }}
+        >
+          <div className="p-6 relative">
+            <h3 className="text-2xl font-black tracking-tight uppercase mb-4 text-center">EMI Calculator</h3>
+            <p className="text-white/80 mb-6 text-center font-medium">
+              Calculate your EMI, total payment, and interest for your loan.
+            </p>
+            
+            <div className="page-container">
+              <div className="input-container space-y-4">
+                <div>
+                  <label htmlFor='loan' className="block text-white font-black mb-2 tracking-wide uppercase text-sm">Loan Amount (INR):</label>
+                  <input
+                    type="number"
+                    value={loanAmount}
+                    id='loan'
+                    onChange={(e) => setLoanAmount(e.target.value)}
+                    className="form-input block w-full bg-white/20 backdrop-blur-sm border-2 border-white/20 text-white rounded-xl p-3 focus:ring-2 focus:ring-white/30 focus:border-white/40 placeholder-white/60 font-bold"
+                    placeholder="Enter loan amount"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor='inte' className="block text-white font-black mb-2 tracking-wide uppercase text-sm">Interest Rate (%):</label>
+                  <input
+                    type="number"
+                    value={interestRate}
+                    id='inte'
+                    onChange={(e) => setInterestRate(e.target.value)}
+                    className="form-input block w-full bg-white/20 backdrop-blur-sm border-2 border-white/20 text-white rounded-xl p-3 focus:ring-2 focus:ring-white/30 focus:border-white/40 placeholder-white/60 font-bold"
+                    placeholder="Enter annual interest rate"
+                    required
+                  />
+                </div>
+                <div>
+                  <label htmlFor='loa' className="block text-white font-black mb-2 tracking-wide uppercase text-sm">Loan Tenure (Months):</label>
+                  <input
+                    type="number"
+                    value={loanTenure}
+                    id='loa'
+                    onChange={(e) => setLoanTenure(e.target.value)}
+                    className="form-input block w-full bg-white/20 backdrop-blur-sm border-2 border-white/20 text-white rounded-xl p-3 focus:ring-2 focus:ring-white/30 focus:border-white/40 placeholder-white/60 font-bold"
+                    placeholder="Enter loan tenure in months"
+                    required
+                  />
+                </div>
               </div>
-            )}
+
+              <div className="btn-calculate flex space-x-4 mt-6">
+                <button
+                  onClick={calculateEMI}
+                  className="bg-white text-black font-black py-3 px-6 rounded-xl hover:bg-gray-200 transition-colors duration-200 tracking-wide uppercase"
+                >
+                  Calculate →
+                </button>
+                <button
+                  onClick={clearAll}
+                  className="bg-transparent border-2 border-white text-white font-black py-3 px-6 rounded-xl hover:bg-white hover:text-black transition-colors duration-200 tracking-wide uppercase"
+                >
+                  Clear
+                </button>
+              </div>
+
+              <div 
+                className="result-container bg-white/10 backdrop-blur-sm border-2 border-white/20 p-6 mt-6 rounded-xl relative" 
+                style={{ minHeight: '200px', maxHeight: '200px' }}
+              >
+                {loading ? (
+                  <div className="flex items-center justify-center h-full">
+                    <div className="animate-spin rounded-full h-16 w-16 border-4 border-white border-t-transparent"></div>
+                  </div>
+                ) : (
+                  <div className="text-white font-bold">
+                    <div className="mb-4 text-xl font-black tracking-wide uppercase">Result:</div>
+                    {error && <div className="text-red-400 mb-4 font-black text-lg">{error}</div>}
+                    {monthlyEMI && <div className="mb-2 text-lg"><span className="font-black uppercase tracking-wide">Monthly EMI:</span> <span className="text-2xl font-black">INR {monthlyEMI}</span></div>}
+                    {totalPayment && <div className="mb-2 text-lg"><span className="font-black uppercase tracking-wide">Total Payment:</span> <span className="text-2xl font-black">INR {totalPayment}</span></div>}
+                    {totalInterestPaid && <div className="text-lg"><span className="font-black uppercase tracking-wide">Total Interest:</span> <span className="text-2xl font-black">INR {totalInterestPaid}</span></div>}
+                  </div>
+                )}
+                
+                {/* Background Pattern */}
+                <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl opacity-5">
+                  <div 
+                    className="w-full h-full"
+                    style={{
+                      backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
+                      backgroundSize: '10px 10px',
+                      backgroundPosition: '0 0, 0 5px'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            
+            {/* Decorative Elements */}
+            <div className="absolute bottom-6 right-6 opacity-20">
+              <div className="w-12 h-12 border-4 border-white rounded-full"></div>
+            </div>
           </div>
         </div>
       </div>

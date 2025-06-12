@@ -3,146 +3,98 @@ import { Link, useLocation } from 'react-router-dom';
 import { DollarSign, Search, User } from 'lucide-react';
 
 const MainNavbar = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Assuming user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const location = useLocation(); // Get current route path
+  const location = useLocation();
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     // Add your logout logic here
   };
 
-  // Function to check if the link is active
   const isActiveLink = (path) => location.pathname === path;
+
+  const navigationLinks = [
+    ['Home', '/main'],
+    ['FinLearn', '/main/learning'],
+    ['FinTest', '/main/games'],
+    ['CaseStudy', '/main/blogs'],
+    ['FinNews', '/main/news'],
+    ['FinTools', '/main/tools'],
+    ['Premium', '/main/premium'],
+    ['Simulation', '/main/simulation'],
+    ['About', '/main/about']
+  ];
 
   return (
     <>
-      <nav className="bg-white border-b-2 border-gray-200 shadow-md fixed top-0 w-full z-50" style={{width:'100vw'}}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{width:'100vw'}}>
+      <nav className="bg-white border-b-4 border-[#ff5722] shadow-xl fixed top-0 w-full z-50">
+        <div className="max-w-full mx-auto px-8" style={{width: '100vw'}}>
           <div className="flex justify-between h-16 items-center">
             {/* Logo */}
-            <div className="flex-shrink-0 flex items-center" style={{marginLeft:'-100px'}}>
-              <DollarSign className="h-8 w-8 text-indigo-600" />
-              <span className="ml-2 text-2xl font-bold text-gray-800">MoneyOverflow</span>
+            <div className="flex-shrink-0 flex items-center">
+              <span className="text-3xl font-black tracking-tight">
+                <span className="text-black">Money</span>
+                <span className="text-[#ff5722] italic">Overflow</span>
+              </span>
             </div>
 
-            {/* Links */}
-            <div className="hidden sm:flex sm:space-x-8">
-              <Link
-                to="/main"
-                className={`${
-                  isActiveLink('/main') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                Home
-              </Link>
-              <Link
-                to="/main/learning"
-                className={`${
-                  isActiveLink('/main/learning') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                FinLearn
-              </Link>
-              <Link
-                to="/main/games"
-                className={`${
-                  isActiveLink('/main/games') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                FinTest
-              </Link>
-              <Link
-                to="/main/blogs"
-                className={`${
-                  isActiveLink('/main/blogs') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                CaseStudy
-              </Link>
-              <Link
-                to="/main/news"
-                className={`${
-                  isActiveLink('/main/news') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                FinNews
-              </Link>
-              <Link
-                to="/main/tools"
-                className={`${
-                  isActiveLink('/main/tools') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                FinTools
-              </Link>
-              <Link
-                to="/main/premium"
-                className={`${
-                  isActiveLink('/main/premium') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                Premium
-              </Link>
-              <Link
-                to="/main/simulation"
-                className={`${
-                  isActiveLink('/main/simulation') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                Simulation
-              </Link>
-              <Link
-                to="/main/about"
-                className={`${
-                  isActiveLink('/main/about') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } inline-flex items-center px-2 pt-1 border-b-2 text-lg font-medium`}
-              >
-                About
-              </Link>
+            {/* Navigation Links */}
+            <div className="hidden sm:flex sm:space-x-10">
+              {navigationLinks.map(([title, path]) => (
+                <Link
+                  key={path}
+                  to={path}
+                  className={`${
+                    isActiveLink(path)
+                      ? 'border-[#ff5722] text-[#ff5722]'
+                      : 'border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722]'
+                  } inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200`}
+                >
+                  {title}
+                </Link>
+              ))}
             </div>
 
-            {/* Auth/User Section */}
+            {/* User Section */}
             <div className="flex items-center space-x-4">
               {isLoggedIn ? (
-                <>
-                  {/* User Icon with Dropdown */}
-                  <div className="relative" style={{marginRight:'-100px'}}>
-                    <button
-                      className="flex items-center text-gray-700 focus:outline-none"
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    >
-                      <User className="h-6 w-6 text-gray-800" />
-                    </button>
+                <div className="relative">
+                  <button
+                    className="flex items-center space-x-2 text-gray-700 hover:text-[#ff5722] focus:outline-none transition-colors duration-200"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  >
+                    <div className="h-8 w-8 rounded-full bg-[#ff5722] flex items-center justify-center">
+                      <User className="h-5 w-5 text-white" />
+                    </div>
+                  </button>
 
-                    {/* Dropdown Menu */}
-                    {isDropdownOpen && (
-                      <div className="absolute right-0 mt-2 w-48 bg-white border rounded-lg shadow-lg py-2 z-50">
-                        <Link
-                          to="/main/account"
-                          className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                          Profile
-                        </Link>
-                        <button
-                          onClick={handleLogout}
-                          className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                        >
-                          Logout
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                </>
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl border-2 border-black/10 shadow-xl py-2 z-50">
+                      <Link
+                        to="/main/account"
+                        className="block px-4 py-2 text-gray-700 hover:bg-[#ff5722] hover:text-white transition-colors duration-200"
+                      >
+                        Profile
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-[#ff5722] hover:text-white transition-colors duration-200"
+                      >
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <div className="flex space-x-4">
                   <Link to="/auth">
-                    <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                    <button className="px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
                       Login
                     </button>
                   </Link>
                   <Link to="/auth">
-                    <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                    <button className="px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
                       Sign Up
                     </button>
                   </Link>
@@ -153,9 +105,19 @@ const MainNavbar = () => {
         </div>
       </nav>
 
-      {/* Spacer */}
-      <div className="h-16" />
-
+      {/* Background Pattern */}
+      <div className="h-16 bg-white border-b-4 border-[#ff5722] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: 'linear-gradient(45deg, #000000 25%, transparent 25%), linear-gradient(-45deg, #000000 25%, transparent 25%)',
+              backgroundSize: '10px 10px',
+              backgroundPosition: '0 0, 0 5px'
+            }}
+          />
+        </div>
+      </div>
     </>
   );
 };

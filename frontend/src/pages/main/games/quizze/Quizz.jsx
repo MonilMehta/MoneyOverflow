@@ -8,57 +8,66 @@ const Quizz = ({ onSelectCategory }) => {
     budgeting: { solved: 0, total: 20 },
   });
 
-  // Array of image URLs for each category
-  const categoryImages = {
-    savings: "https://github.com/ayush-that/FinVeda/blob/main/assets/images/blog-1.jpg?raw=true",
-    retirement: "https://github.com/ayush-that/FinVeda/blob/main/assets/images/blog-2.jpg?raw=true", // Replace with your image URL
-    investing: "https://github.com/ayush-that/FinVeda/blob/main/assets/images/blog-3.jpg?raw=true", // Replace with your image URL
-    budgeting: "https://github.com/ayush-that/FinVeda/blob/main/assets/images/fintech.jpeg?raw=true", // Replace with your image URL
-  };
+  
 
   const handleSelectCategory = (category) => {
     onSelectCategory(category);
   };
 
   return (
-    <div className="text-center p-5 w-full">
-      <h4 className="text-4xl font-mono mb-4 font-bold text-[#dbf4ff]">Select a Category</h4>
-      <div className="flex space-x-4 justify-around">
-        {Object.keys(quizCounters).map((category) => (
-          <div
-            key={category}
-            className="bg-white border border-gray-300 rounded-2xl transition-transform duration-300 hover:scale-105 hover:shadow-lg hover:border-blue-500 h-120 w-96 flex flex-col justify-between p-4" // Increased height and width
-          >
-            {/* Image included in the card */}
-            <img 
-              src={categoryImages[category]} 
-              alt={`${category.charAt(0).toUpperCase() + category.slice(1)} Image`} 
-              className="mb-2 rounded-t-lg h-60 w-full object-cover" // Increased image height
-            />
-            <div>
-              <h5 className="text-2xl mb-2 font-medium text-[#31475e]">
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </h5>
-              <p className="text-base mb-4">
-                {quizCounters[category].solved}/{quizCounters[category].total} solved
-              </p>
-            </div>
-            <button
-              className={`py-2 px-4 rounded-lg text-white w-full transition duration-300 ${
-                category === 'savings'
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : category === 'retirement'
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : category === 'investing'
-                  ? 'bg-blue-600 hover:bg-blue-700'
-                  : 'bg-blue-600 hover:bg-blue-700'
-              }`}
-              onClick={() => handleSelectCategory(category)} // Call the function when button is clicked
+    <div className="p-5 w-full bg-gray-800">
+      <div className="section-title pb-4">
+        <div className="line ml-8"></div>
+        <h2 className="title text-4xl font-extrabold pl-8 text-white mb-8 text-left">
+          <span>Quiz Categories</span>
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 px-2">
+        {Object.keys(quizCounters).map((category, index) => {
+          const colors = [
+            { bg: "bg-green-300", text: "text-black", button: "bg-gray-800" },
+            { bg: "bg-gray-900", text: "text-white", button: "bg-gray-700" },
+            { bg: "bg-purple-400", text: "text-black", button: "bg-purple-600" },
+            { bg: "bg-yellow-200", text: "text-black", button: "bg-yellow-500" },
+          ];
+          const colorScheme = colors[index];
+
+          return (
+            <div
+              key={category}
+              className={`${colorScheme.bg} rounded-3xl transition-all duration-300 hover:scale-105 hover:shadow-xl flex flex-col justify-between p-8 min-h-[400px] w-full text-left`}
             >
-              Select
-            </button>
-          </div>
-        ))}
+              <div>
+                <h5 className={`text-3xl mb-6 font-bold ${colorScheme.text} leading-tight`}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </h5>
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="h-2 w-full bg-gray-200/50 rounded-full">
+                    <div 
+                      className="h-2 bg-gray-800 rounded-full"
+                      style={{ 
+                        width: `${(quizCounters[category].solved / quizCounters[category].total) * 100}%` 
+                      }}
+                    ></div>
+                  </div>
+                  <span className={`text-sm font-medium ${colorScheme.text}`}>
+                    {Math.round((quizCounters[category].solved / quizCounters[category].total) * 100)}%
+                  </span>
+                </div>
+                <p className={`text-lg ${colorScheme.text}`}>
+                  {quizCounters[category].solved} of {quizCounters[category].total} questions completed
+                </p>
+              </div>
+              {/* Added full-width button at the bottom */}
+              <button
+                className={`${colorScheme.button} w-full py-3 px-6 rounded-xl text-white font-semibold transition-opacity duration-200 hover:opacity-90 mt-6`}
+                onClick={() => handleSelectCategory(category)}
+              >
+                Start Test
+              </button>
+            </div>
+          )
+        })}
       </div>
       <hr className='mt-12 border-b-2 border-white' />
     </div>

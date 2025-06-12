@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import toast styles
-import API from "../../../../apis/server.api.js";
-const Investing = ({ onNextModule }) => {
+import API from '../../../../apis/server.api';
+
+const Saving = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -31,15 +30,25 @@ const Investing = ({ onNextModule }) => {
     fetchSubmodules();
   }, []);
 
-  // Show a toast message when loading
-  if (loading) {
-    toast.info("Check out our tools for simplified calculations", { toastId: 'invest' });
-    return <p>Loading submodules...</p>;
-  }
+      if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-800 flex items-center justify-center">
+        <div className="bg-gray-900 rounded-lg shadow-lg p-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-300 mx-auto"></div>
+          <p className="text-white text-center mt-4 font-medium">Loading submodules...</p>
+        </div>
+      </div>
+    );
+  };
 
-  const formatContent = (content) => {
+  const formatContent = (content, isActive) => {
+    const textColor = isActive ? 'text-black' : 'text-white';
     return content.split('\n').map((paragraph, index) => (
-      <p key={index} className="submodule-paragraph">{paragraph}</p>
+      paragraph.trim() && (
+        <p key={index} className={`mb-3 ${textColor} leading-relaxed`}>
+          {paragraph}
+        </p>
+      )
     ));
   };
 
@@ -53,111 +62,152 @@ const Investing = ({ onNextModule }) => {
 
   // Function to validate and convert YouTube URLs to embed format
   const formatVideoUrl = (url) => {
-    const match = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
-    return match ? `https://www.youtube.com/embed/${match[1]}` : null;
+    if (!url) return null;
+    
+    // Handle different YouTube URL formats
+    const patterns = [
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?youtu\.be\/([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/v\/([a-zA-Z0-9_-]{11})/,
+      /(?:https?:\/\/)?(?:www\.)?youtube\.com\/.*[?&]v=([a-zA-Z0-9_-]{11})/
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return `https://www.youtube.com/embed/${match[1]}?enablejsapi=1&origin=${window.location.origin}`;
+      }
+    }
+    
+    // If it's already an embed URL, use it as is
+    if (url.includes('youtube.com/embed/')) {
+      return url;
+    }
+    
+    console.warn('Invalid YouTube URL format:', url);
+    return null;
   };
 
   return (
-    <div className="financial-basic-page">
-      <h1>Investing</h1>
-      {submodules.map((submodule, index) => (
-        <div key={index} className="submodule-section">
-          <h2 className="submodule-title">{submodule.title}</h2>
-          <div className="submodule-content">
-            {formatContent(submodule.content)}
-          </div>
-          {submodule.image && <img src={submodule.image} alt="Submodule visual" />}
-          <div className="video-container">
-            {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
-              <iframe
-                width="560"
-                height="315"
-                src={formatVideoUrl(submodule.VideoUrl)}
-                title="YouTube video player"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            ) : (
-              <p>No valid video available.</p>
-            )}
-          </div>
+    <div className="min-h-screen bg-gray-800 py-8 px-4">
+      <div className="max-w-4xl mx-auto">
+        {/* Header */}
+        <div className="text-left mb-12">
+          <h1 className="text-4xl font-bold text-white mb-4">
+             Investing
+          </h1>
+          <p className="text-lg text-white opacity-80">
+            Discover how to grow your wealth through smart and informed investment decisions.
+          </p>
         </div>
-      ))}
-      <button className="next-button" onClick={handleNextClick}>Next</button>
+
+        {/* Submodules Grid */}
+        <div className="space-y-8">
+          {submodules.map((submodule, index) => {
+            const isActive = index % 2 === 1; // Alternate cards starting with second one
+            const cardBg = isActive ? 'bg-green-300' : 'bg-gray-900';
+            const headerBg = isActive ? 'bg-green-300' : 'bg-gray-900';
+            const textColor = isActive ? 'text-black' : 'text-white';
+            const iconColor = isActive ? 'text-black' : 'text-white';
+            const badgeBg = isActive ? 'bg-gray-800' : 'bg-green-300';
+            const badgeText = isActive ? 'text-white' : 'text-black';
+            
+            return (
+              <div
+                key={index}
+                className={`${cardBg} rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1`}
+              >
+                {/* Card Header */}
+                <div className={`${headerBg} px-6 py-4`}>
+                  <div className="flex items-center">
+                    <div className={`${badgeBg} rounded-full w-8 h-8 flex items-center justify-center mr-3`}>
+                      <span className={`${badgeText} font-bold text-sm`}>{index + 1}</span>
+                    </div>
+                    <h2 className={`text-xl font-bold ${iconColor}`}>
+                      {submodule.title}
+                    </h2>
+                  </div>
+                </div>
+
+                {/* Card Content */}
+                <div className="p-6">  
+                {/* Text Content */}
+                  <div className="mb-6">
+                    {formatContent(submodule.content, isActive)}
+                  </div>
+
+                  {/* Video Section */}
+                  <div className={`${isActive ? 'bg-gray-100' : 'bg-gray-800'} rounded-lg p-4`}>
+                    <div className="flex items-center mb-3">
+                      <div className={`${isActive ? 'bg-gray-800' : 'bg-green-300'} rounded-full w-6 h-6 flex items-center justify-center mr-2`}>
+                        <span className={`${isActive ? 'text-white' : 'text-black'} text-xs`}>▶</span>
+                      </div>
+                      <h3 className={`font-semibold ${textColor}`}>Video Lesson</h3>
+                    </div>
+                    
+                    {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
+                      <div className="relative w-full" style={{ paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                        <iframe
+                          className="absolute top-0 left-0 w-full h-full rounded-lg"
+                          width="560"
+                          height="315"
+                          src={formatVideoUrl(submodule.VideoUrl)}
+                          title={`${submodule.title} - Video Lesson`}
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    ) : submodule.VideoUrl ? (
+                      <div className={`${isActive ? 'bg-gray-200' : 'bg-gray-700'} rounded-lg p-8 text-center`}>
+                        <div className="text-4xl mb-2">⚠️</div>
+                        <p className={`${textColor} opacity-60 mb-2`}>Invalid video URL format</p>
+                        <p className={`${textColor} opacity-40 text-xs break-all`}>{submodule.VideoUrl}</p>
+                      </div>
+                    ) : (
+                      <div className={`${isActive ? 'bg-gray-200' : 'bg-gray-700'} rounded-lg p-8 text-center`}>
+                        <div className="text-4xl mb-2">📹</div>
+                        <p className={`${textColor} opacity-60`}>No video available for this lesson</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Next Button */}
+        <div className="text-center mt-12">
+          <button
+            className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-gray-400"
+            onClick={handleNextClick}
+          >
+            Continue to Next Module →
+          </button>
+        </div>
+
+        {/* Progress Indicator */}
+        <div className="mt-8 text-center">
+          <div className="inline-flex items-center space-x-2">
+            {submodules.map((_, index) => {
+              const isActive = index % 2 === 1;
+              return (
+                <div
+                  key={index}
+                  className={`w-3 h-3 rounded-full ${isActive ? 'bg-green-300' : 'bg-gray-700'}`}
+                ></div>
+              );
+            })}
+          </div>
+          <p className="text-white opacity-60 mt-2 text-sm">
+            {submodules.length} lessons completed
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
 
-// Add styles to make the page look decent and responsive
-const styles = `
-  .financial-basic-page {
-    font-size: 14px;
-    max-width: 1100px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #ffffff;
-  }
-  h1 {
-    font-size: 24px;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .submodule-section {
-    margin-bottom: 20px;
-  }
-  .submodule-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  .submodule-content {
-    font-size: 14px;
-    line-height: 1.6;
-    color: #333;
-  }
-  .submodule-paragraph {
-    margin-bottom: 12px;
-  }
-  img {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  .video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    margin-bottom: 20px;
-  }
-  .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .next-button {
-    display: block;
-    margin: 20px auto 0;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #2563eb;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .next-button:hover {
-    background-color: #1e40af;
-  }
-`;
-
-export default ({ onNextModule }) => (
-  <>
-    <style>{styles}</style>
-    <Investing onNextModule={onNextModule} />
-  </>
-);
+export default Saving;
