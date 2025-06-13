@@ -12,7 +12,7 @@ const CompletedLearningPaths = ({ course }) => {
   {
     "title": "Budgeting",
     "description": "Create effective plans to manage and track your spending",
-    "highlight": "Contact Our Experts",
+    "highlight": "Contact The Experts",
     "subtitle": "Master your monthly budget"
   },
   {
@@ -115,7 +115,7 @@ const CompletedLearningPaths = ({ course }) => {
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="mb-10 text-left">
           <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
-            <span className="block italic">Fin</span>
+            <span className="block italic">FIN</span>
             <span className="block text-[#ff5722] italic">LEARN</span>
           </h2>
           <p className="mt-4 text-lg text-gray-700 max-w-xl font-medium">

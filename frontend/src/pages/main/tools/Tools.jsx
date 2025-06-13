@@ -6,8 +6,7 @@ import SavingsGoalCalculator from "./components/SavingsGoalCalculator";
 import EMICalculator from "./components/EMICalculator";
 import BillSplitCalculator from "./components/BillSplitCalculator";
 import blogs1 from "../../../assets/blogs1.gif";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const Tools = () => {
   const [showGif, setShowGif] = useState(true);
@@ -17,9 +16,7 @@ const Tools = () => {
     const timer = setTimeout(() => {
       setShowGif(false);
       setBgColor("bg-[#ffffff]");
-      setTimeout(() => {
-        toast.info("Check out simulation for real time experience !", {toastId: 'tools'})
-      }, 4000)
+     
     }, 3000);
 
     return () => clearTimeout(timer);
@@ -61,24 +58,7 @@ const Tools = () => {
         ))}
       </div>
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastStyle={{
-          backgroundColor: '#f5f5f5',
-          color: '#000000',
-          border: '2px solid #e0e0e0',
-          fontWeight: 'bold'
-        }}
-      />
+  
       
       
         <div className="relative z-10 w-full max-w-none px-8">

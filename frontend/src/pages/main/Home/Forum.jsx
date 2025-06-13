@@ -28,12 +28,7 @@ const Forum = () => {
       accent: "#ff7043",
       button: "#000000"
     },
-    {
-      bg: "#e8ddd4",
-      text: "#000000",
-      accent: "#d7c4b0",
-      button: "#ff5722"
-    },
+    
     {
       bg: "#000000",
       text: "#ffffff",
@@ -244,7 +239,7 @@ const Forum = () => {
         </div>
 
         {/* Forum Questions */}
-        <div className="grid grid-cols-1 gap-6">
+        <div className="grid grid-cols-1 gap-8 w-full px-0">
           {questions.map((user, userIndex) => 
             user.quest.map((question, questionIndex) => {
               const globalQuestionIndex = userIndex * user.quest.length + questionIndex;
@@ -253,12 +248,14 @@ const Forum = () => {
               return (
                 <div
                   key={question._id}
-                  className="rounded-[16px] overflow-hidden shadow-lg transition-transform hover:-translate-y-2 hover:shadow-xl relative w-full"
+                  className="rounded-[24px] overflow-hidden shadow-lg transition-transform hover:-translate-y-2 hover:shadow-xl relative w-full"
                   style={{
                     backgroundColor: colorScheme.bg,
-                    color: colorScheme.text,
+                    color: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff', // Dynamic text color
                     border: `2px solid ${colorScheme.accent}`,
-                    fontFamily: 'Arial, sans-serif'
+                    fontFamily: 'Arial, sans-serif',
+                    minHeight: '200px',
+                    padding: '2rem'
                   }}
                 >
                   <div className="p-6 relative">
@@ -274,36 +271,36 @@ const Forum = () => {
                       />
                     </div>
 
-                    <div className="flex justify-between items-start relative z-10">
+                    <div className="flex justify-between items-start relative z-10 gap-8">
                       <div className="flex-1">
-                        <h3 className="text-2xl font-black leading-tight tracking-wide uppercase mb-4">
+                        <h3 className="text-3xl font-black leading-tight tracking-wide uppercase mb-6">
                           {question.title}
                         </h3>
                         
-                        <div className="flex items-center gap-6 text-sm font-medium mb-4">
-                          <span className="flex items-center gap-2">
-                            <User className="h-4 w-4" />
+                        <div className="flex items-center gap-8 text-base font-medium mb-4">
+                          <span className="flex items-center gap-3">
+                            <User className="h-5 w-5" />
                             {question.author}
                           </span>
-                          <span className="flex items-center gap-2">
-                            <ThumbsUp className="h-4 w-4" />
+                          <span className="flex items-center gap-3">
+                            <ThumbsUp className="h-5 w-5" />
                             {question.upvotes}
                           </span>
                           <span 
-                            className="flex items-center gap-2 cursor-pointer hover:opacity-70 transition-opacity"
+                            className="flex items-center gap-3 cursor-pointer hover:opacity-70 transition-opacity"
                             onClick={() => toggleAnswers(question._id)}
                           >
-                            <MessageSquare className="h-4 w-4" />
+                            <MessageSquare className="h-5 w-5" />
                             {question.replies} Replies
                           </span>
                         </div>
                       </div>
                       
                       <button
-                        className="bg-transparent border-2 px-6 py-3 rounded-xl text-sm font-bold hover:bg-current hover:text-white transition-all duration-300 transform hover:scale-105 ml-4"
+                        className="bg-transparent border-2 px-8 py-4 rounded-xl text-base font-bold hover:bg-current hover:text-white transition-all duration-300 transform hover:scale-105"
                         style={{
-                          borderColor: colorScheme.button,
-                          color: colorScheme.button
+                          borderColor: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff',
+                          color: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff'
                         }}
                         onClick={() => openModal(question)}
                       >

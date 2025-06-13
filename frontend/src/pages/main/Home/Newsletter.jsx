@@ -8,6 +8,7 @@ const Newsletter = () => {
   const [email, setEmail] = useState('');
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [subscriptionSuccess, setSubscriptionSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -15,12 +16,11 @@ const Newsletter = () => {
 
   const handlePayment = async () => {
     try {
-      // await displayRazorPay(59);
-      // Simulate payment success for demo
-      setTimeout(() => {
-        setPaymentSuccess(true);
-        handleSubscription();
-      }, 1000);
+      // Assuming displayRazorPay() handles payment logic
+      await displayRazorPay(59); // Assuming payment is ₹59
+      // Call the handleSubscription function after successful payment
+      await handleSubscription();
+
     } catch (error) {
       console.error('Payment failed', error);
     }
@@ -31,14 +31,16 @@ const Newsletter = () => {
       const response = await axios.post(subscribe, { email }, {
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('token')}` // Assuming you store the token in localStorage
         }
       });
 
-      // Simulate successful subscription for demo
-      setTimeout(() => {
+      if (response.status === 200) {
+        
         setSubscriptionSuccess(true);
-      }, 500);
+      } else {
+        console.error('Subscription failed');
+      }
     } catch (error) {
       console.error('Error subscribing to newsletter:', error);
     }
@@ -86,7 +88,6 @@ const Newsletter = () => {
           <div className="text-center">
             <div className="bg-white rounded-[24px] p-12 shadow-2xl border-4 border-[#ff5722] max-w-2xl mx-auto">
               <div className="w-32 h-32 mx-auto mb-8 rounded-full bg-green-100 flex items-center justify-center">
-                <div className="text-4xl">✅</div>
               </div>
               <h2 className="text-4xl font-black text-[#ff5722] mb-4 uppercase tracking-wide" style={{ fontFamily: 'Arial, sans-serif' }}>
                 Payment Successful!
@@ -212,6 +213,16 @@ const Newsletter = () => {
           </div>
         )}
       </div>
+
+      {/* Payment Success Component */}
+      {showSuccess && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-8 rounded-lg shadow-xl text-center">
+            <img src={SuccessGif} alt="Payment Success" className="w-48 h-48 mx-auto" />
+            <h2 className="text-2xl font-bold text-green-600 mt-4">Payment Successful!</h2>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

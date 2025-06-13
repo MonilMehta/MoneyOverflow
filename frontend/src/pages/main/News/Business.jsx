@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import NewsGif from '../../../assets/news1.gif';
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+
 
 const NewsContainer = styled.div`
   background-color: #f6f6f6;
@@ -311,9 +310,6 @@ const BusinessNewsApp = () => {
       const response = await axios.get(API_URL);
       setArticles(prevArticles => [...prevArticles, ...response.data.articles]);
       setLoading(false);
-      setTimeout(() => {
-        toast.info("Subscribe to our newsletter for daily news!", { toastId: 'news' });
-      }, 5000);
     } catch (error) {
       console.error('Error fetching news:', error);
       setLoading(false);
@@ -336,7 +332,7 @@ const BusinessNewsApp = () => {
   
   return (
     <>
-      <ToastContainer />
+
       <NewsContainer>
         <BackgroundPattern />
         <VerticalLines />
@@ -353,7 +349,7 @@ const BusinessNewsApp = () => {
 
             <HeaderSection>
               <MainTitle>
-                <span className="title-line-1">Business</span>
+                <span className="title-line-1">FIN</span>
                 <span className="title-line-2">NEWS</span>
               </MainTitle>
               <Subtitle>
@@ -390,7 +386,7 @@ const BusinessNewsApp = () => {
               Load More News
             </LoadMoreButton>
           </>
-        )}
+        
       </NewsContainer>
     </>
   );

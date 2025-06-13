@@ -1,4 +1,4 @@
-import React,{ useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { DollarSign } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import FAQSection from './FaqSection';
@@ -9,50 +9,53 @@ import HeroSection from './HeroSection';
 import './landing.css';
 import Footer from './Footer';
 import RotationLogo from './RotationLogo';
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import styles
-const LandingPage = () => {
 
-  useEffect(() => {
-    setTimeout(() => {
-      toast.dark("Don't forget to visit the about page!", {toastId: 'landing'})
-    }, 2000)
-  })
+const LandingPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      <ToastContainer/>
       {/* Navbar */}
-      <nav className="bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              <div className="flex-shrink-0 flex items-center">
-                <DollarSign className="h-8 w-8 text-indigo-600" />
-                <span className="ml-2 text-xl font-bold text-gray-800">MoneyOverflow</span>
-              </div>
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link to="/" className="border-indigo-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Home
-                </Link>
-                <Link to="/main/news" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Trends
-                </Link>
-                <Link to="/main/tools" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  Tools
-                </Link>
-                <Link to="/main/about" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
-                  About
-                </Link>
-              </div>
+      <nav className="bg-white border-b-4 border-[#ff5722] shadow-xl fixed top-0 w-full z-50">
+        <div className="max-w-full mx-auto px-8" style={{width: '100vw'}}>
+          <div className="flex justify-between h-16 items-center">
+            {/* Logo */}
+            <div className="flex-shrink-0 flex items-center">
+              <span className="text-3xl font-black tracking-tight">
+                <span className="text-black">Money</span>
+                <span className="text-[#ff5722] italic">Overflow</span>
+              </span>
             </div>
-            <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+
+            {/* Navigation Links */}
+            <div className="hidden sm:flex sm:space-x-10">
+              <Link
+                to="/"
+                className="border-[#ff5722] text-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+              >
+                Home
+              </Link>
+              <Link
+                to="/main/about"
+                className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+              >
+                About
+              </Link>
+              <Link
+                to="/pricing"
+                className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+              >
+                Pricing
+              </Link>
+            </div>
+
+            {/* Auth Buttons */}
+            <div className="flex space-x-4">
               <Link to="/auth">
-                <button className="bg-gray-100 text-gray-800 px-4 py-2 rounded-md text-sm font-medium">
+                <button className="px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
                   Login
                 </button>
               </Link>
               <Link to="/auth">
-                <button className="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                <button className="px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
                   Sign Up
                 </button>
               </Link>
@@ -60,25 +63,38 @@ const LandingPage = () => {
           </div>
         </div>
       </nav>
+
+      {/* Background Pattern */}
+      <div className="h-16 bg-white border-b-4 border-[#ff5722] relative overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div 
+            className="w-full h-full"
+            style={{
+              backgroundImage: 'linear-gradient(45deg, #000000 25%, transparent 25%), linear-gradient(-45deg, #000000 25%, transparent 25%)',
+              backgroundSize: '10px 10px',
+              backgroundPosition: '0 0, 0 5px'
+            }}
+          />
+        </div>
+      </div>
+
       {/* <RotationLogo/> */}
       {/* Hero Section */}
       <HeroSection />
-
+      
       {/* Feature Boxes */}
       <Features />
-
+      
       {/* Blog Section */}
       <Blog />
-
-      
+             
       {/* User Testimonial Carousel */}
       <UserTestimonial />
-
+      
       {/* FAQ Section */}
       <FAQSection />
-
-      {/* Footer */}
-      <Footer />
+      
+  
     </div>
   );
 };

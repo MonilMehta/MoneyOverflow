@@ -71,8 +71,7 @@ const BlogPosts = () => {
     }, 3000);
   });
 
-  if (error) return <p className="text-blue-600">{error}</p>;
-
+  
   return (
         <>
           {/* Dotted Grid Background */}
@@ -115,7 +114,7 @@ const BlogPosts = () => {
             {/* Header Section */}
             <div className="mb-10 text-left mt-10">
               <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
-                <span className="block italic">Case</span>
+                <span className="block italic">FIN</span>
                 <span className="block text-[#ff5722] italic">STUDIES</span>
               </h2>
               <p className="mt-4 text-lg text-gray-700 max-w-xl font-medium">

@@ -18,11 +18,11 @@ const MainNavbar = () => {
     ['Home', '/main'],
     ['FinLearn', '/main/learning'],
     ['FinTest', '/main/games'],
-    ['CaseStudy', '/main/blogs'],
+    ['FinStudies', '/main/blogs'],
     ['FinNews', '/main/news'],
     ['FinTools', '/main/tools'],
     ['Premium', '/main/premium'],
-    ['Simulation', '/main/simulation'],
+    ['FinSimulation', '/main/simulation'],
     ['About', '/main/about']
   ];
 

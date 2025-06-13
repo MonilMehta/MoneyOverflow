@@ -10,20 +10,16 @@ import InsuranceAndProtection from './modules/InsuranceAndProtection';
 import TaxesAndLegalConsideration from './modules/TaxesAndLegalConsideration';
 import FinancialToolsAndResources from './modules/FinancialToolsAndResources';
 import WealthBuilding from './modules/WealthBuilding';
-import axios from 'axios';
+// import axios from 'axios'; // Note: axios import removed for artifact display
 import { currentUser } from '../../../apis/user.api';
 import { isUnlock, mark } from '../../../apis/learning.api';
+import axios from 'axios';
 
 const SideBar = () => {
   const [selectedModule, setSelectedModule] = useState('Financial Basics');
   const [expandedModules, setExpandedModules] = useState([]);
   const [course, setCourse] = useState();
   const [user, setUser] = useState();
-
-  const cardColors = {
-    default: { bg: "bg-gray-900", text: "text-white", button: "bg-gray-700", icon: "text-white" },
-    active: { bg: "bg-green-300", text: "text-black", button: "bg-gray-800", icon: "text-black" }
-  };
 
   const fetchData = async () => {
     let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
@@ -114,74 +110,215 @@ const SideBar = () => {
   ];
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-[#f6f6f6] relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
+      {/* Background Pattern */}
+      <div className="fixed inset-0 opacity-10 pointer-events-none">
+        <div 
+          className="w-full h-full"
+          style={{
+            backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+            backgroundSize: '30px 30px',
+            backgroundPosition: '0 0'
+          }}
+        />
+      </div>
+      
+      {/* Vertical Lines */}
+      <div className="fixed inset-0 opacity-5 pointer-events-none">
+        {[...Array(10)].map((_, i) => (
+          <div
+            key={`v-${i}`}
+            className="absolute h-full border-l border-dotted border-black"
+            style={{ left: `${i * 10}%` }}
+          />
+        ))}
+      </div>
+
       {/* Sidebar */}
-      <div className="w-80 p-4 sticky top-0 h-screen overflow-y-auto bg-gray-900">
-        <div className="flex flex-col gap-2">
-          {modules.map((module, index) => {
-            const isUnlocked = index <= course;
-            const isActive = selectedModule === module.name;
-            const colors = isActive ? cardColors.active : cardColors.default;
-            
-            return (
-              <div key={module.name} className="flex flex-col">
-                <div
-                  className={`p-3 cursor-pointer rounded-lg flex justify-between items-center transition-all duration-200 border border-transparent hover:bg-gray-800 ${
-                    isActive 
-                      ? `${colors.bg} ${colors.text}` 
-                      : `${colors.bg} ${colors.text}`
-                  }`}
-                  onClick={() => checkUnlock(module)}
-                >
-                  <div className="flex items-center flex-1 min-w-0">
-                    <div className="flex items-center mr-3 flex-shrink-0">
-                      {isUnlocked ? (
-                        <Unlock className={`h-5 w-5 ${colors.icon}`} />
-                      ) : (
-                        <Lock className={`h-5 w-5 ${colors.icon}`} />
+      <div className="w-80 bg-white rounded-r-[24px] shadow-2xl border-r-4 border-[#ff5722] sticky top-0 h-screen overflow-y-auto relative z-10">
+        {/* Header */}
+        <div className="p-6 border-b-2 border-[#ff5722] bg-white rounded-tr-[24px] relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: 'linear-gradient(45deg, #ff5722 25%, transparent 25%), linear-gradient(-45deg, #ff5722 25%, transparent 25%)',
+                backgroundSize: '10px 10px',
+                backgroundPosition: '0 0, 0 5px'
+              }}
+            />
+          </div>
+          
+          <div className="relative z-10">
+            <h2 className="text-3xl font-black tracking-tight text-[#000000] leading-tight mb-2">
+              <span className="block italic">FIN</span>
+              <span className="block text-[#ff5722] italic">LEARN</span>
+            </h2>
+            <p className="text-sm text-gray-600 font-medium">
+              Master your finances step by step
+            </p>
+          </div>
+
+          {/* Decorative Elements */}
+          <div className="absolute top-4 right-4 opacity-20">
+            <div className="w-6 h-6 border-2 border-[#ff5722] rounded-full"></div>
+          </div>
+        </div>
+
+        {/* Modules List */}
+        <div className="p-4">
+          <div className="flex flex-col gap-3">
+            {modules.map((module, index) => {
+              const isUnlocked = index <= course;
+              const isActive = selectedModule === module.name;
+              
+              return (
+                <div key={module.name} className="flex flex-col">
+                  <div
+                    className={`rounded-[16px] overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer relative border-2 ${
+                      isActive 
+                        ? 'bg-[#ff5722] text-white border-[#e64a19] shadow-2xl transform -translate-y-1' 
+                        : isUnlocked
+                        ? 'bg-white text-black border-gray-200 hover:border-[#ff5722]'
+                        : 'bg-gray-100 text-gray-500 border-gray-300'
+                    }`}
+                    onClick={() => checkUnlock(module)}
+                  >
+                    {/* Background Pattern */}
+                    <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
+                      <div 
+                        className="w-full h-full"
+                        style={{
+                          backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
+                          backgroundSize: '8px 8px',
+                          backgroundPosition: '0 0, 0 4px'
+                        }}
+                      />
+                    </div>
+
+                    <div className="p-4 relative z-10">
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center flex-1 min-w-0">
+                          <div className="flex items-center mr-3 flex-shrink-0">
+                            {isUnlocked ? (
+                              <Unlock className={`h-5 w-5 ${isActive ? 'text-white' : 'text-[#ff5722]'}`} />
+                            ) : (
+                              <Lock className="h-5 w-5 text-gray-400" />
+                            )}
+                          </div>
+                          <span className={`text-sm font-black leading-tight text-left flex-1 uppercase tracking-wide ${
+                            isActive ? 'text-white' : isUnlocked ? 'text-black' : 'text-gray-500'
+                          }`}>
+                            {module.name}
+                          </span>
+                        </div>
+                        <button
+                          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center flex-shrink-0 ml-2 border-2 ${
+                            isActive 
+                              ? 'bg-white text-[#ff5722] border-white hover:bg-gray-100' 
+                              : isUnlocked
+                              ? 'bg-[#ff5722] text-white border-[#ff5722] hover:bg-[#e64a19]'
+                              : 'bg-gray-300 text-gray-500 border-gray-300'
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleExpand(module.name);
+                          }}
+                        >
+                          {expandedModules.includes(module.name) ? (
+                            <ChevronUp className="h-4 w-4" />
+                          ) : (
+                            <ChevronDown className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Decorative Elements */}
+                      {isActive && (
+                        <div className="absolute top-2 right-2 opacity-20">
+                          <div className="w-4 h-4 border border-white rounded-full"></div>
+                        </div>
                       )}
                     </div>
-                    <span className={`text-sm font-medium leading-tight text-left flex-1 ${
-                      isActive ? 'font-semibold' : ''
-                    }`}>
-                      {module.name}
-                    </span>
                   </div>
-                  <button
-                    className={`${colors.button} p-2 rounded-lg transition-all duration-200 hover:opacity-80 flex items-center justify-center flex-shrink-0 ml-2`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleExpand(module.name);
-                    }}
-                  >
-                    {expandedModules.includes(module.name) ? (
-                      <ChevronUp className="h-4 w-4 text-white" />
-                    ) : (
-                      <ChevronDown className="h-4 w-4 text-white" />
-                    )}
-                  </button>
+
+                  {/* Submodules */}
+                  {expandedModules.includes(module.name) && (
+                    <div className="mt-3 ml-6 flex flex-col gap-2 relative">
+                      {/* Connecting Line */}
+                      <div className="absolute -left-4 top-0 bottom-0 w-0.5 bg-[#ff5722] opacity-30"></div>
+                      
+                      {module.submodules.map((submodule, subIndex) => (
+                        <div
+                          key={subIndex}
+                          className="bg-white p-4 text-sm font-bold text-gray-900 rounded-xl transition-all duration-300 cursor-pointer border-2 border-gray-200 hover:border-[#ff5722] hover:bg-[#fff5f5] hover:-translate-y-0.5 hover:shadow-lg relative overflow-hidden shadow-md"
+                        >
+                          {/* Removed background pattern for better text visibility */}
+                          
+                          <div className="relative z-10 flex items-center">
+                            <div className="w-3 h-3 bg-[#ff5722] rounded-full mr-3 flex-shrink-0"></div>
+                            <span className="font-bold uppercase tracking-wide text-gray-900 leading-relaxed">{submodule}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                {expandedModules.includes(module.name) && (
-                  <div className="mt-2 ml-8 flex flex-col gap-1">
-                    {module.submodules.map((submodule, subIndex) => (
-                      <div
-                        key={subIndex}
-                        className="p-2 text-xs bg-gray-900 text-white rounded-md transition-all duration-200 cursor-pointer text-left leading-tight border border-transparent hover:bg-gray-800"
-                      >
-                        {submodule}
-                      </div>
-                    ))}
-                  </div>
-                )}
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Progress Footer */}
+        <div className="p-4 border-t-2 border-[#ff5722] bg-white relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: 'linear-gradient(45deg, #ff5722 25%, transparent 25%), linear-gradient(-45deg, #ff5722 25%, transparent 25%)',
+                backgroundSize: '8px 8px',
+                backgroundPosition: '0 0, 0 4px'
+              }}
+            />
+          </div>
+          
+          <div className="relative z-10">
+            <div className="bg-[#ff5722] text-white px-4 py-3 rounded-xl">
+              <p className="text-sm font-black uppercase tracking-wide text-center">
+                Progress: {course + 1 || 0}/{modules.length}
+              </p>
+              <div className="mt-2 bg-white bg-opacity-30 rounded-full h-2">
+                <div 
+                  className="bg-white h-full rounded-full transition-all duration-500"
+                  style={{ width: `${((course + 1 || 0) / modules.length) * 100}%` }}
+                ></div>
               </div>
-            );
-          })}
+            </div>
+          </div>
         </div>
       </div>
       
       {/* Content Area */}
-      <div className="flex-grow overflow-y-auto bg-gray-50">
-        {renderModule()}
+      <div className="flex-grow overflow-y-auto bg-[#f6f6f6] relative z-10">
+        <div className="bg-whitemin-h-full shadow-2xl relative overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-3">
+            <div 
+              className="w-full h-full"
+              style={{
+                backgroundImage: 'linear-gradient(45deg, #ff5722 25%, transparent 25%), linear-gradient(-45deg, #ff5722 25%, transparent 25%)',
+                backgroundSize: '20px 20px',
+                backgroundPosition: '0 0, 0 10px'
+              }}
+            />
+          </div>
+          
+          <div className="relative z-10">
+            {renderModule()}
+          </div>
+        </div>
       </div>
     </div>
   );

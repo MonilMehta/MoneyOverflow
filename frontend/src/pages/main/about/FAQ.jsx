@@ -5,7 +5,6 @@ const FAQ = () => {
   return (
     <>
     <Flow />
-    <Team />
     </>
   )
 }

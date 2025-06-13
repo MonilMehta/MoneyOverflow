@@ -3,8 +3,7 @@ import SideBar from "./SideBar";
 import axios from "axios";
 import { currentUser } from "../../../apis/user.api";
 import RedirectPage from "../components/RedirectPage";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import styles
+
 
 const Learning = () => {
   const [user, setUser] = useState();
@@ -25,7 +24,6 @@ const Learning = () => {
     <>
       {user ? (
         <>
-          <ToastContainer />
           <SideBar />
         </>
       ) : (

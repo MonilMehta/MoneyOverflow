@@ -487,7 +487,7 @@ export default function Simulation() {
             {/* Header */}
             <div className="mb-10 text-left px-8">
               <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight flex items-center gap-3">
-                <span className="text-black">FIN</span>
+                <span className="text-black italic">FIN</span>
                 <span className="text-[#ff5722] italic">SIMULATION</span>
               </h2>
               

@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-
 const UserTestimonial = () => {
-    const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const testimonials = [
-    { name: "John Doe", text: "MoneyOverflow changed my financial life. I've never felt more in control of my finances!" },
-    { name: "Jane Smith", text: "The courses are so easy to understand. I finally feel confident about investing." },
-    { name: "Mike Johnson", text: "Thanks to MoneyOverflow, I've paid off my debts and started saving for retirement." },
+    { name: "Vivrant Mercant", text: "MoneyOverflow changed my financial life. I've never felt more in control of my finances!" },
+    { name: "Rakesh Singh", text: "The courses are so easy to understand. I finally feel confident about investing." },
+    { name: "Rahul Mehra", text: "Thanks to MoneyOverflow, I've paid off my debts and started saving for retirement." },
+  ];
+
+  const cardColors = [
+    { bg: "#ff5722", text: "#000000", accent: "#ff7043", button: "#ffffff" },
+    { bg: "#e8ddd4", text: "#000000", accent: "#d7c4b0", button: "#000000" },
+    { bg: "#000000", text: "#ffffff", accent: "#333333", button: "#ff5722" },
   ];
 
   const nextTestimonial = () => {
@@ -18,23 +24,154 @@ const UserTestimonial = () => {
   const prevTestimonial = () => {
     setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length);
   };
+
+  // Auto-scroll effect
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length);
+    }, 4000); // Change testimonial every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, testimonials.length]);
+
+  // Handle manual navigation
+  const handleManualNavigation = (direction) => {
+    setIsAutoPlaying(false); // Stop auto-play when user interacts
+    if (direction === 'next') {
+      nextTestimonial();
+    } else {
+      prevTestimonial();
+    }
+    
+    // Resume auto-play after 8 seconds of inactivity
+    setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 8000);
+  };
+
+  // Handle indicator click
+  const handleIndicatorClick = (index) => {
+    setIsAutoPlaying(false);
+    setCurrentTestimonial(index);
+    
+    // Resume auto-play after 8 seconds
+    setTimeout(() => {
+      setIsAutoPlaying(true);
+    }, 8000);
+  };
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 bg-white">
-        <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-8">What Our Users Say</h2>
-        <div className="relative bg-indigo-600 rounded-lg shadow-xl p-8">
-          <div className="text-white text-center">
-            <p className="text-xl italic mb-4">"{testimonials[currentTestimonial].text}"</p>
-            <p className="font-semibold">- {testimonials[currentTestimonial].name}</p>
+    <div className="bg-gray-100 min-h-screen py-16 px-4 md:px-8 relative overflow-hidden font-sans">
+      {/* Background Pattern */}
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)',
+          backgroundSize: '30px 30px',
+          backgroundPosition: '0 0'
+        }}
+      />
+      
+      <div className="relative z-10 w-full mx-auto">
+        {/* Header Section */}
+        <div className="mb-16 text-left px-6 md:px-12">
+          <h1 className="text-6xl md:text-7xl font-black leading-none text-black mb-4">
+            <span className="block italic">WHAT OUR</span>
+            <span className="block text-orange-600 italic">USERS SAY</span>
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl font-medium mb-4">
+            Real stories from people who transformed their financial future with MoneyOverflow.
+          </p>
+          <div className="flex items-center gap-4">
+            <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold uppercase">
+              Verified Reviews
+            </div>
+            <div className="text-3xl font-bold">*</div>
           </div>
-          <button onClick={prevTestimonial} className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 text-indigo-600 hover:bg-indigo-100">
-            <ChevronLeft className="h-6 w-6" />
-          </button>
-          <button onClick={nextTestimonial} className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-2 text-indigo-600 hover:bg-indigo-100">
-            <ChevronRight className="h-6 w-6" />
-          </button>
+        </div>
+
+        {/* Testimonial Card */}
+        <div className="relative px-6 md:px-12">
+          <div 
+            className="border-2 rounded-2xl p-8 md:p-12 h-80 md:h-96 flex flex-col justify-between relative overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-2xl w-full"
+            style={{
+              backgroundColor: cardColors[currentTestimonial].bg,
+              color: cardColors[currentTestimonial].text,
+              borderColor: cardColors[currentTestimonial].accent,
+              backgroundImage: `linear-gradient(45deg, currentColor 25%, transparent 25%), 
+                               linear-gradient(-45deg, currentColor 25%, transparent 25%)`,
+              backgroundSize: '10px 10px',
+              backgroundPosition: '0 0, 0 5px',
+              backgroundBlendMode: 'overlay'
+            }}
+          >
+            {/* Subtle pattern overlay */}
+            <div 
+              className="absolute inset-0 opacity-5 pointer-events-none rounded-2xl"
+              style={{
+                backgroundImage: `linear-gradient(45deg, currentColor 25%, transparent 25%), 
+                                 linear-gradient(-45deg, currentColor 25%, transparent 25%)`,
+                backgroundSize: '10px 10px',
+                backgroundPosition: '0 0, 0 5px'
+              }}
+            />
+            
+            <div className="relative z-10">
+              {/* Category Tag */}
+              <div 
+                className="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase mb-6 tracking-wider"
+                style={{
+                  backgroundColor: cardColors[currentTestimonial].button,
+                  color: cardColors[currentTestimonial].button === "#ffffff" ? "#000000" : "#ffffff"
+                }}
+              >
+                USER STORY
+              </div>
+              
+              {/* Testimonial Text */}
+              <blockquote className="text-2xl md:text-3xl font-bold leading-tight mb-8 italic">
+                "{testimonials[currentTestimonial].text}"
+              </blockquote>
+            </div>
+            
+            <div className="relative z-10">
+              {/* Author Info */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-md font-bold uppercase tracking-wider">
+                    — {testimonials[currentTestimonial].name}
+                  </p>
+                  <p className="text-md fonr-bold uppercase tracking-wide mt-1">
+                    Verified Customer
+                  </p>
+                </div>
+                
+                
+              </div>
+            </div>
+          </div>
+          
+          {/* Testimonial Indicators */}
+          <div className="flex justify-center mt-8 gap-2">
+            {testimonials.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleIndicatorClick(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentTestimonial 
+                    ? 'bg-orange-600 scale-125' 
+                    : 'bg-gray-400 hover:bg-gray-600'
+                }`}
+              />
+            ))}
+          </div>
+          
         </div>
       </div>
-  )
-}
+    </div>
+  );
+};
 
-export default UserTestimonial
+export default UserTestimonial;

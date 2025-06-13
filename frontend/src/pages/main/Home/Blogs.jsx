@@ -101,14 +101,14 @@ const Blogs = () => {
           <div className="mb-10 text-left">
             <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
               <span className="block">LATEST</span>
-              <span className="block text-[#ff5722] italic">CASE STUDIES</span>
+              <span className="block text-[#ff5722] italic">FIN STUDIES</span>
             </h2>
             <p className="mt-4 text-lg text-gray-700 max-w-xl font-medium">
               Dive into powerful case studies and lessons learned.
             </p>
             <div className="mt-4 flex items-center gap-4">
               <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold">
-                Studies 100+
+                Studies 7+
               </div>
               <div className="text-2xl">*</div>
             </div>
