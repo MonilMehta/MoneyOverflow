@@ -325,34 +325,16 @@ const BlogPosts = () => {
                       </div>
                     )}
                   </div>
-                  
-                  {/* Bottom Content */}
+                    {/* Bottom Content */}
                   <div className="z-10">
-                    {isOrange && (
-                      <div className="text-sm font-medium text-black opacity-80">
-                        Success stories & insights
-                      </div>
-                    )}
-                    {isBeige && (
-                      <div className="flex items-center gap-2">
-                        <div className="flex -space-x-2">
-                          <div className="w-6 h-6 bg-gray-400 rounded-full border-2 border-white"></div>
-                          <div className="w-6 h-6 bg-gray-500 rounded-full border-2 border-white"></div>
-                          <div className="w-6 h-6 bg-gray-600 rounded-full border-2 border-white"></div>
-                        </div>
-                        <div className="text-xs font-medium">
-                          Read Study
-                        </div>
-                      </div>
-                    )}
-                    {(isBlack || (!isOrange && !isBeige)) && (
-                      <Link
-                        to={`/main/blogs/${blog._id}`}
-                        className="bg-transparent border border-current px-4 py-2 rounded text-sm font-bold hover:bg-opacity-20 hover:bg-current transition-all duration-200 inline-block"
-                      >
-                        READ MORE →
-                      </Link>
-                    )}
+                    <Link
+                      to={`/main/blogs/${blog._id}`}
+                      className={`w-full bg-transparent border ${
+                        isBlack ? 'border-white text-white' : 'border-current text-current'
+                      } px-4 py-2 rounded text-sm font-bold hover:bg-opacity-20 hover:bg-current transition-all duration-200 inline-block text-center`}
+                    >
+                      {isOrange ? 'READ FEATURED →' : isBeige ? 'READ STUDY →' : 'READ MORE →'}
+                    </Link>
                   </div>
                   
                   {/* Background Pattern */}
@@ -366,31 +348,6 @@ const BlogPosts = () => {
                       }}
                     />
                   </div>
-                    {/* Hover Arrow */}
-                  {(isOrange || isBeige) && (
-                    <Link
-                      to={`/main/blogs/${blog._id}`}
-                      className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/10 active:bg-black/20 transition-all cursor-pointer touch-manipulation"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
-                      aria-label="Read blog post"
-                    >
-                      <div className="w-8 h-8 flex items-center justify-center opacity-50 hover:opacity-100 transition-all">
-                        <svg
-                          className="w-5 h-5"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
-                      </div>
-                    </Link>
-                  )}
                 </div>
               </div>
             );

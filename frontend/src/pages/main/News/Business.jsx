@@ -1,8 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import React, { useState, useEffect, useRef } from 'react';
+import styled, { keyframes } from 'styled-components';
 import axios from 'axios';
 import NewsGif from '../../../assets/news1.gif';
 
+// Animation keyframes
+const fadeInUp = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const fadeInLeft = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const fadeInRight = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const scaleIn = keyframes`
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+`;
 
 const NewsContainer = styled.div`
   background-color: #f6f6f6;
@@ -292,11 +336,49 @@ const LoadingGif = styled.img`
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 `;
 
+const AnimatedMainTitle = styled(MainTitle)`
+  .title-line-1 {
+    opacity: 0;
+    animation: ${fadeInLeft} 0.8s ease forwards;
+  }
+  
+  .title-line-2 {
+    opacity: 0;
+    animation: ${fadeInRight} 0.8s ease forwards;
+    animation-delay: 0.2s;
+  }
+`;
+
+const AnimatedSubtitle = styled(Subtitle)`
+  opacity: 0;
+  animation: ${fadeInUp} 0.8s ease forwards;
+  animation-delay: 0.4s;
+`;
+
+const AnimatedStatsContainer = styled(StatsContainer)`
+  opacity: 0;
+  animation: ${fadeInUp} 0.8s ease forwards;
+  animation-delay: 0.6s;
+`;
+
+const AnimatedNewsCard = styled(NewsCard)`
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
 const BusinessNewsApp = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [country, setCountry] = useState('us');
+  const [visibleCards, setVisibleCards] = useState(new Set());
+  const newsGridRef = useRef(null);
 
   const fetchNews = async (page, country) => {
     let API_KEY = process.env.REACT_APP_API_KEY;
@@ -330,6 +412,27 @@ const BusinessNewsApp = () => {
     });
   };
   
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleCards((prev) => new Set([...prev, entry.target.dataset.index]));
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px',
+      }
+    );
+
+    const cards = document.querySelectorAll('.news-card');
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [articles]);
+
   return (
     <>
 
@@ -348,25 +451,30 @@ const BusinessNewsApp = () => {
             </NewsTickerContainer>
 
             <HeaderSection>
-              <MainTitle>
+              <AnimatedMainTitle>
                 <span className="title-line-1">FIN</span>
                 <span className="title-line-2">NEWS</span>
-              </MainTitle>
-              <Subtitle>
+              </AnimatedMainTitle>
+              <AnimatedSubtitle>
                 Stay updated with the latest business news and market insights from around the globe.
-              </Subtitle>
-              <StatsContainer>
+              </AnimatedSubtitle>
+              <AnimatedStatsContainer>
                 <StatsBadge>Live Updates</StatsBadge>
                 <Asterisk>*</Asterisk>
-              </StatsContainer>
+              </AnimatedStatsContainer>
             </HeaderSection>
 
-            <NewsGrid>
+            <NewsGrid ref={newsGridRef}>
               {articles.map((article, index) => (
-                <NewsCard 
+                <AnimatedNewsCard 
                   key={index} 
                   colorIndex={index}
                   onClick={() => window.open(article.url, '_blank')}
+                  className={`news-card ${visibleCards.has(index.toString()) ? 'visible' : ''}`}
+                  data-index={index}
+                  style={{ 
+                    transitionDelay: `${(index % 3) * 0.1}s`
+                  }}
                 >
                   <div>
                     <NewsTitle>{article.title}</NewsTitle>
@@ -378,7 +486,7 @@ const BusinessNewsApp = () => {
                   <LearnMoreButton colorIndex={index}>
                     Read More →
                   </LearnMoreButton>
-                </NewsCard>
+                </AnimatedNewsCard>
               ))}
             </NewsGrid>
             
