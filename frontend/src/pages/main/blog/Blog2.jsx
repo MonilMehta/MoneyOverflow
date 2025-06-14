@@ -366,26 +366,29 @@ const BlogPosts = () => {
                       }}
                     />
                   </div>
-                  
-                  {/* Hover Arrow */}
+                    {/* Hover Arrow */}
                   {(isOrange || isBeige) && (
                     <Link
                       to={`/main/blogs/${blog._id}`}
-                      className="absolute top-4 right-4 opacity-50 hover:opacity-100 transition-opacity"
+                      className="absolute top-4 right-4 w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/10 active:bg-black/20 transition-all cursor-pointer touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                      aria-label="Read blog post"
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
+                      <div className="w-8 h-8 flex items-center justify-center opacity-50 hover:opacity-100 transition-all">
+                        <svg
+                          className="w-5 h-5"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9 5l7 7-7 7"
+                          />
+                        </svg>
+                      </div>
                     </Link>
                   )}
                 </div>
