@@ -28,7 +28,7 @@ const HeroSection = () => {
   return (
     <div
       id="hero"
-      className="relative flex items-center justify-center text-black min-h-screen mt-4"
+      className="relative flex items-center justify-center text-black min-h-screen p-4 sm:p-6 md:p-8 mt-4"
       style={{
         background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
         overflow: 'hidden',
@@ -36,7 +36,7 @@ const HeroSection = () => {
     >
       {/* Background grid lines */}
       <svg
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full hidden sm:block"
         style={{ zIndex: 0 }}
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
@@ -59,7 +59,7 @@ const HeroSection = () => {
 
       {/* Exact SVG from the image */}
       <svg
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full hidden sm:block"
         style={{ zIndex: 1, transform: 'translateX(4%)' }}
         viewBox="200 0 1915 1108"
         fill="none"
@@ -75,7 +75,7 @@ const HeroSection = () => {
 
       {/* Orange dots positioned like in the image */}
       <div
-        className="absolute decorative-element"
+        className="absolute decorative-element hidden sm:block"
         style={{
           top: '8%',
           right: '12%',
@@ -88,7 +88,7 @@ const HeroSection = () => {
       />
       
       <div
-        className="absolute decorative-element"
+        className="absolute decorative-element hidden sm:block"
         style={{
           bottom: '25%',
           left: '15%',
@@ -102,14 +102,13 @@ const HeroSection = () => {
 
       {/* Asterisk elements replacing A and B */}
       <div
-        className="absolute decorative-element"
+        className="absolute decorative-element hidden sm:block"
         style={{
           top: '25%',
           left: '15%',
           fontSize: '24px',
           fontWeight: 'bold',
           color: '#000',
-  
           zIndex: 2,
         }}
       >
@@ -117,14 +116,13 @@ const HeroSection = () => {
       </div>
 
       <div
-        className="absolute decorative-element"
+        className="absolute decorative-element hidden sm:block"
         style={{
           bottom: '30%',
           left: '12%',
           fontSize: '24px',
           fontWeight: 'bold',
           color: '#000',
-          
           zIndex: 2,
         }}
       >
@@ -133,14 +131,13 @@ const HeroSection = () => {
 
       {/* Asterisk */}
       <div
-        className="absolute decorative-element"
+        className="absolute decorative-element hidden sm:block"
         style={{
           top: '30%',
           right: '15%',
           fontSize: '24px',
           fontWeight: 'bold',
           color: '#000',
-   
           zIndex: 2,
         }}
       >
@@ -148,14 +145,14 @@ const HeroSection = () => {
       </div>
 
       {/* Main content - centered */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-8" style={{ marginLeft: '5%' }}>
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4 sm:px-8">
         {/* Main heading - positioned higher */}
-        <div className="mb-6 text-center">
-          <h1 className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-black tracking-tight leading-none mb-2 italic">
+        <div className="mb-4 sm:mb-6 text-center">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-black tracking-tight leading-none mb-2 italic">
             MONEY
           </h1>
-          <div className="flex items-center justify-center gap-4 mb-2 italic">
-            <h1 className="text-8xl md:text-9xl lg:text-[10rem] xl:text-[12rem] font-bold text-[#ff5722] tracking-tight leading-none">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 italic">
+            <h1 className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[10rem] font-bold text-[#ff5722] tracking-tight leading-none">
               <span className="relative">
                 Ø
               </span>VERFLOW
@@ -164,9 +161,9 @@ const HeroSection = () => {
         </div>
 
         {/* Description - positioned lower with more spacing */}
-        <div className="max-w-4xl mx-auto mt-12">
-          <p className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-relaxed text-gray-800 text-center">
-           Your journey to financial literacy starts here. Explore our resources, tools, and community to master the art of managing money effectively.
+        <div className="max-w-4xl mx-auto mt-6 sm:mt-8 md:mt-12">
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-medium leading-relaxed text-gray-800 text-center px-4 sm:px-6">
+            Your journey to financial literacy starts here. Explore our resources, tools, and community to master the art of managing money effectively.
           </p>
         </div>
       </div>

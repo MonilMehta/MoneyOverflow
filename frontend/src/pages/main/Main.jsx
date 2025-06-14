@@ -37,7 +37,7 @@ const Main = () => {
         <Route path="/news" element={<BusinessNewsApp />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/simulation" element={<Simulation />} />
-        <Route path="/about" element={<FAQ />} />
+        <Route path="/about" element={<FAQ/>} />
       </Routes>
       <Chatbot /> 
     </>

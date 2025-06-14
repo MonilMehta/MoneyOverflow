@@ -75,7 +75,7 @@ const FAQItem = ({ question, answer, isOpen, onToggle, colorIndex }) => {
         </div>
       </div>
     </div>
-  );
+   );
 };
 
 const FAQSection = () => {
