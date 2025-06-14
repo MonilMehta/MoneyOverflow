@@ -2,7 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, X, Loader } from 'lucide-react';
 
 const ChatbotContainer = ({ children, isOpen, onClose }) => (
-  <div className={`fixed bottom-5 right-5 bg-white shadow-2xl rounded-[24px] flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'h-[40vw]' : 'h-0'}`} style={{ width: '30vw', zIndex:'9999', fontFamily: 'Arial, sans-serif'}}>
+  <div 
+    className={`fixed bottom-2 right-2 sm:bottom-5 sm:right-5 bg-white shadow-2xl rounded-[24px] flex flex-col overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'w-[95vw] sm:w-[90vw] md:w-[70vw] lg:w-[30vw] h-[85vh] sm:h-[70vh] md:h-[60vh] lg:h-[40vw]' : 'w-0 h-0'}`}
+    style={{ 
+      maxWidth: '480px',
+      zIndex:'9999', 
+      fontFamily: 'Arial, sans-serif'
+    }}
+  >
     {/* Background Pattern */}
     <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[24px] opacity-5">
       <div 
@@ -19,19 +26,19 @@ const ChatbotContainer = ({ children, isOpen, onClose }) => (
 );
 
 const ChatbotHeader = ({ title, onClose }) => (
-  <div className="bg-[#ff5722] text-white p-6 flex justify-between items-center relative z-10">
-    <h3 className="text-2xl font-black uppercase tracking-wide" style={{ fontFamily: 'Arial, sans-serif' }}>
+  <div className="bg-[#ff5722] text-white p-3 sm:p-4 lg:p-6 flex justify-between items-center relative z-10">
+    <h3 className="text-lg sm:text-xl lg:text-2xl font-black uppercase tracking-wide" style={{ fontFamily: 'Arial, sans-serif' }}>
       {title}
     </h3>
     <button 
       onClick={onClose} 
-      className="text-white hover:text-gray-200 transition-colors bg-transparent border-2 border-white rounded-full w-10 h-10 flex items-center justify-center hover:bg-white hover:text-[#ff5722] transition-all duration-300"
+      className="text-white hover:text-gray-200 transition-colors bg-transparent border-2 border-white rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center hover:bg-white hover:text-[#ff5722] transition-all duration-300"
     >
-      <X size={20} />
+      <X size={16} className="sm:w-5 sm:h-5" />
     </button>
     
-    {/* Decorative Elements */}
-    <div className="absolute top-4 right-16 opacity-30">
+    {/* Decorative Elements - Hidden on mobile */}
+    <div className="absolute top-4 right-16 opacity-30 hidden sm:block">
       <div className="w-6 h-6 border-2 border-white rounded-full"></div>
     </div>
   </div>
@@ -47,16 +54,16 @@ const ChatbotMessages = ({ messages }) => {
   useEffect(scrollToBottom, [messages]);
 
   return (
-    <div className="flex-1 p-6 overflow-y-auto relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
+    <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
       {messages.map((message, index) => (
         <div
           key={index}
-          className={`mb-4 ${
+          className={`mb-3 sm:mb-4 ${
             message.sender === 'user' ? 'text-right' : 'text-left'
           }`}
         >
           <div
-            className={`inline-block p-4 rounded-xl max-w-[80%] font-medium text-base ${
+            className={`inline-block p-3 sm:p-4 rounded-xl max-w-[85%] sm:max-w-[80%] font-medium text-sm sm:text-base ${
               message.sender === 'user'
                 ? 'bg-[#ff5722] text-white'
                 : 'bg-gray-100 text-black border-2 border-gray-300'
@@ -72,23 +79,28 @@ const ChatbotMessages = ({ messages }) => {
 };
 
 const ChatbotInput = ({ input, setInput, sendMessage, isLoading }) => (
-  <div className="p-6 border-t-2 border-[#ff5722] relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
-    <div className="flex space-x-3">
+  <div className="p-3 sm:p-4 lg:p-6 border-t-2 border-[#ff5722] relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
+    <div className="flex space-x-2 sm:space-x-3">
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyPress={(e) => e.key === 'Enter' && !isLoading && sendMessage()}
-        className="flex-1 p-4 border-2 border-gray-300 rounded-xl text-lg font-medium focus:border-[#ff5722] focus:outline-none transition-colors"
+        className="flex-1 p-3 sm:p-4 border-2 border-gray-300 rounded-xl text-sm sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none transition-colors"
         placeholder="Ask me anything about finance..."
         disabled={isLoading}
       />
       <button
         onClick={sendMessage}
-        className={`bg-[#ff5722] text-white px-6 py-4 rounded-xl text-base font-black uppercase tracking-wide hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+        className={`bg-[#ff5722] text-white px-3 py-3 sm:px-6 sm:py-4 rounded-xl text-xs sm:text-base font-black uppercase tracking-wide hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
         disabled={isLoading}
       >
-        {isLoading ? <Loader className="animate-spin" size={20} /> : 'SEND →'}
+        {isLoading ? <Loader className="animate-spin" size={16} /> : (
+          <>
+            <span className="hidden sm:inline">SEND →</span>
+            <span className="sm:hidden">→</span>
+          </>
+        )}
       </button>
     </div>
   </div>
@@ -102,16 +114,16 @@ const StarterQuestions = ({ onSelect }) => {
   ];
 
   return (
-    <div className="p-6 border-t-2 border-[#ff5722] relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
-      <p className="text-lg font-black text-[#000000] mb-4 uppercase tracking-wide">
+    <div className="p-3 sm:p-4 lg:p-6 border-t-2 border-[#ff5722] relative z-10" style={{ fontFamily: 'Arial, sans-serif' }}>
+      <p className="text-base sm:text-lg font-black text-[#000000] mb-3 sm:mb-4 uppercase tracking-wide">
         Popular Questions
       </p>
-      <div className="space-y-3">
+      <div className="space-y-2 sm:space-y-3">
         {questions.map((question, index) => (
           <button
             key={index}
             onClick={() => onSelect(question)}
-            className="w-full text-left p-4 bg-gray-100 rounded-xl hover:bg-[#ff5722] hover:text-white transition-all duration-300 font-medium text-base border-2 border-transparent hover:border-[#ff5722] hover:-translate-y-1 hover:shadow-lg"
+            className="w-full text-left p-3 sm:p-4 bg-gray-100 rounded-xl hover:bg-[#ff5722] hover:text-white transition-all duration-300 font-medium text-sm sm:text-base border-2 border-transparent hover:border-[#ff5722] hover:-translate-y-1 hover:shadow-lg"
           >
             {question}
           </button>
@@ -124,7 +136,7 @@ const StarterQuestions = ({ onSelect }) => {
 const ChatbotIcon = ({ onClick }) => (
   <button
     onClick={onClick}
-    className="fixed bottom-5 right-5 p-6 bg-[#ff5722] text-white rounded-full shadow-2xl hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl "
+    className="fixed bottom-3 right-3 sm:bottom-5 sm:right-5 p-4 sm:p-6 bg-[#ff5722] text-white rounded-full shadow-2xl hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-2 hover:shadow-xl touch-manipulation"
     style={{ 
       fontFamily: 'Arial, sans-serif', 
       zIndex: '9999',
@@ -133,12 +145,12 @@ const ChatbotIcon = ({ onClick }) => (
       outline: 'none'
     }}
   >
-    <MessageCircle size={28} />
+    <MessageCircle size={24} className="sm:w-7 sm:h-7" />
   </button>
 );
 
 const Alert = ({ title, description }) => (
-  <div className="m-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-xl relative font-medium" role="alert" style={{ fontFamily: 'Arial, sans-serif' }}>
+  <div className="m-3 sm:m-4 lg:m-6 bg-red-100 border-2 border-red-400 text-red-700 px-4 py-3 sm:px-6 sm:py-4 rounded-xl relative font-medium text-sm sm:text-base" role="alert" style={{ fontFamily: 'Arial, sans-serif' }}>
     <strong className="font-black uppercase tracking-wide">{title}</strong>
     <span className="block mt-2">{description}</span>
   </div>

@@ -1,42 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Lock, Unlock, Menu, X } from 'lucide-react';
-// Note: Module imports and APIs removed for artifact display
-// import FinancialBasic from './modules/FinancialBasic';
-// import Budgeting from './modules/Budgeting';
-// import Saving from './modules/Saving';
-// import DebtManagement from './modules/DebtManagement';
-// import Investing from './modules/Investing';
-// import RetirementPlanning from './modules/RetirementPlanning';
-// import InsuranceAndProtection from './modules/InsuranceAndProtection';
-// import TaxesAndLegalConsideration from './modules/TaxesAndLegalConsideration';
-// import FinancialToolsAndResources from './modules/FinancialToolsAndResources';
-// import WealthBuilding from './modules/WealthBuilding';
-// import { currentUser } from '../../../apis/user.api';
-// import { isUnlock, mark } from '../../../apis/learning.api';
-
-// Mock components for demonstration
-const FinancialBasic = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Financial Basics Module</h1></div>;
-const Budgeting = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Budgeting Module</h1></div>;
-const Saving = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Saving Module</h1></div>;
-const DebtManagement = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Debt Management Module</h1></div>;
-const Investing = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Investing Module</h1></div>;
-const RetirementPlanning = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Retirement Planning Module</h1></div>;
-const InsuranceAndProtection = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Insurance Module</h1></div>;
-const TaxesAndLegalConsideration = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Taxes Module</h1></div>;
-const FinancialToolsAndResources = ({ onNextModule }) => <div className="p-8"><h1 className="text-2xl font-bold">Tools Module</h1></div>;
-const WealthBuilding = () => <div className="p-8"><h1 className="text-2xl font-bold">Wealth Building Module</h1></div>;
+import { ChevronDown, ChevronUp, Lock, Unlock } from 'lucide-react';
+import FinancialBasic from './modules/FinancialBasic';
+import Budgeting from './modules/Budgeting';
+import Saving from './modules/Saving';
+import DebtManagement from './modules/DebtManagement';
+import Investing from './modules/Investing';
+import RetirementPlanning from './modules/RetirementPlanning';
+import InsuranceAndProtection from './modules/InsuranceAndProtection';
+import TaxesAndLegalConsideration from './modules/TaxesAndLegalConsideration';
+import FinancialToolsAndResources from './modules/FinancialToolsAndResources';
+import WealthBuilding from './modules/WealthBuilding';
+// import axios from 'axios'; // Note: axios import removed for artifact display
+import { currentUser } from '../../../apis/user.api';
+import { isUnlock, mark } from '../../../apis/learning.api';
+import axios from 'axios';
 
 const SideBar = () => {
   const [selectedModule, setSelectedModule] = useState('Financial Basics');
   const [expandedModules, setExpandedModules] = useState([]);
   const [course, setCourse] = useState();
   const [user, setUser] = useState();
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const fetchData = async () => {
-    // Mock data for demonstration
-    setCourse(2);
-    setUser('mock-user-id');
+    let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
+    const res = await axios.get(currentUser, { headers: { Authorization: `Bearer ${accessToken}` } })
+    console.log(res?.data?.data)
+    setCourse(res?.data?.data?.highestCompletedIndex);
+    setUser(res?.data?.data?._id);
   }
 
   useEffect(() => {
@@ -45,11 +35,9 @@ const SideBar = () => {
 
   const checkUnlock = async (module) => {
     try{
-      // Mock unlock logic for demonstration
-      console.log('Unlocking module:', module);
+      const res = await axios.post(isUnlock, {id: module.id, userId: user});
+      console.log(res);
       setSelectedModule(module.name);
-      // Close mobile sidebar when module is selected
-      setIsSidebarOpen(false);
     } catch(error){
       console.error(error);
     }
@@ -57,8 +45,8 @@ const SideBar = () => {
 
   const checkMark = async (id) => {
     try{
-      // Mock mark logic for demonstration
-      console.log('Marking module as complete:', id);
+      const res = await axios.post(mark, {id: id, userId: user});
+      console.log(res);
       fetchData();
     } catch(error){
       console.error(error);
@@ -122,7 +110,7 @@ const SideBar = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-[#f6f6f6] relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
+    <div className="flex flex-col md:flex-row h-screen bg-[#f6f6f6] relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
       {/* Background Pattern */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <div 
@@ -136,7 +124,7 @@ const SideBar = () => {
       </div>
       
       {/* Vertical Lines */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none">
+      <div className="fixed inset-0 opacity-5 pointer-events-none hidden md:block">
         {[...Array(10)].map((_, i) => (
           <div
             key={`v-${i}`}
@@ -146,28 +134,10 @@ const SideBar = () => {
         ))}
       </div>
 
-      {/* Mobile Menu Button */}
-      <button
-        className="fixed top-4 left-4 z-50 lg:hidden bg-[#ff5722] text-white p-3 rounded-xl shadow-lg hover:bg-[#e64a19] transition-all duration-200"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        {isSidebarOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-      </button>
-
-      {/* Mobile Overlay */}
-      {isSidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
-          onClick={() => setIsSidebarOpen(false)}
-        />
-      )}
-
       {/* Sidebar */}
-      <div className={`${
-        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } lg:translate-x-0 fixed lg:static w-80 max-w-[90vw] lg:max-w-none bg-white rounded-r-[24px] shadow-2xl border-r-4 border-[#ff5722] top-0 h-screen overflow-y-auto relative z-40 transition-transform duration-300 ease-in-out`}>
+      <div className="w-full md:w-80 bg-white md:rounded-r-[24px] shadow-2xl border-b-4 md:border-b-0 md:border-r-4 border-[#ff5722] md:sticky md:top-0 h-auto md:h-screen overflow-y-auto relative z-10 transition-all duration-300">
         {/* Header */}
-        <div className="p-6 pt-16 lg:pt-6 border-b-2 border-[#ff5722] bg-white rounded-tr-[24px] relative overflow-hidden">
+        <div className="p-4 md:p-6 border-b-2 border-[#ff5722] bg-white md:rounded-tr-[24px] relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
             <div 
@@ -181,7 +151,7 @@ const SideBar = () => {
           </div>
           
           <div className="relative z-10">
-            <h2 className="text-3xl font-black tracking-tight text-[#000000] leading-tight mb-2">
+            <h2 className="text-2xl md:text-3xl font-black tracking-tight text-[#000000] leading-tight mb-2">
               <span className="block italic">FIN</span>
               <span className="block text-[#ff5722] italic">LEARN</span>
             </h2>
@@ -192,13 +162,13 @@ const SideBar = () => {
 
           {/* Decorative Elements */}
           <div className="absolute top-4 right-4 opacity-20">
-            <div className="w-6 h-6 border-2 border-[#ff5722] rounded-full"></div>
+            <div className="w-4 md:w-6 h-4 md:h-6 border-2 border-[#ff5722] rounded-full"></div>
           </div>
         </div>
 
         {/* Modules List */}
-        <div className="p-4">
-          <div className="flex flex-col gap-3">
+        <div className="p-3 md:p-4">
+          <div className="flex flex-col gap-2 md:gap-3">
             {modules.map((module, index) => {
               const isUnlocked = index <= course;
               const isActive = selectedModule === module.name;
@@ -206,7 +176,7 @@ const SideBar = () => {
               return (
                 <div key={module.name} className="flex flex-col">
                   <div
-                    className={`rounded-[16px] overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer relative border-2 ${
+                    className={`rounded-[12px] md:rounded-[16px] overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-pointer relative border-2 ${
                       isActive 
                         ? 'bg-[#ff5722] text-white border-[#e64a19] shadow-2xl transform -translate-y-1' 
                         : isUnlocked
@@ -216,7 +186,7 @@ const SideBar = () => {
                     onClick={() => checkUnlock(module)}
                   >
                     {/* Background Pattern */}
-                    <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
+                    <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[12px] md:rounded-[16px] opacity-5">
                       <div 
                         className="w-full h-full"
                         style={{
@@ -227,24 +197,24 @@ const SideBar = () => {
                       />
                     </div>
 
-                    <div className="p-4 relative z-10">
+                    <div className="p-3 md:p-4 relative z-10">
                       <div className="flex justify-between items-center">
-                        <div className="flex items-center flex-1 min-w-0">
-                          <div className="flex items-center mr-3 flex-shrink-0">
+                        <div className="flex items-center flex-1 min-w-0 gap-2 md:gap-3">
+                          <div className="flex-shrink-0">
                             {isUnlocked ? (
-                              <Unlock className={`h-5 w-5 ${isActive ? 'text-white' : 'text-[#ff5722]'}`} />
+                              <Unlock className={`h-4 w-4 md:h-5 md:w-5 ${isActive ? 'text-white' : 'text-[#ff5722]'}`} />
                             ) : (
-                              <Lock className="h-5 w-5 text-gray-400" />
+                              <Lock className="h-4 w-4 md:h-5 md:w-5 text-gray-400" />
                             )}
                           </div>
-                          <span className={`text-sm font-black leading-tight text-left flex-1 uppercase tracking-wide ${
+                          <span className={`text-xs md:text-sm font-black leading-tight text-left flex-1 uppercase tracking-wide ${
                             isActive ? 'text-white' : isUnlocked ? 'text-black' : 'text-gray-500'
                           }`}>
                             {module.name}
                           </span>
                         </div>
                         <button
-                          className={`p-2 rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center flex-shrink-0 ml-2 border-2 ${
+                          className={`p-1.5 md:p-2 rounded-lg md:rounded-xl transition-all duration-300 hover:scale-105 flex items-center justify-center flex-shrink-0 ml-2 border-2 ${
                             isActive 
                               ? 'bg-white text-[#ff5722] border-white hover:bg-gray-100' 
                               : isUnlocked
@@ -257,37 +227,28 @@ const SideBar = () => {
                           }}
                         >
                           {expandedModules.includes(module.name) ? (
-                            <ChevronUp className="h-4 w-4" />
+                            <ChevronUp className="h-3 w-3 md:h-4 md:w-4" />
                           ) : (
-                            <ChevronDown className="h-4 w-4" />
+                            <ChevronDown className="h-3 w-3 md:h-4 md:w-4" />
                           )}
                         </button>
                       </div>
-
-                      {/* Decorative Elements */}
-                      {isActive && (
-                        <div className="absolute top-2 right-2 opacity-20">
-                          <div className="w-4 h-4 border border-white rounded-full"></div>
-                        </div>
-                      )}
                     </div>
                   </div>
 
                   {/* Submodules */}
                   {expandedModules.includes(module.name) && (
-                    <div className="mt-3 ml-6 flex flex-col gap-2 relative">
+                    <div className="mt-2 md:mt-3 ml-4 md:ml-6 flex flex-col gap-2 relative">
                       {/* Connecting Line */}
-                      <div className="absolute -left-4 top-0 bottom-0 w-0.5 bg-[#ff5722] opacity-30"></div>
+                      <div className="absolute -left-3 md:-left-4 top-0 bottom-0 w-0.5 bg-[#ff5722] opacity-30"></div>
                       
                       {module.submodules.map((submodule, subIndex) => (
                         <div
                           key={subIndex}
-                          className="bg-white p-4 text-sm font-bold text-gray-900 rounded-xl transition-all duration-300 cursor-pointer border-2 border-gray-200 hover:border-[#ff5722] hover:bg-[#fff5f5] hover:-translate-y-0.5 hover:shadow-lg relative overflow-hidden shadow-md"
+                          className="bg-white p-3 md:p-4 text-xs md:text-sm font-bold text-gray-900 rounded-lg md:rounded-xl transition-all duration-300 cursor-pointer border-2 border-gray-200 hover:border-[#ff5722] hover:bg-[#fff5f5] hover:-translate-y-0.5 hover:shadow-lg relative overflow-hidden shadow-md"
                         >
-                          {/* Removed background pattern for better text visibility */}
-                          
                           <div className="relative z-10 flex items-center">
-                            <div className="w-3 h-3 bg-[#ff5722] rounded-full mr-3 flex-shrink-0"></div>
+                            <div className="w-2 h-2 md:w-3 md:h-3 bg-[#ff5722] rounded-full mr-2 md:mr-3 flex-shrink-0"></div>
                             <span className="font-bold uppercase tracking-wide text-gray-900 leading-relaxed">{submodule}</span>
                           </div>
                         </div>
@@ -301,7 +262,7 @@ const SideBar = () => {
         </div>
 
         {/* Progress Footer */}
-        <div className="p-4 border-t-2 border-[#ff5722] bg-white relative overflow-hidden">
+        <div className="p-3 md:p-4 border-t-2 border-[#ff5722] bg-white relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-5">
             <div 
@@ -315,11 +276,11 @@ const SideBar = () => {
           </div>
           
           <div className="relative z-10">
-            <div className="bg-[#ff5722] text-white px-4 py-3 rounded-xl">
-              <p className="text-sm font-black uppercase tracking-wide text-center">
+            <div className="bg-[#ff5722] text-white px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl">
+              <p className="text-xs md:text-sm font-black uppercase tracking-wide text-center">
                 Progress: {course + 1 || 0}/{modules.length}
               </p>
-              <div className="mt-2 bg-white bg-opacity-30 rounded-full h-2">
+              <div className="mt-2 bg-white bg-opacity-30 rounded-full h-1.5 md:h-2">
                 <div 
                   className="bg-white h-full rounded-full transition-all duration-500"
                   style={{ width: `${((course + 1 || 0) / modules.length) * 100}%` }}
@@ -331,8 +292,8 @@ const SideBar = () => {
       </div>
       
       {/* Content Area */}
-      <div className="flex-grow overflow-y-auto bg-[#f6f6f6] relative z-10 lg:ml-0">
-        <div className="bg-whitemin-h-full shadow-2xl relative overflow-hidden">
+      <div className="flex-grow overflow-y-auto bg-[#f6f6f6] relative z-10">
+        <div className="bg-white min-h-full shadow-2xl relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-3">
             <div 
@@ -345,7 +306,7 @@ const SideBar = () => {
             />
           </div>
           
-          <div className="relative z-10 pt-16 lg:pt-0">
+          <div className="relative z-10">
             {renderModule()}
           </div>
         </div>

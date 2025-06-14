@@ -32,7 +32,7 @@ const Budgeting = ({ onNextModule }) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f6f6f6] flex items-center justify-center relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
+      <div className="min-h-screen bg-[#f6f6f6] flex items-center justify-center p-4 relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
         {/* Background Pattern */}
         <div className="fixed inset-0 opacity-10 pointer-events-none">
           <div 
@@ -45,9 +45,9 @@ const Budgeting = ({ onNextModule }) => {
           />
         </div>
         
-        <div className="bg-white rounded-[24px] shadow-2xl p-12 border-4 border-[#ff5722] relative overflow-hidden">
+        <div className="bg-white rounded-xl md:rounded-[24px] shadow-2xl p-6 md:p-12 border-4 border-[#ff5722] relative overflow-hidden w-full max-w-md md:max-w-lg">
           {/* Background Pattern */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[24px] opacity-5">
+          <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl md:rounded-[24px] opacity-5">
             <div 
               className="w-full h-full"
               style={{
@@ -59,13 +59,13 @@ const Budgeting = ({ onNextModule }) => {
           </div>
           
           <div className="relative z-10 text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#ff5722] border-t-transparent mx-auto mb-6"></div>
-            <p className="text-black text-xl font-black uppercase tracking-wide">Loading Learning Modules...</p>
+            <div className="animate-spin rounded-full h-12 w-12 md:h-16 md:w-16 border-4 border-[#ff5722] border-t-transparent mx-auto mb-4 md:mb-6"></div>
+            <p className="text-black text-lg md:text-xl font-black uppercase tracking-wide">Loading Learning Modules...</p>
             <div className="mt-4 flex justify-center gap-2">
               {[...Array(3)].map((_, i) => (
                 <div 
                   key={i} 
-                  className="w-3 h-3 bg-[#ff5722] rounded-full animate-pulse"
+                  className="w-2 h-2 md:w-3 md:h-3 bg-[#ff5722] rounded-full animate-pulse"
                   style={{ animationDelay: `${i * 0.2}s` }}
                 ></div>
               ))}
@@ -125,7 +125,7 @@ const Budgeting = ({ onNextModule }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f6f6f6] py-12 px-6 relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
+    <div className="min-h-screen bg-[#f6f6f6] py-6 md:py-12 px-4 md:px-6 relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
       {/* Background Pattern */}
       <div className="fixed inset-0 opacity-10 pointer-events-none">
         <div 
@@ -139,7 +139,7 @@ const Budgeting = ({ onNextModule }) => {
       </div>
       
       {/* Vertical Lines */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none">
+      <div className="fixed inset-0 opacity-5 pointer-events-none hidden md:block">
         {[...Array(8)].map((_, i) => (
           <div
             key={`v-${i}`}
@@ -151,10 +151,10 @@ const Budgeting = ({ onNextModule }) => {
 
       <div className="max-w-5xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-16 relative">
-          <div className="bg-white rounded-[24px] shadow-2xl p-12 border-4 border-[#ff5722] relative overflow-hidden">
+        <div className="text-center mb-8 md:mb-16 relative">
+          <div className="bg-white rounded-xl md:rounded-[24px] shadow-2xl p-6 md:p-12 border-4 border-[#ff5722] relative overflow-hidden">
             {/* Background Pattern */}
-            <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[24px] opacity-5">
+            <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl md:rounded-[24px] opacity-5">
               <div 
                 className="w-full h-full"
                 style={{
@@ -166,37 +166,37 @@ const Budgeting = ({ onNextModule }) => {
             </div>
             
             <div className="relative z-10">
-              <h1 className="text-6xl font-black text-black mb-6 leading-tight tracking-tight">
+              <h1 className="text-4xl md:text-6xl font-black text-black mb-4 md:mb-6 leading-tight tracking-tight">
                 <span className="block italic">BUDGETING</span>
                 <span className="block text-[#ff5722] italic">MASTERY</span>
               </h1>
-              <p className="text-xl text-gray-700 font-medium max-w-2xl mx-auto">
+              <p className="text-lg md:text-xl text-gray-700 font-medium max-w-2xl mx-auto">
                 Master the fundamentals of personal budgeting and strategic financial planning
               </p>
-              <div className="mt-6 flex justify-center gap-3">
-                <div className="bg-black text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wide">
+              <div className="mt-4 md:mt-6 flex flex-wrap justify-center gap-2 md:gap-3">
+                <div className="bg-black text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold uppercase tracking-wide">
                   Financial Planning
                 </div>
-                <div className="bg-[#ff5722] text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wide">
+                <div className="bg-[#ff5722] text-white px-4 md:px-6 py-2 rounded-full text-xs md:text-sm font-bold uppercase tracking-wide">
                   Budget Control
                 </div>
               </div>
             </div>
             
             {/* Decorative Elements */}
-            <div className="absolute top-6 right-6 opacity-20">
-              <div className="w-8 h-8 border-4 border-[#ff5722] rounded-full"></div>
+            <div className="absolute top-4 md:top-6 right-4 md:right-6 opacity-20">
+              <div className="w-6 md:w-8 h-6 md:h-8 border-4 border-[#ff5722] rounded-full"></div>
             </div>
-            <div className="absolute bottom-6 left-6 opacity-20">
-              <div className="w-6 h-6 bg-[#ff5722] rounded-full"></div>
+            <div className="absolute bottom-4 md:bottom-6 left-4 md:left-6 opacity-20">
+              <div className="w-4 md:w-6 h-4 md:h-6 bg-[#ff5722] rounded-full"></div>
             </div>
           </div>
         </div>
 
         {/* Submodules Grid */}
-        <div className="space-y-12">
+        <div className="space-y-6 md:space-y-12">
           {submodules.map((submodule, index) => {
-            const isActive = index % 2 === 1; // Alternate cards starting with second one
+            const isActive = index % 2 === 1;
             const cardBg = isActive ? 'bg-[#ff5722]' : 'bg-white';
             const textColor = isActive ? 'text-white' : 'text-black';
             const badgeBg = isActive ? 'bg-white' : 'bg-[#ff5722]';
@@ -208,7 +208,9 @@ const Budgeting = ({ onNextModule }) => {
             return (
               <div
                 key={index}
-                className={`${cardBg} rounded-[24px] shadow-2xl overflow-hidden hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 border-4 ${isActive ? 'border-white border-opacity-30' : 'border-[#ff5722]'} relative`}
+                className={`${cardBg} rounded-xl md:rounded-[24px] shadow-2xl p-6 md:p-12 border-4 ${
+                  isActive ? 'border-[#e64a19]' : 'border-[#ff5722]'
+                } relative overflow-hidden transform transition-all duration-500 hover:-translate-y-2 hover:shadow-3xl`}
               >
                 {/* Background Pattern */}
                 <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[24px] opacity-5">
