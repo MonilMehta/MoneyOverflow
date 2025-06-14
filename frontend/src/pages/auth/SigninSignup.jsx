@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { register, login } from "../../apis/user.api.js";
+
 const GlobalStyle = createGlobalStyle`
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
   @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
@@ -311,6 +314,7 @@ function SignupSignin() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showPasswordLogin, setShowPasswordLogin] = useState(false);
   const [showPasswordSignup, setShowPasswordSignup] = useState(false);
+  const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
     email: "",
@@ -350,11 +354,20 @@ function SignupSignin() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Simulate API call
-      console.log("Login data:", loginData);
-      alert("Login successful! (Demo)");
+      const response = await axios.post(login, loginData);
+      document.cookie = `accessToken=${
+        response?.data?.data?.accessToken
+      };max-age=${7 * 24 * 60 * 60};path=/`;
+      document.cookie = `userId=${response?.data?.data?.user?._id};max-age=${
+        7 * 24 * 60 * 60
+      };path=/`;
+      document.cookie = `email=${response?.data?.data?.user?.email};max-age=${
+        7 * 24 * 60 * 60
+      };path=/`;
+      console.log("Login successful:", response?.data);
+      navigate('/main');
     } catch (error) {
-      console.error("Login failed:", error);
+      console.error("Login failed:", error.response);
     }
   };
 
@@ -373,8 +386,8 @@ function SignupSignin() {
     };
 
     try {
-      console.log("Signup data:", signupPayload);
-      alert("Signup successful! Switching to login... (Demo)");
+      const response = await axios.post(register, signupPayload);
+      console.log("Signup successful:", response?.data);
       flip(); // Switch to login after signup
     } catch (error) {
       console.error("Signup failed:", error);

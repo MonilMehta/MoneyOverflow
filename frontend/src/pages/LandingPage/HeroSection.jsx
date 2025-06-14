@@ -60,7 +60,7 @@ const HeroSection = () => {
       {/* Exact SVG from the image */}
       <svg
         className="absolute inset-0 w-full h-full"
-        style={{ zIndex: 1, transform: 'translateX(5%)' }}
+        style={{ zIndex: 1, transform: 'translateX(4%)' }}
         viewBox="200 0 1915 1108"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

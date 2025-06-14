@@ -4,7 +4,9 @@ import Team from './Team'
 const FAQ = () => {
   return (
     <>
+    <Team/>
     <Flow />
+    
     </>
   )
 }
