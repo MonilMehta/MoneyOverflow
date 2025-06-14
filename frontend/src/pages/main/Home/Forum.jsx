@@ -11,38 +11,6 @@ import {
 } from "../../../apis/forum.api";
 import axios from "axios";
 
-// Custom hook for intersection observer
-const useIntersectionObserver = (options = {}) => {
-  const [isIntersecting, setIsIntersecting] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
-  const ref = useRef();
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting && !hasAnimated) {
-        setIsIntersecting(true);
-        setHasAnimated(true);
-      }
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px',
-      ...options
-    });
-
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
-
-    return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
-    };
-  }, [hasAnimated, options]);
-
-  return [ref, isIntersecting];
-};
-
 const Forum = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState(null);
@@ -52,10 +20,6 @@ const Forum = () => {
   const [writeAns, setWriteAns] = useState("");
   const [expandedQuestionId, setExpandedQuestionId] = useState(null);
   const [answers, setAnswers] = useState({});
-  
-  // Animation refs
-  const [headerRef, headerVisible] = useIntersectionObserver();
-  const [askSectionRef, askSectionVisible] = useIntersectionObserver();
   
   const cardColors = [
     {
@@ -168,19 +132,13 @@ const Forum = () => {
     };
   };
 
-  // Component for animated question cards
+  // Component for question cards
   const QuestionCard = ({ user, question, globalQuestionIndex }) => {
-    const [cardRef, cardVisible] = useIntersectionObserver();
     const colorScheme = getColorScheme(globalQuestionIndex);
     
     return (
       <div
-        ref={cardRef}
-        className={`rounded-xl sm:rounded-[24px] overflow-hidden shadow-lg transition-all duration-700 ease-out relative w-full transform ${
-          cardVisible 
-            ? 'translate-y-0 opacity-100 hover:-translate-y-2 hover:shadow-xl' 
-            : 'translate-y-8 opacity-0'
-        }`}
+        className="rounded-xl sm:rounded-[24px] overflow-hidden shadow-lg relative w-full hover:-translate-y-2 hover:shadow-xl"
         style={{
           backgroundColor: colorScheme.bg,
           color: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff',
@@ -192,7 +150,9 @@ const Forum = () => {
       >
         <div className="p-4 sm:p-6 relative">
           {/* Background Pattern */}
-          <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl sm:rounded-[16px] opacity-5">
+          <div 
+            className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl sm:rounded-[16px] opacity-5"
+          >
             <div 
               className="w-full h-full"
               style={{
@@ -205,11 +165,15 @@ const Forum = () => {
 
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start relative z-10 gap-4 sm:gap-8">
             <div className="flex-1">
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-wide uppercase mb-4 sm:mb-6">
+              <h3 
+                className="text-xl sm:text-2xl lg:text-3xl font-black leading-tight tracking-wide uppercase mb-4 sm:mb-6"
+              >
                 {question.title}
               </h3>
               
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 text-sm sm:text-base font-medium mb-4">
+              <div 
+                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8 text-sm sm:text-base font-medium mb-4"
+              >
                 <span className="flex items-center gap-2 sm:gap-3">
                   <User className="h-4 w-4 sm:h-5 sm:w-5" />
                   <span className="truncate">{question.author}</span>
@@ -219,7 +183,7 @@ const Forum = () => {
                   {question.upvotes}
                 </span>
                 <span 
-                  className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-70 transition-opacity"
+                  className="flex items-center gap-2 sm:gap-3 cursor-pointer hover:opacity-70"
                   onClick={() => toggleAnswers(question._id)}
                 >
                   <MessageSquare className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -229,7 +193,7 @@ const Forum = () => {
             </div>
             
             <button
-              className="bg-transparent border-2 px-4 py-2 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold hover:bg-current hover:text-white transition-all duration-300 transform hover:scale-105 w-full sm:w-auto mt-2 sm:mt-0"
+              className="bg-transparent border-2 px-4 py-2 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-sm sm:text-base font-bold hover:bg-current hover:text-white hover:scale-105 w-full sm:w-auto mt-2 sm:mt-0"
               style={{
                 borderColor: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff',
                 color: colorScheme.bg === '#ffffff' ? '#000000' : '#ffffff'
@@ -261,11 +225,23 @@ const Forum = () => {
 
         {/* Answers Dropdown */}
         {expandedQuestionId === question._id && (
-          <div className="p-4 sm:p-6 border-t-2" style={{ borderColor: colorScheme.accent, backgroundColor: colorScheme.bg }}>
+          <div 
+            className="p-4 sm:p-6 border-t-2"
+            style={{ 
+              borderColor: colorScheme.accent, 
+              backgroundColor: colorScheme.bg
+            }}
+          >
             <h4 className="text-lg sm:text-xl font-black mb-4 uppercase tracking-wide">ANSWERS</h4>
             {answers[question._id] ? (
-              answers[question._id].map((answer) => (
-                <div key={answer._id} className="mb-4 p-3 sm:p-4 rounded-lg sm:rounded-xl" style={{ backgroundColor: colorScheme.accent }}>
+              answers[question._id].map((answer, index) => (
+                <div 
+                  key={answer._id} 
+                  className="mb-4 p-3 sm:p-4 rounded-lg sm:rounded-xl"
+                  style={{ 
+                    backgroundColor: colorScheme.accent
+                  }}
+                >
                   <p className="font-medium text-sm sm:text-base">{answer.bodyA}</p>
                 </div>
               ))
@@ -316,15 +292,14 @@ const Forum = () => {
 
       <div className="w-full relative z-10 max-w-7xl mx-auto">
         {/* Header */}
-        <div 
-          ref={headerRef}
-          className={`mb-8 sm:mb-10 text-left transition-all duration-700 ease-out transform ${
-            headerVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-          }`}
-        >
+        <div className="mb-8 sm:mb-10 text-left">
           <h2 className="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
-            <span className="block italic">Community</span>
-            <span className="block text-[#ff5722] italic">FORUM</span>
+            <span className="block italic">
+              Community
+            </span>
+            <span className="block text-[#ff5722] italic">
+              FORUM
+            </span>
           </h2>
           <p className="mt-4 text-base sm:text-lg text-gray-700 font-medium max-w-xl">
             Ask questions, share knowledge, and connect with fellow learners in our community.
@@ -338,12 +313,7 @@ const Forum = () => {
         </div>
 
         {/* Ask Question Section */}
-        <div 
-          ref={askSectionRef}
-          className={`bg-white rounded-xl sm:rounded-[24px] p-4 sm:p-8 shadow-2xl border-2 sm:border-4 border-[#ff5722] mb-8 sm:mb-12 relative overflow-hidden transition-all duration-700 ease-out transform ${
-            askSectionVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-          }`}
-        >
+        <div className="bg-white rounded-xl sm:rounded-[24px] p-4 sm:p-8 shadow-2xl border-2 sm:border-4 border-[#ff5722] mb-8 sm:mb-12 relative overflow-hidden">
           {/* Background Pattern */}
           <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-xl sm:rounded-[24px] opacity-5">
             <div 
@@ -357,13 +327,16 @@ const Forum = () => {
           </div>
 
           <div className="relative z-10">
-            <h3 className="text-2xl sm:text-3xl font-black text-[#000000] mb-4 sm:mb-6 uppercase tracking-wide text-left" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <h3 
+              className="text-2xl sm:text-3xl font-black text-[#000000] mb-4 sm:mb-6 uppercase tracking-wide text-left"
+              style={{ fontFamily: 'Arial, sans-serif' }}
+            >
               Ask the Community
             </h3>
             
             <div className="space-y-4">
               <textarea
-                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none transition-colors resize-none text-left"
+                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none resize-none text-left"
                 rows="2"
                 placeholder="What's your question?"
                 value={q}
@@ -372,7 +345,7 @@ const Forum = () => {
               />
               
               <textarea
-                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none transition-colors resize-none text-left"
+                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none resize-none text-left"
                 rows="4"
                 placeholder="Describe in detail..."
                 value={d}
@@ -382,7 +355,7 @@ const Forum = () => {
               
               <div className="flex justify-start">
                 <button
-                  className="bg-[#ff5722] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-base sm:text-lg font-black uppercase tracking-wide hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg w-full sm:w-auto"
+                  className="bg-[#ff5722] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-base sm:text-lg font-black uppercase tracking-wide hover:bg-[#e64a19] hover:-translate-y-1 hover:shadow-lg w-full sm:w-auto"
                   onClick={() => postQuestion()}
                   style={{ fontFamily: 'Arial, sans-serif' }}
                 >
@@ -438,7 +411,7 @@ const Forum = () => {
               </p>
               
               <textarea
-                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none transition-colors resize-none mb-6"
+                className="w-full p-3 sm:p-4 border-2 border-gray-300 rounded-lg sm:rounded-xl text-base sm:text-lg font-medium focus:border-[#ff5722] focus:outline-none resize-none mb-6"
                 rows="4"
                 placeholder="Write your reply..."
                 value={writeAns}
@@ -446,7 +419,7 @@ const Forum = () => {
               />
               
               <button
-                className="bg-[#ff5722] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-base sm:text-lg font-black uppercase tracking-wide hover:bg-[#e64a19] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg w-full sm:w-auto"
+                className="bg-[#ff5722] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg sm:rounded-xl text-base sm:text-lg font-black uppercase tracking-wide hover:bg-[#e64a19] hover:-translate-y-1 hover:shadow-lg w-full sm:w-auto"
                 onClick={() => postAnswer(selectedQuestion._id)}
               >
                 <span className="hidden sm:inline">Post Reply →</span>
