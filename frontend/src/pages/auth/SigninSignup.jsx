@@ -10,27 +10,33 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const BodyWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   font-family: "Arial", sans-serif;
   color: #000000;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0;
-  padding: 0;
+  padding: 80px 20px; /* Added padding for navbar and mobile spacing */
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
 `;
 
 const Box = styled.div`
   width: 480px;
-  max-width: 95%;
-  height: 800px;
+  max-width: 100%;
+  min-height: 600px;
+  height: auto; /* Changed from fixed height to auto */
   perspective: 1000px;
   position: relative;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    min-height: 550px;
+  }
 `;
 
 const FlipCardInner = styled.div`
@@ -46,19 +52,25 @@ const FlipCardInner = styled.div`
 const BoxBase = styled.div`
   position: absolute;
   width: 100%;
-  height: 100%;
+  min-height: 600px;
+  height: auto; /* Changed from fixed height to auto */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 50px 40px;
+  padding: 40px 30px;
   border-radius: 24px;
   background: #ffffff;
   border: 4px solid #ff5722;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   overflow: hidden;
+
+  @media (max-width: 768px) {
+    min-height: 550px;
+    padding: 30px 20px;
+  }
 
   /* Background Pattern */
   &::before {
@@ -101,8 +113,8 @@ const BoxSignup = styled(BoxBase)`
 `;
 
 const Title = styled.h1`
-  font-size: 2.8rem;
-  margin-bottom: 25px;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  margin-bottom: 20px;
   color: #000000;
   letter-spacing: 2px;
   font-weight: 900;
@@ -113,12 +125,12 @@ const Title = styled.h1`
 `;
 
 const SubTitle = styled.div`
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 3vw, 1.1rem);
   color: #ff5722;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   font-family: "Arial", sans-serif;
   position: relative;
   z-index: 2;
@@ -126,10 +138,10 @@ const SubTitle = styled.div`
 
 const Input = styled.input`
   width: 100%;
-  padding: 18px 20px;
+  padding: 15px;
   font-size: 1rem;
   border-radius: 12px;
-  margin-bottom: 18px;
+  margin-bottom: 15px;
   background: #ffffff;
   border: 2px solid #e0e0e0;
   color: #000000;
@@ -150,12 +162,17 @@ const Input = styled.input`
     color: #888888;
     font-weight: 500;
   }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    margin-bottom: 12px;
+  }
 `;
 
 const Button = styled.button`
   width: 100%;
-  padding: 20px;
-  font-size: 1.2rem;
+  padding: 15px;
+  font-size: clamp(1rem, 3vw, 1.2rem);
   letter-spacing: 2px;
   border-radius: 12px;
   background: #ff5722;
@@ -164,7 +181,7 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 25px;
+  margin-top: 20px;
   text-transform: uppercase;
   font-family: "Arial", sans-serif;
   position: relative;
@@ -178,6 +195,11 @@ const Button = styled.button`
 
   &:active {
     transform: translateY(0);
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px;
+    margin-top: 15px;
   }
 `;
 
