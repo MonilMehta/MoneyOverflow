@@ -501,18 +501,17 @@ export default function Simulation() {
           {/* Rest of your existing code */}
           <div className="w-full relative z-10">
             {/* Header */}
-            <div className="mb-10 text-left px-8">
-              <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight flex items-center gap-3">
+            <div className="mb-6 md:mb-10 text-left px-4 md:px-8">
+              <h2 className="text-3xl md:text-4xl lg:text-6xl font-black tracking-tight text-[#000000] leading-tight flex items-center gap-2 md:gap-3">
                 <span className="text-black italic">FIN</span>
                 <span className="text-[#ff5722] italic">SIMULATION</span>
               </h2>
-              
             </div>
 
-            <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 px-8">
+            <div className="grid grid-cols-1 xl:grid-cols-4 gap-4 md:gap-6 px-4 md:px-8">
               {/* Main Trading Panel */}
               <div className="xl:col-span-3">
-                <div className="bg-[#f5f5f5] rounded-2xl p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden">
+                <div className="bg-[#f5f5f5] rounded-2xl p-4 md:p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden">
                   {/* Add the striped background pattern */}
                   <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-2xl opacity-5">
                     <div 
@@ -526,27 +525,27 @@ export default function Simulation() {
                   </div>
 
                   {/* Controls Header */}
-                  <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 space-y-4 lg:space-y-0">
+                  <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 md:mb-6 space-y-4 lg:space-y-0">
                     <div className="flex items-center space-x-3">
-                      <BarChart3 className="h-6 w-6 text-[#ff5722]" />
-                      <h2 className="text-xl font-black text-black uppercase">
+                      <BarChart3 className="h-5 w-5 md:h-6 md:w-6 text-[#ff5722]" />
+                      <h2 className="text-base md:text-xl font-black text-black uppercase">
                         Answer quiz questions to affect market volatility
                       </h2>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      <div className="relative">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <div className="relative flex-1 min-w-[200px]">
                         <Search className="h-4 w-4 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
                         <input
                           type="text"
                           placeholder="Search stocks..."
                           value={searchTerm}
                           onChange={(e) => setSearchTerm(e.target.value)}
-                          className="w-48 pl-10 pr-4 py-2 bg-white border-2 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#ff5722]"
+                          className="w-full pl-10 pr-4 py-2 bg-white border-2 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#ff5722]"
                         />
                       </div>
                       <button
                         onClick={fetchQuiz}
-                        className="px-4 py-2 bg-black text-white rounded-xl flex items-center hover:bg-gray-800 transition-all duration-200 font-bold shadow-lg"
+                        className="px-4 py-2 bg-black text-white rounded-xl flex items-center hover:bg-gray-800 transition-all duration-200 font-bold shadow-lg whitespace-nowrap"
                       >
                         <HelpCircle className="h-4 w-4 mr-2" />
                         Quiz
@@ -555,13 +554,13 @@ export default function Simulation() {
                   </div>
 
                   {/* Stock Selection */}
-                  <div className="mb-6">
-                    <div className="flex flex-wrap gap-2">
+                  <div className="mb-4 md:mb-6 overflow-x-auto">
+                    <div className="flex flex-nowrap gap-2 pb-2">
                       {filteredStocks.map((stock) => (
                         <button
                           key={stock}
                           onClick={() => setSelectedStock(stock)}
-                          className={`px-4 py-2 rounded-xl font-bold transition-all duration-200 ${
+                          className={`px-4 py-2 rounded-xl font-bold transition-all duration-200 whitespace-nowrap ${
                             selectedStock === stock
                               ? "bg-[#ff5722] text-white shadow-lg"
                               : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -574,14 +573,14 @@ export default function Simulation() {
                   </div>
 
                   {/* Trading Controls */}
-                  <div className="bg-gray-50 rounded-xl p-6 border-2 border-gray-200">
-                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-6 space-y-4 lg:space-y-0">
+                  <div className="bg-gray-50 rounded-xl p-4 md:p-6 border-2 border-gray-200">
+                    <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-4 md:mb-6 space-y-4 lg:space-y-0">
                       <div>
-                        <h3 className="text-2xl font-black text-black mb-1">
+                        <h3 className="text-xl md:text-2xl font-black text-black mb-1">
                           {STOCKS[selectedStock].name}
                         </h3>
-                        <div className="flex items-center space-x-3">
-                          <p className="text-3xl font-black text-[#ff5722]">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                          <p className="text-2xl md:text-3xl font-black text-[#ff5722]">
                             ₹{getCurrentPrice(selectedStock).toFixed(2)}
                           </p>
                           <div className="flex items-center text-gray-600">
@@ -590,34 +589,36 @@ export default function Simulation() {
                           </div>
                         </div>
                       </div>
-                      <div className="flex items-center space-x-3">
+                      <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
                         <input
                           type="number"
                           placeholder="Quantity"
                           value={quantity}
                           onChange={(e) => setQuantity(e.target.value)}
-                          className="w-32 p-3 bg-white border-2 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#ff5722]"
+                          className="w-full lg:w-32 p-3 bg-white border-2 border-gray-200 rounded-xl text-gray-700 placeholder-gray-400 focus:outline-none focus:border-[#ff5722]"
                         />
-                        <button
-                          onClick={() => handleTrade("buy")}
-                          className="px-6 py-3 bg-[#ff5722] text-white rounded-xl flex items-center hover:bg-[#e64a19] transition-all duration-200 font-bold shadow-lg"
-                        >
-                          <TrendingUp className="mr-2 h-4 w-4" />
-                          Buy
-                        </button>
-                        <button
-                          onClick={() => handleTrade("sell")}
-                          className="px-6 py-3 bg-black text-white rounded-xl flex items-center hover:bg-gray-800 transition-all duration-200 font-bold shadow-lg"
-                        >
-                          <TrendingDown className="mr-2 h-4 w-4" />
-                          Sell
-                        </button>
+                        <div className="flex gap-3 w-full lg:w-auto">
+                          <button
+                            onClick={() => handleTrade("buy")}
+                            className="flex-1 lg:flex-none px-6 py-3 bg-[#ff5722] text-white rounded-xl flex items-center justify-center hover:bg-[#e64a19] transition-all duration-200 font-bold shadow-lg"
+                          >
+                            <TrendingUp className="mr-2 h-4 w-4" />
+                            Buy
+                          </button>
+                          <button
+                            onClick={() => handleTrade("sell")}
+                            className="flex-1 lg:flex-none px-6 py-3 bg-black text-white rounded-xl flex items-center justify-center hover:bg-gray-800 transition-all duration-200 font-bold shadow-lg"
+                          >
+                            <TrendingDown className="mr-2 h-4 w-4" />
+                            Sell
+                          </button>
+                        </div>
                       </div>
                     </div>
 
                     {/* Chart Container */}
-                    <div className="bg-white rounded-xl p-6 border-2 border-gray-200">
-                      <div className="w-full h-96">
+                    <div className="bg-white rounded-xl p-3 md:p-6 border-2 border-gray-200">
+                      <div className="w-full h-64 md:h-96">
                         <StockChart data={stockData[selectedStock]} symbol={selectedStock} />
                       </div>
                     </div>
@@ -626,7 +627,7 @@ export default function Simulation() {
               </div>
 
               {/* Portfolio Sidebar */}
-              <div className="bg-[#f5f5f5] rounded-2xl p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden h-fit sticky top-6">
+              <div className="bg-[#f5f5f5] rounded-2xl p-4 md:p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden h-fit xl:sticky xl:top-6">
                 {/* Add the striped background pattern */}
                 <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-2xl opacity-5">
                   <div 
@@ -639,22 +640,21 @@ export default function Simulation() {
                   />
                 </div>
 
-                <div className="flex items-center mb-6">
-
-                  <h2 className="text-2xl font-black text-black uppercase">Portfolio</h2>
+                <div className="flex items-center mb-4 md:mb-6">
+                  <h2 className="text-xl md:text-2xl font-black text-black uppercase">Portfolio</h2>
                 </div>
                 
-                <div className="space-y-6">
-                  <div className="space-y-4">
+                <div className="space-y-4 md:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-1 gap-4">
                     <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
                       <p className="text-sm text-gray-600 mb-1 font-bold">Available Cash</p>
-                      <p className="text-2xl font-black text-[#ff5722]">
+                      <p className="text-xl md:text-2xl font-black text-[#ff5722]">
                         ₹{portfolio.cash.toFixed(2)}
                       </p>
                     </div>
                     <div className="bg-gray-50 rounded-xl p-4 border-2 border-gray-200">
                       <p className="text-sm text-gray-600 mb-1 font-bold">Portfolio Value</p>
-                      <p className="text-2xl font-black text-black">
+                      <p className="text-xl md:text-2xl font-black text-black">
                         ₹{portfolioValue.toFixed(2)}
                       </p>
                     </div>
@@ -662,7 +662,7 @@ export default function Simulation() {
 
                   <div>
                     <h3 className="font-black text-black text-lg uppercase mb-4">Holdings</h3>
-                    <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
+                    <div className="space-y-3 max-h-[calc(100vh-24rem)] overflow-y-auto pr-2">
                       {Object.entries(portfolio.stocks).length === 0 ? (
                         <p className="text-gray-500 text-center py-8 font-medium">No holdings yet</p>
                       ) : (
@@ -673,21 +673,21 @@ export default function Simulation() {
                                 <span className="font-bold text-black">{stock}</span>
                                 <span className="text-[#ff5722] font-bold">{quantity} shares</span>
                               </div>
-                              <div className="space-y-1 text-sm">
-                                <div className="flex justify-between text-gray-600">
-                                  <span>Avg Price:</span>
+                              <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-2 gap-2 text-sm">
+                                <div className="text-gray-600">
+                                  <span>Avg Price: </span>
                                   <span>₹{avgPrice.toFixed(2)}</span>
                                 </div>
-                                <div className="flex justify-between text-gray-600">
-                                  <span>Current:</span>
+                                <div className="text-gray-600">
+                                  <span>Current: </span>
                                   <span>₹{getCurrentPrice(stock).toFixed(2)}</span>
                                 </div>
-                                <div className={`flex justify-between font-bold ${
+                                <div className={`sm:col-span-3 xl:col-span-2 font-bold ${
                                   getCurrentPrice(stock) > avgPrice
                                     ? "text-green-600"
                                     : "text-red-600"
                                 }`}>
-                                  <span>P&L:</span>
+                                  <span>P&L: </span>
                                   <span>₹{((getCurrentPrice(stock) - avgPrice) * quantity).toFixed(2)}</span>
                                 </div>
                               </div>
@@ -703,7 +703,7 @@ export default function Simulation() {
           </div>
 
           {/* Alerts */}
-          <div className="fixed top-4 right-4 z-50 space-y-2">
+          <div className="fixed top-4 right-4 z-50 space-y-2 w-full max-w-[90vw] md:max-w-sm">
             {alerts.map((alert) => (
               <div
                 key={alert.id}
@@ -721,7 +721,7 @@ export default function Simulation() {
           {/* Quiz Modal */}
           {showQuiz && currentQuiz && (
             <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-              <div className="bg-[#f5f5f5] rounded-2xl p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden max-w-2xl w-full">
+              <div className="bg-[#f5f5f5] rounded-2xl p-4 md:p-6 border-2 border-black/10 transition-transform hover:-translate-y-2 hover:shadow-xl relative overflow-hidden max-w-2xl w-full mx-4">
                 {/* Add the striped background pattern */}
                 <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-2xl opacity-5">
                   <div 
@@ -736,7 +736,7 @@ export default function Simulation() {
 
                 {/* Quiz Content */}
                 <div className="relative z-10">
-                  <h3 className="text-2xl font-black text-black mb-6">
+                  <h3 className="text-xl md:text-2xl font-black text-black mb-4 md:mb-6">
                     {currentQuiz.question}
                   </h3>
                   <div className="space-y-3">
@@ -744,7 +744,7 @@ export default function Simulation() {
                       <button
                         key={index}
                         onClick={() => handleQuizAnswer(index)}
-                        className="w-full p-4 text-left bg-white hover:bg-[#ff5722] hover:text-white rounded-xl transition-all duration-200 text-gray-700 border-2 border-gray-200 hover:border-[#ff5722] font-medium"
+                        className="w-full p-4 text-left bg-white hover:bg-[#ff5722] hover:text-white rounded-xl transition-all duration-200 text-gray-700 border-2 border-gray-200 hover:border-[#ff5722] font-medium text-sm md:text-base"
                       >
                         {option}
                       </button>
@@ -754,10 +754,10 @@ export default function Simulation() {
 
                 {/* Decorative Elements */}
                 <div className="absolute bottom-6 right-6 opacity-20">
-                  <div className="w-16 h-16 border-4 border-black rounded-full"></div>
+                  <div className="w-12 h-12 md:w-16 md:h-16 border-4 border-black rounded-full"></div>
                 </div>
                 <div className="absolute top-1/4 left-6 opacity-10">
-                  <div className="w-8 h-8 border-2 border-black rotate-45"></div>
+                  <div className="w-6 h-6 md:w-8 md:h-8 border-2 border-black rotate-45"></div>
                 </div>
               </div>
             </div>
