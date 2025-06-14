@@ -314,6 +314,7 @@ function SignupSignin() {
   const [isFlipped, setIsFlipped] = useState(false);
   const [showPasswordLogin, setShowPasswordLogin] = useState(false);
   const [showPasswordSignup, setShowPasswordSignup] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
   const navigate = useNavigate();
 
   const [loginData, setLoginData] = useState({
@@ -417,7 +418,7 @@ function SignupSignin() {
                               Home
                             </Link>
                             <Link
-                              to="/main/about"
+                              to="/About"
                               className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
                             >
                               About
@@ -486,6 +487,28 @@ function SignupSignin() {
                 
                 <Button type="submit">
                   LOGIN →
+                </Button>
+                {/* Demo Login Button */}
+                <Button type="button" style={{ background: '#607d8b', marginTop: '10px' }}
+                  disabled={demoLoading}
+                  onClick={async () => {
+                    setLoginData({ email: 'chris@gmail.com', password: 'chris@C' });
+                    setDemoLoading(true);
+                    try {
+                      const demoData = { email: 'chris@gmail.com', password: 'chris@C' };
+                      const response = await axios.post(login, demoData);
+                      document.cookie = `accessToken=${response?.data?.data?.accessToken};max-age=${7 * 24 * 60 * 60};path=/`;
+                      document.cookie = `userId=${response?.data?.data?.user?._id};max-age=${7 * 24 * 60 * 60};path=/`;
+                      document.cookie = `email=${response?.data?.data?.user?.email};max-age=${7 * 24 * 60 * 60};path=/`;
+                      navigate('/main');
+                    } catch (error) {
+                      alert('Demo login failed.');
+                    } finally {
+                      setDemoLoading(false);
+                    }
+                  }}
+                >
+                  {demoLoading ? 'Logging in...' : 'Demo Login'}
                 </Button>
               </FormContainer>
               

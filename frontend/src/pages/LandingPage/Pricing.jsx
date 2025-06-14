@@ -88,7 +88,7 @@ const Pricing = () => {
                         Home
                       </Link>
                       <Link
-                        to="/main/about"
+                        to="/About"
                         className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
                       >
                         About

@@ -334,7 +334,7 @@ const WebsiteFlow = () => {
             <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold">
               10 Pages
             </div>
-            <div className="bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold">
+            <div className="bg-[#ff5722] text-white px-4 py-2 rounded-full text-sm font-bold">
               4 Levels
             </div>
             <div className="text-2xl">*</div>

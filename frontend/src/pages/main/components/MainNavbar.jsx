@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { DollarSign, Search, User } from 'lucide-react';
 
 const MainNavbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
-
+  const navigate = useNavigate();
   const handleLogout = () => {
     setIsLoggedIn(false);
     // Add your logout logic here
+    navigate('/'); // Redirect to home page after logout
   };
 
   const isActiveLink = (path) => location.pathname === path;
@@ -49,7 +50,7 @@ const MainNavbar = () => {
                     isActiveLink(path)
                       ? 'border-[#ff5722] text-[#ff5722]'
                       : 'border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722]'
-                  } inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200`}
+                  } inline-flex items-center  pt-1 border-b-2 text-lg font-black transition-all duration-200`}
                 >
                   {title}
                 </Link>
