@@ -20,7 +20,7 @@ const Games = () => {
   };
 
   return (
-    <div className='pt-6 bg-[#f6f6f6] min-h-screen relative'>
+    <div className='pt-4 md:pt-6 bg-[#f6f6f6] min-h-screen relative'>
       {/* Dotted Grid Background */}
       <div className="absolute inset-0 opacity-20">
         <div 
@@ -34,7 +34,7 @@ const Games = () => {
       </div>
       
       {/* Vertical Lines */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 hidden md:block">
         {[...Array(10)].map((_, i) => (
           <div
             key={`v-${i}`}
@@ -45,7 +45,7 @@ const Games = () => {
       </div>
       
       {/* Horizontal Lines */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 hidden md:block">
         {[...Array(8)].map((_, i) => (
           <div
             key={`h-${i}`}
@@ -55,13 +55,11 @@ const Games = () => {
         ))}
       </div>
 
-     
-        <div className="relative z-10 flex flex-wrap justify-around gap-5 p-5 rounded-lg w-11/12 mx-auto">
-          <Quizz onSelectCategory={handleSelectCategory} />
-          {/* <Daily /> */}
-          <Questions category={selectedCategory} />
-        </div>
-  
+      <div className="relative z-10 flex flex-col md:flex-row flex-wrap justify-around gap-4 md:gap-5 p-3 md:p-5 rounded-lg w-full md:w-11/12 mx-auto">
+        <Quizz onSelectCategory={handleSelectCategory} />
+        {/* <Daily /> */}
+        <Questions category={selectedCategory} />
+      </div>
     </div>
   );
 };

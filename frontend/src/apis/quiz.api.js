@@ -1,4 +1,9 @@
-import API from "./server.api.js";
+import { axiosInstance } from "./server.api.js";
 
-export const getQuestion = `${API}/quiz/getQuestion`;
-export const checkAnswer = `${API}/quiz/checkAnswer`;
+export const getQuestion = async (data) => {
+  return await axiosInstance.post('/quiz/getQuestion', data);
+};
+
+export const checkAnswer = async (data) => {
+  return await axiosInstance.post('/quiz/checkAnswer', data);
+};

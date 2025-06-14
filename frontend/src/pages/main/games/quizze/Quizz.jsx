@@ -52,7 +52,7 @@ const Quizz = ({ onSelectCategory }) => {
   };
 
   return (
-    <div className="p-6 bg-[#f6f6f6] relative font-sans w-full">
+    <div className="p-3 md:p-6 bg-[#f6f6f6] relative font-sans w-full">
       {/* Dotted Grid Background */}
       <div className="absolute inset-0 opacity-20">
         <div 
@@ -66,7 +66,7 @@ const Quizz = ({ onSelectCategory }) => {
       </div>
       
       {/* Vertical Lines */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 hidden md:block">
         {[...Array(10)].map((_, i) => (
           <div
             key={`v-${i}`}
@@ -77,7 +77,7 @@ const Quizz = ({ onSelectCategory }) => {
       </div>
       
       {/* Horizontal Lines */}
-      <div className="absolute inset-0 opacity-10">
+      <div className="absolute inset-0 opacity-10 hidden md:block">
         {[...Array(8)].map((_, i) => (
           <div
             key={`h-${i}`}
@@ -89,161 +89,79 @@ const Quizz = ({ onSelectCategory }) => {
 
       {/* Quiz Categories Section */}
       <div className="relative z-10 w-full">
-        <div className="mb-10 text-left">
-            <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
-              <span className="inline italic">FIN</span><span className="inline text-[#f5f5f5] italic" style={{ textShadow: '2px 2px 0px #000000' }}>TEST</span>
-            </h2>
-            <p className="text-lg text-gray-700 font-medium text-left">
-              Comprehensive suite of questions to test your financial knwoledge.
-            </p>
-          </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+        <div className="mb-6 md:mb-10 text-left">
+          <h2 className="text-3xl md:text-6xl font-black tracking-tight text-[#000000] leading-tight mb-2 md:mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <span className="inline italic">FIN</span>
+            <span className="inline text-[#f5f5f5] italic" style={{ textShadow: '2px 2px 0px #000000' }}>TEST</span>
+          </h2>
+          <p className="text-base md:text-lg text-gray-700 font-medium text-left">
+            Comprehensive suite of questions to test your financial knowledge.
+          </p>
+        </div>
+
+        {/* Quiz Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {cardData.map((card, index) => {
-            const colors = cardColors[index];
-            const isOrange = colors.bg === "#ff5722";
-            const isBeige = colors.bg === "#e8ddd4";
-            const isBlack = colors.bg === "#000000";
-            const isWhite = colors.bg === "#ffffff";
-            const categoryData = quizCounters[card.category];
-            
+            const colorScheme = cardColors[index];
+            const counter = quizCounters[card.category.toLowerCase()];
+
             return (
               <div
-                key={index}
-                className="rounded-[16px] overflow-hidden shadow-lg transition-transform hover:-translate-y-2 hover:shadow-xl relative cursor-pointer w-full"
-                style={{
-                  backgroundColor: colors.bg,
-                  color: colors.text,
-                  border: `2px solid ${colors.accent}`,
-                  fontFamily: 'Arial, sans-serif',
-                  minHeight: '400px'
-                }}
+                key={card.title}
                 onClick={() => handleSelectCategory(card.category)}
+                className="bg-white rounded-[20px] p-4 md:p-6 border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-pointer relative overflow-hidden group"
+                style={{
+                  backgroundColor: colorScheme.bg,
+                  borderColor: colorScheme.accent,
+                }}
               >
-                <div className="p-8 h-full flex flex-col justify-between relative">
-                  {/* Main Content */}
-                  <div className="z-10">
-                    <h3 className="text-xl font-black leading-tight tracking-wide uppercase mb-2">
+                {/* Background Pattern */}
+                <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                  <div
+                    className="w-full h-full"
+                    style={{
+                      backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
+                      backgroundSize: '12px 12px',
+                      backgroundPosition: '0 0, 0 6px',
+                      color: colorScheme.text
+                    }}
+                  />
+                </div>
+
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-4">
+                    <h3 
+                      className="text-xl md:text-2xl font-black tracking-tight"
+                      style={{ color: colorScheme.text }}
+                    >
                       {card.title}
                     </h3>
-                    {isOrange && (
-                      <div className="text-2xl font-black text-white mb-2">
-                        {colors.highlight}
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Middle Content */}
-                  <div className="z-10 flex-1 flex items-center">
-                    {isBeige && (
-                      <div className="text-lg font-bold text-black">
-                        {colors.highlight}
-                      </div>
-                    )}
-                    {isBlack && (
-                      <div className="text-center">
-                        <div className="bg-orange-500 text-black px-3 py-1 rounded text-xs font-bold mb-2">
-                          {colors.highlight}
-                        </div>
-                        <div className="text-white text-sm font-medium">
-                          {colors.subtitle}
-                        </div>
-                      </div>
-                    )}
-                    {isWhite && (
-                      <div className="text-center">
-                        <div className="bg-black text-white px-3 py-1 rounded text-xs font-bold mb-2">
-                          {colors.highlight}
-                        </div>
-                        <div className="text-black text-sm font-medium">
-                          {colors.subtitle}
-                        </div>
-                        <div className="absolute top-4 right-4 opacity-20">
-                          <div className="w-8 h-8 border-2 border-black rounded-full"></div>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {/* Progress Bar */}
-                  <div className="z-10 mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-xs font-medium opacity-80">
-                        Progress
-                      </span>
-                      <span className="text-xs font-bold">
-                        {Math.round((categoryData.solved / categoryData.total) * 100)}%
-                      </span>
-                    </div>
-                    <div className="h-2 bg-black bg-opacity-20 rounded-full overflow-hidden">
-                      <div 
-                        className="h-full bg-current opacity-60 rounded-full transition-all duration-300"
-                        style={{
-                          width: `${(categoryData.solved / categoryData.total) * 100}%`
-                        }}
-                      />
-                    </div>
-                    <div className="text-xs mt-1 opacity-70">
-                      {categoryData.solved} of {categoryData.total} completed
-                    </div>
-                  </div>
-                  
-                  {/* Bottom Content - Start Test Button */}
-                  <div className="z-10">
-                    {isOrange && (
-                      <div className="text-xs font-medium text-black opacity-80 mb-2">
-                        {colors.subtitle}
-                      </div>
-                    )}
-                    <button 
-                      className="block w-full text-center bg-transparent border-2 border-current px-4 py-2 rounded text-sm font-bold hover:bg-current hover:text-white transition-all duration-300 transform hover:scale-105"
+                    <div
+                      className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full"
                       style={{
-                        borderColor: isBlack ? '#ff5722' : 'currentColor',
-                        color: isBlack ? '#ff5722' : 'currentColor'
-                      }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleSelectCategory(card.category);
+                        backgroundColor: colorScheme.accent,
+                        color: colorScheme.text
                       }}
                     >
-                      START TEST →
-                    </button>
-                  </div>
-                  
-                  {/* Decorative Elements */}
-                  {isOrange && (
-                    <div className="absolute top-4 right-4 opacity-20">
-                      <div className="w-8 h-8 border-2 border-white rounded-full"></div>
-                    </div>
-                  )}
-                  
-                  {isBeige && (
-                    <div className="absolute bottom-4 right-4 opacity-30">
-                      <div className="flex -space-x-1">
-                        <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-                        <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
-                        <div className="w-4 h-4 bg-gray-600 rounded-full"></div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Progress indicator */}
-                  <div className="absolute top-2 left-2 z-10">
-                    <div className="text-xs font-bold opacity-60">
-                      {categoryData.solved}/{categoryData.total}
+                      <span className="text-sm md:text-base font-bold">{counter.solved}/{counter.total}</span>
                     </div>
                   </div>
-                  
-                  {/* Background Pattern */}
-                  <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
-                    <div 
-                      className="w-full h-full"
-                      style={{
-                        backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
-                        backgroundSize: '8px 8px',
-                        backgroundPosition: '0 0, 0 4px'
-                      }}
-                    />
+
+                  <p 
+                    className="text-sm md:text-base font-bold mb-4 opacity-80"
+                    style={{ color: colorScheme.text }}
+                  >
+                    {colorScheme.subtitle}
+                  </p>
+
+                  <div
+                    className="inline-flex items-center text-sm md:text-base font-bold mt-2 py-2 px-4 rounded-full group-hover:scale-105 transition-transform duration-300"
+                    style={{
+                      backgroundColor: colorScheme.text,
+                      color: colorScheme.bg
+                    }}
+                  >
+                    Start Quiz →
                   </div>
                 </div>
               </div>
