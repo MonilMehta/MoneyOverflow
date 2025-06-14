@@ -1,12 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const Quizz = ({ onSelectCategory }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const componentRef = useRef(null);
+  
   const [quizCounters, setQuizCounters] = useState({
     savings: { solved: 0, total: 20 },
     retirement: { solved: 0, total: 20 },
     investing: { solved: 0, total: 20 },
     budgeting: { solved: 0, total: 20 },
   });
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(false);
+            setTimeout(() => {
+              setIsVisible(true);
+            }, 50);
+          } else {
+            setIsVisible(false);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px -50px 0px'
+      }
+    );
+
+    if (componentRef.current) {
+      observer.observe(componentRef.current);
+    }
+
+    return () => {
+      if (componentRef.current) {
+        observer.unobserve(componentRef.current);
+      }
+    };
+  }, []);
 
   // Updated card color schemes matching the finance idle style
   const cardColors = [
@@ -52,21 +86,29 @@ const Quizz = ({ onSelectCategory }) => {
   };
 
   return (
-    <div className="p-3 md:p-6 bg-[#f6f6f6] relative font-sans w-full">
-      {/* Dotted Grid Background */}
-      <div className="absolute inset-0 opacity-20">
+    <div ref={componentRef} className="p-3 md:p-6 bg-[#f6f6f6] relative font-sans w-full min-h-screen">
+      {/* Dotted Grid Background with fade-in */}
+      <div 
+        className={`absolute inset-0 opacity-20 transition-opacity duration-1000 ease-out ${
+          isVisible ? 'opacity-20' : 'opacity-0'
+        }`}
+      >
         <div 
           className="w-full h-full"
           style={{
-            backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
+            backgroundImage: 'radial-gradient(circle, #000 1px, transparent 1px)',
             backgroundSize: '30px 30px',
             backgroundPosition: '0 0'
           }}
         />
       </div>
       
-      {/* Vertical Lines */}
-      <div className="absolute inset-0 opacity-10 hidden md:block">
+      {/* Vertical Lines with fade-in */}
+      <div 
+        className={`absolute inset-0 opacity-10 hidden md:block transition-opacity duration-1200 ease-out ${
+          isVisible ? 'opacity-10' : 'opacity-0'
+        }`}
+      >
         {[...Array(10)].map((_, i) => (
           <div
             key={`v-${i}`}
@@ -76,8 +118,12 @@ const Quizz = ({ onSelectCategory }) => {
         ))}
       </div>
       
-      {/* Horizontal Lines */}
-      <div className="absolute inset-0 opacity-10 hidden md:block">
+      {/* Horizontal Lines with fade-in */}
+      <div 
+        className={`absolute inset-0 opacity-10 hidden md:block transition-opacity duration-1400 ease-out ${
+          isVisible ? 'opacity-10' : 'opacity-0'
+        }`}
+      >
         {[...Array(8)].map((_, i) => (
           <div
             key={`h-${i}`}
@@ -89,12 +135,26 @@ const Quizz = ({ onSelectCategory }) => {
 
       {/* Quiz Categories Section */}
       <div className="relative z-10 w-full">
-        <div className="mb-6 md:mb-10 text-left">
+        <div 
+          className={`mb-6 md:mb-10 text-left transition-all duration-1000 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+          }`}
+        >
           <h2 className="text-3xl md:text-6xl font-black tracking-tight text-[#000000] leading-tight mb-2 md:mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
-            <span className="inline italic">FIN</span>
-            <span className="inline text-[#f5f5f5] italic" style={{ textShadow: '2px 2px 0px #000000' }}>TEST</span>
+            <span className={`inline italic transition-all duration-800 ease-out ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+            }`}>
+              FIN
+            </span>
+            <span className={`inline text-[#f5f5f5] italic transition-all duration-1000 delay-200 ease-out ${
+              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+            }`} style={{ textShadow: '2px 2px 0px #000000' }}>
+              TEST
+            </span>
           </h2>
-          <p className="text-base md:text-lg text-gray-700 font-medium text-left">
+          <p className={`text-base md:text-lg text-gray-700 font-medium text-left transition-all duration-1200 delay-400 ease-out ${
+            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`}>
             Comprehensive suite of questions to test your financial knowledge.
           </p>
         </div>
@@ -109,14 +169,19 @@ const Quizz = ({ onSelectCategory }) => {
               <div
                 key={card.title}
                 onClick={() => handleSelectCategory(card.category)}
-                className="bg-white rounded-[20px] p-4 md:p-6 border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-pointer relative overflow-hidden group"
+                className={`bg-white rounded-[20px] p-4 md:p-6 border-2 transition-all duration-500 hover:-translate-y-2 hover:shadow-xl cursor-pointer relative overflow-hidden group ${
+                  isVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                }`}
                 style={{
                   backgroundColor: colorScheme.bg,
                   borderColor: colorScheme.accent,
+                  transitionDelay: `${800 + index * 150}ms`
                 }}
               >
                 {/* Background Pattern */}
-                <div className="absolute inset-0 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
+                <div className={`absolute inset-0 opacity-5 group-hover:opacity-10 transition-all duration-500 ${
+                  isVisible ? 'opacity-5' : 'opacity-0'
+                }`}>
                   <div
                     className="w-full h-full"
                     style={{
@@ -129,7 +194,12 @@ const Quizz = ({ onSelectCategory }) => {
                 </div>
 
                 <div className="relative z-10">
-                  <div className="flex justify-between items-start mb-4">
+                  <div 
+                    className={`flex justify-between items-start mb-4 transition-all duration-800 ease-out ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                    }`}
+                    style={{ transitionDelay: `${1000 + index * 150}ms` }}
+                  >
                     <h3 
                       className="text-xl md:text-2xl font-black tracking-tight"
                       style={{ color: colorScheme.text }}
@@ -148,17 +218,25 @@ const Quizz = ({ onSelectCategory }) => {
                   </div>
 
                   <p 
-                    className="text-sm md:text-base font-bold mb-4 opacity-80"
-                    style={{ color: colorScheme.text }}
+                    className={`text-sm md:text-base font-bold mb-4 opacity-80 transition-all duration-800 ease-out ${
+                      isVisible ? 'opacity-80 translate-x-0' : 'opacity-0 translate-x-4'
+                    }`}
+                    style={{ 
+                      color: colorScheme.text,
+                      transitionDelay: `${1200 + index * 150}ms`
+                    }}
                   >
                     {colorScheme.subtitle}
                   </p>
 
                   <div
-                    className="inline-flex items-center text-sm md:text-base font-bold mt-2 py-2 px-4 rounded-full group-hover:scale-105 transition-transform duration-300"
+                    className={`inline-flex items-center text-sm md:text-base font-bold mt-2 py-2 px-4 rounded-full group-hover:scale-105 transition-all duration-800 ease-out ${
+                      isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
                     style={{
                       backgroundColor: colorScheme.text,
-                      color: colorScheme.bg
+                      color: colorScheme.bg,
+                      transitionDelay: `${1400 + index * 150}ms`
                     }}
                   >
                     Start Quiz →
