@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { getBlogs } from "../../apis/blogs.api";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
 import styled from 'styled-components';
 
 const BlogContainer = styled.div`
@@ -44,6 +42,10 @@ const ContentWrapper = styled.div`
 const HeaderSection = styled.div`
   margin-bottom: 50px;
   text-align: left;
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: ${props => props.isVisible ? 'translateY(0)' : 'translateY(30px)'};
+  transition: all 0.8s ease-out;
+  transition-delay: ${props => props.isVisible ? '0ms' : '0ms'};
 `;
 
 const MainTitle = styled.h1`
@@ -131,8 +133,14 @@ const BlogCard = styled.div`
   transition: all 0.3s ease;
   cursor: pointer;
   
+  /* Animation properties */
+  opacity: ${props => props.isVisible ? 1 : 0};
+  transform: ${props => props.isVisible ? 'translateY(0)' : 'translateY(30px)'};
+  transition: all 0.8s ease-out;
+  transition-delay: ${props => props.isVisible ? `${props.animationDelay}ms` : '0ms'};
+  
   &:hover {
-    transform: translateY(-8px);
+    transform: ${props => props.isVisible ? 'translateY(-8px)' : 'translateY(30px)'};
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
   }
   
@@ -270,33 +278,84 @@ const ReadMoreButton = styled.button`
 const Blog = () => {
   const [blogs, setBlogs] = useState();
   const [render, setRender] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  // Mock data for demonstration
+  const mockBlogs = [
+    {
+      _id: "1",
+      title: "The Future of Fintech",
+      description: "Exploring emerging technologies that are reshaping the financial landscape and creating new opportunities for innovation in the digital economy."
+    },
+    {
+      _id: "2", 
+      title: "Investment Strategies for 2024",
+      description: "Comprehensive guide to modern investment approaches, risk management, and portfolio diversification strategies for the current market environment."
+    },
+    {
+      _id: "3",
+      title: "Digital Banking Revolution",
+      description: "How digital-first banking is transforming customer experiences and operational efficiency in the financial services industry."
+    }
+  ];
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch(getBlogs);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const data = await response.json();
-        setBlogs(data.slice(0, 3));
-        setRender(true);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchBlogs();
+    // Using mock data for demonstration
+    setBlogs(mockBlogs.slice(0, 3));
+    setRender(true);
+    
+    // Uncomment this for real API call
+    // const fetchBlogs = async () => {
+    //   try {
+    //     const response = await fetch(getBlogs);
+    //     if (!response.ok) {
+    //       throw new Error("Network response was not ok");
+    //     }
+    //     const data = await response.json();
+    //     setBlogs(data.slice(0, 3));
+    //     setRender(true);
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // };
+    // fetchBlogs();
   }, []);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        } else {
+          // Reset animation when section goes out of view
+          setIsVisible(false);
+        }
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the section is visible
+        rootMargin: '0px 0px -50px 0px' // Start animation 50px before the section comes into view
+      }
+    );
 
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, [render]);
 
   return (
     <>
       {render && (
-        <BlogContainer>
+        <BlogContainer ref={sectionRef}>
           <BackgroundPattern />
           <ContentWrapper>
-            <HeaderSection>
+            <HeaderSection isVisible={isVisible}>
               <MainTitle>
                 <span className="title-line-1">LATEST</span>
                 <span className="title-line-2 italic">FIN STORIES</span>
@@ -318,11 +377,11 @@ const Blog = () => {
                   <BlogCard 
                     key={blog._id} 
                     colorIndex={displayIndex}
+                    isVisible={isVisible}
+                    animationDelay={index * 200}
                     onClick={() => window.open('#section', '_blank')}
                   >
                     <div>
-            
-
                       <BlogTitle>{blog.title}</BlogTitle>
                       <BlogDescription>
                         {blog.description.substring(0, 150)}...

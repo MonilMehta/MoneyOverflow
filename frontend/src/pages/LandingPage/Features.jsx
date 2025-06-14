@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BarChart, BookOpen, Users } from 'lucide-react';
 
 const Features = () => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
   // Updated color schemes to match the modern design
   const cardColors = [
     {
@@ -51,8 +54,39 @@ const Features = () => {
     }
   ];
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+        } else {
+          // Reset animation when section goes out of view
+          setIsVisible(false);
+        }
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of the section is visible
+        rootMargin: '0px 0px -50px 0px' // Start animation 50px before the section comes into view
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative overflow-hidden" id='section'>
+    <div 
+      ref={sectionRef}
+      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative overflow-hidden" 
+      id='section'
+    >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <div 
@@ -90,7 +124,9 @@ const Features = () => {
           return (
             <div
               key={index}
-              className="relative overflow-hidden shadow-xl rounded-[20px] transform transition-all duration-700 ease-out hover:scale-110 hover:shadow-2xl hover:-translate-y-8 hover:rotate-1 group animate-fade-in-up cursor-pointer"
+              className={`relative overflow-hidden shadow-xl rounded-[20px] transform transition-all duration-700 ease-out hover:scale-110 hover:shadow-2xl hover:-translate-y-8 hover:rotate-1 group cursor-pointer ${
+                isVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-8'
+              }`}
               style={{
                 height: '75vh',
                 marginTop: marginTop,
@@ -98,7 +134,7 @@ const Features = () => {
                 color: colorScheme.text,
                 border: `3px solid ${colorScheme.accent}`,
                 fontFamily: 'Arial, sans-serif',
-                animationDelay: `${index * 200}ms`,
+                animationDelay: isVisible ? `${index * 200}ms` : '0ms',
                 animationFillMode: 'both',
                 transformOrigin: 'center center'
               }}
