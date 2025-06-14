@@ -131,7 +131,6 @@ const BlogCard = styled.div`
   position: relative;
   overflow: hidden;
   transition: all 0.3s ease;
-  cursor: pointer;
   
   /* Animation properties */
   opacity: ${props => props.isVisible ? 1 : 0};
@@ -252,27 +251,14 @@ const CategoryTag = styled.div`
   letter-spacing: 0.5px;
 `;
 
-const ReadMoreButton = styled.button`
-  background-color: transparent;
+const ReadMoreText = styled.div`
   color: ${props => cardColors[props.colorIndex % cardColors.length].button};
-  border: 2px solid ${props => cardColors[props.colorIndex % cardColors.length].button};
-  padding: 12px 24px;
-  border-radius: 8px;
   font-size: 0.875rem;
   font-weight: bold;
   text-transform: uppercase;
-  transition: all 0.3s ease;
-  cursor: pointer;
   width: 100%;
   letter-spacing: 1px;
-  
-  &:hover {
-    background-color: ${props => cardColors[props.colorIndex % cardColors.length].button};
-    color: ${props => {
-      const buttonBg = cardColors[props.colorIndex % cardColors.length].button;
-      return buttonBg === "#ffffff" ? "#000000" : "#ffffff";
-    }};
-  }
+  text-align: center;
 `;
 
 const Blog = () => {
@@ -379,7 +365,6 @@ const Blog = () => {
                     colorIndex={displayIndex}
                     isVisible={isVisible}
                     animationDelay={index * 200}
-                    onClick={() => window.open('#section', '_blank')}
                   >
                     <div>
                       <BlogTitle>{blog.title}</BlogTitle>
@@ -392,9 +377,9 @@ const Blog = () => {
                       <CategoryTag colorIndex={displayIndex}>
                         FIN STUDY
                       </CategoryTag>
-                      <ReadMoreButton colorIndex={displayIndex}>
-                       Sign Up To Read Full Story →
-                      </ReadMoreButton>
+                      <ReadMoreText colorIndex={displayIndex}>
+                        Sign Up To Read Full Story →
+                      </ReadMoreText>
                     </TagsAndAction>
                   </BlogCard>
                 );

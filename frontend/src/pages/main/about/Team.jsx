@@ -114,10 +114,10 @@ const Team = () => {
   ];
 
   const stats = [
-    { number: "50K+", label: "Active Users" },
-    { number: "100+", label: "Learning Modules" },
+    { number: "50+", label: "Active Users" },
+    { number: "10+", label: "Learning Modules" },
     { number: "24/7", label: "Support" },
-    { number: "95%", label: "Success Rate" }
+    { number: "90%", label: "Success Rate" }
   ];
 
   return (

@@ -197,7 +197,7 @@ const CompletedLearningPaths = ({ course }) => {
             }`}
           >
             <div className="bg-black text-white px-4 py-2 rounded-full text-sm font-bold">
-              Users 50K
+              Users 50+
             </div>
             <div className="text-2xl">*</div>
           </div>

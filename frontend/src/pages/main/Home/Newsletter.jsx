@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CheckCircle } from 'lucide-react';
+import { displayRazorPay } from './razorpay';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
@@ -45,19 +46,31 @@ const Newsletter = () => {
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
-  };
-
-  const handlePayment = async () => {
+  };  const handlePayment = async () => {
     try {
-      // Simulate payment process
-      setShowSuccess(true);
-      setTimeout(() => {
-        setShowSuccess(false);
+      if (!email) {
+        alert('Please enter your email address');
+        return;
+      }
+      // Open Razorpay with subscription amount
+      const response = await displayRazorPay(59, email); // Amount in INR and email
+      
+      // Only show success if payment is completed
+      if (response.razorpay_payment_id) {
         setPaymentSuccess(true);
-        handleSubscription();
-      }, 2000);
+        setSubscriptionSuccess(true);
+     
+      }
     } catch (error) {
-      console.error('Payment failed', error);
+      console.error('Payment failed:', error);
+      if (error.message === 'Payment cancelled') {
+        alert('Payment was cancelled. Please try again if you wish to subscribe.');
+      } else {
+        alert('Payment failed. Please try again.');
+      }
+      setPaymentSuccess(false);
+      setSubscriptionSuccess(false);
+      setShowSuccess(false);
     }
   };
 
