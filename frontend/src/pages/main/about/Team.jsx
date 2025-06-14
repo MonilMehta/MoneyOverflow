@@ -1,7 +1,40 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { BookOpen, Users, TrendingUp, Award, MessageCircle, Mail, BarChart3, DollarSign, Target, Heart } from 'lucide-react';
 
 const Team = () => {
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    // Create intersection observer
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          } else {
+            entry.target.classList.remove('animate-in');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px -50px 0px'
+      }
+    );
+
+    // Observe all animated elements
+    const animatedElements = document.querySelectorAll('.fade-in-element');
+    animatedElements.forEach((el) => {
+      observerRef.current.observe(el);
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
   const features = [
     {
       title: "Learning Modules",
@@ -89,6 +122,67 @@ const Team = () => {
 
   return (
     <div className="bg-[#f6f6f6] font-sans relative overflow-hidden">
+      {/* CSS Styles for animations */}
+      <style jsx>{`
+        .fade-in-element {
+          opacity: 0;
+          transform: translateY(30px);
+          transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        
+        .fade-in-element.animate-in {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        
+        .fade-in-element.delay-100 {
+          transition-delay: 0.1s;
+        }
+        
+        .fade-in-element.delay-200 {
+          transition-delay: 0.2s;
+        }
+        
+        .fade-in-element.delay-300 {
+          transition-delay: 0.3s;
+        }
+        
+        .fade-in-element.delay-400 {
+          transition-delay: 0.4s;
+        }
+        
+        .fade-in-element.delay-500 {
+          transition-delay: 0.5s;
+        }
+        
+        .fade-in-element.delay-600 {
+          transition-delay: 0.6s;
+        }
+        
+        .fade-in-left {
+          transform: translateX(-30px) translateY(0);
+        }
+        
+        .fade-in-right {
+          transform: translateX(30px) translateY(0);
+        }
+        
+        .fade-in-up {
+          transform: translateY(50px);
+        }
+        
+        .fade-in-scale {
+          transform: scale(0.9) translateY(20px);
+        }
+        
+        .fade-in-element.animate-in.fade-in-left,
+        .fade-in-element.animate-in.fade-in-right,
+        .fade-in-element.animate-in.fade-in-up,
+        .fade-in-element.animate-in.fade-in-scale {
+          transform: translateX(0) translateY(0) scale(1);
+        }
+      `}</style>
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-20">
         <div 
@@ -115,14 +209,14 @@ const Team = () => {
       {/* Hero Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-6xl sm:text-8xl font-black tracking-tight text-[#000000] leading-tight mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
+          <h1 className="fade-in-element fade-in-scale text-6xl sm:text-8xl font-black tracking-tight text-[#000000] leading-tight mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
             <span className="block italic">MONEY</span>
             <span className="block text-[#ff5722] italic">OVERFLOW</span>
           </h1>
-          <p className="text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
+          <p className="fade-in-element fade-in-up delay-200 text-xl sm:text-2xl text-gray-700 max-w-4xl mx-auto leading-relaxed font-medium">
             Democratizing financial literacy by making financial education engaging, easy to understand, and accessible to all.
           </p>
-          <div className="mt-8 flex justify-center items-center gap-6 flex-wrap">
+          <div className="fade-in-element fade-in-up delay-400 mt-8 flex justify-center items-center gap-6 flex-wrap">
             {stats.map((stat, index) => (
               <div key={index} className="bg-black text-white px-6 py-3 rounded-full text-lg font-bold transform hover:scale-105 transition-transform">
                 {stat.number} <span className="text-orange-500">{stat.label}</span>
@@ -137,7 +231,7 @@ const Team = () => {
         <div className="w-full px-4 sm:px-6 lg:px-8">
           <div className="max-w-none mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div className="px-4 lg:px-12">
+              <div className="fade-in-element fade-in-left px-4 lg:px-12">
                 <h2 className="text-5xl font-black tracking-tight text-[#000000] mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
                   OUR <span className="text-[#ff5722]">STORY</span>
                 </h2>
@@ -153,7 +247,7 @@ const Team = () => {
                   </p>
                 </div>
               </div>
-              <div className="px-4 lg:px-12">
+              <div className="fade-in-element fade-in-right delay-300 px-4 lg:px-12">
                 <div className="bg-black text-white p-8 rounded-[20px] shadow-xl">
                   <div className="flex items-center mb-6">
                     <Heart className="h-12 w-12 text-orange-500 mr-4" />
@@ -176,10 +270,10 @@ const Team = () => {
       <section className="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-5xl font-black tracking-tight text-[#000000] mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
+            <h2 className="fade-in-element fade-in-up text-5xl font-black tracking-tight text-[#000000] mb-4" style={{ fontFamily: 'Arial, sans-serif' }}>
               WHAT WE <span className="text-[#ff5722]">OFFER</span>
             </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            <p className="fade-in-element fade-in-up delay-200 text-xl text-gray-700 max-w-3xl mx-auto">
               Interactive and educational features designed to make learning about money effective and enjoyable
             </p>
           </div>
@@ -191,11 +285,12 @@ const Team = () => {
               const isBeige = colorScheme.bg === "#e8ddd4";
               const isBlack = colorScheme.bg === "#000000";
               const Icon = feature.icon;
+              const delayClass = `delay-${Math.min((index + 1) * 100, 600)}`;
               
               return (
                 <div 
                   key={index} 
-                  className="rounded-[16px] overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:scale-105 cursor-pointer group" 
+                  className={`fade-in-element fade-in-scale ${delayClass} rounded-[16px] overflow-hidden shadow-lg transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:scale-105 cursor-pointer group`} 
                   style={{
                     backgroundColor: colorScheme.bg,
                     color: colorScheme.text,
@@ -282,7 +377,7 @@ const Team = () => {
       {/* Why Choose Us Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-5xl font-black tracking-tight text-[#000000] text-center mb-12" style={{ fontFamily: 'Arial, sans-serif' }}>
+          <h2 className="fade-in-element fade-in-up text-5xl font-black tracking-tight text-[#000000] text-center mb-12" style={{ fontFamily: 'Arial, sans-serif' }}>
             WHY <span className="text-[#ff5722]">CHOOSE US?</span>
           </h2>
           
@@ -295,7 +390,7 @@ const Team = () => {
               { title: "Inclusive Community", desc: "A safe space to learn, share, and grow together" },
               { title: "Proven Results", desc: "95% of users report improved financial confidence" }
             ].map((item, index) => (
-              <div key={index} className="bg-white p-6 rounded-[16px] shadow-lg border-2 border-gray-100 hover:border-orange-500 transition-all duration-300 hover:-translate-y-1">
+              <div key={index} className={`fade-in-element fade-in-up delay-${Math.min((index + 1) * 100, 600)} bg-white p-6 rounded-[16px] shadow-lg border-2 border-gray-100 hover:border-orange-500 transition-all duration-300 hover:-translate-y-1`}>
                 <div className="flex items-center mb-4">
                   <div className="w-3 h-3 bg-orange-500 rounded-full mr-3"></div>
                   <h3 className="text-xl font-bold text-black">{item.title}</h3>
@@ -310,7 +405,7 @@ const Team = () => {
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-black text-white p-12 rounded-[20px] shadow-2xl">
+          <div className="fade-in-element fade-in-scale bg-black text-white p-12 rounded-[20px] shadow-2xl">
             <h2 className="text-4xl sm:text-5xl font-black mb-6" style={{ fontFamily: 'Arial, sans-serif' }}>
               JOIN OUR <span className="text-orange-500">MISSION</span>
             </h2>
