@@ -3,10 +3,10 @@ import styled, { createGlobalStyle } from 'styled-components';
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { register, login } from "../../apis/user.api.js";
-import { DollarSign, Menu, X } from 'lucide-react';
+import { DollarSign, Menu, X, Eye, EyeOff } from 'lucide-react';
+
 const GlobalStyle = createGlobalStyle`
   @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
-  @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css");
 `;
 
 const BodyWrapper = styled.div`
@@ -18,7 +18,7 @@ const BodyWrapper = styled.div`
   justify-content: center;
   align-items: center;
   margin: 0;
-  padding: 80px 20px; /* Added padding for navbar and mobile spacing */
+  padding: 80px 20px;
   position: relative;
   overflow-x: hidden;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
@@ -28,7 +28,7 @@ const Box = styled.div`
   width: 480px;
   max-width: 100%;
   min-height: 600px;
-  height: auto; /* Changed from fixed height to auto */
+  height: auto;
   perspective: 1000px;
   position: relative;
   z-index: 10;
@@ -53,7 +53,7 @@ const BoxBase = styled.div`
   position: absolute;
   width: 100%;
   min-height: 600px;
-  height: auto; /* Changed from fixed height to auto */
+  height: auto;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;
@@ -72,7 +72,6 @@ const BoxBase = styled.div`
     padding: 30px 20px;
   }
 
-  /* Background Pattern */
   &::before {
     content: '';
     position: absolute;
@@ -90,7 +89,6 @@ const BoxBase = styled.div`
     border-radius: 20px;
   }
 
-  /* Decorative Elements */
   &::after {
     content: '';
     position: absolute;
@@ -207,20 +205,30 @@ const PasswordContainer = styled.div`
   position: relative;
   width: 100%;
   z-index: 2;
+`;
 
-  i {
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #888888;
-    transition: all 0.3s ease;
-    font-size: 1.1rem;
+const PasswordToggleIcon = styled.div`
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #888888;
+  transition: all 0.3s ease;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  border-radius: 4px;
 
-    &:hover {
-      color: #ff5722;
-    }
+  &:hover {
+    color: #ff5722;
+    background-color: rgba(255, 87, 34, 0.1);
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.95);
   }
 `;
 
@@ -338,15 +346,16 @@ function SignupSignin() {
   const [showPasswordSignup, setShowPasswordSignup] = useState(false);
   const [demoLoading, setDemoLoading] = useState(false);
   const navigate = useNavigate();
-   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
-    const toggleMobileMenu = () => {
-      setIsMobileMenuOpen(!isMobileMenuOpen);
-    };
-  
-    const closeMobileMenu = () => {
-      setIsMobileMenuOpen(false);
-    };
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -419,7 +428,7 @@ function SignupSignin() {
     try {
       const response = await axios.post(register, signupPayload);
       console.log("Signup successful:", response?.data);
-      flip(); // Switch to login after signup
+      flip();
     } catch (error) {
       console.error("Signup failed:", error);
     }
@@ -427,295 +436,297 @@ function SignupSignin() {
 
   return (
     <>
-    <div>
-     <nav className="bg-white border-b-4 border-[#ff5722] shadow-xl fixed top-0 w-full z-50">
-             <div className="max-w-full mx-auto px-4 sm:px-8" style={{width: '100vw'}}>
-               <div className="flex justify-between h-16 items-center">
-                 {/* Logo */}
-                 <div className="flex-shrink-0 flex items-center">
-                   <span className="text-2xl sm:text-3xl font-black tracking-tight">
-                     <span className="text-black">Money</span>
-                     <span className="text-[#ff5722] italic">Overflow</span>
-                   </span>
-                 </div>
-     
-                 {/* Desktop Navigation Links */}
-                 <div className="hidden md:flex md:space-x-10">
-                   <Link
-                     to="/"
-                     className="border-[#ff5722] text-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
-                   >
-                     Home
-                   </Link>
-                   <Link
-                     to="/About"
-                     className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
-                   >
-                     About
-                   </Link>
-                   <Link
-                     to="/pricing"
-                     className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
-                   >
-                     Pricing
-                   </Link>
-                 </div>
-     
-                 {/* Desktop Auth Buttons */}
-                 <div className="hidden md:flex space-x-4">
-                   <Link to="/auth">
-                     <button className="px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
-                       Login
-                     </button>
-                   </Link>
-                   <Link to="/auth">
-                     <button className="px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
-                       Sign Up
-                     </button>
-                   </Link>
-                 </div>
-     
-                 {/* Mobile menu button */}
-                 <div className="md:hidden">
-                   <button
-                     onClick={toggleMobileMenu}
-                     className="inline-flex items-center justify-center p-2 rounded-md text-[#ff5722] hover:text-[#e64a19] hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#ff5722] transition-all duration-200"
-                     aria-expanded="false"
-                   >
-                     <span className="sr-only">Open main menu</span>
-                     {isMobileMenuOpen ? (
-                       <X className="block h-6 w-6" aria-hidden="true" />
-                     ) : (
-                       <Menu className="block h-6 w-6" aria-hidden="true" />
-                     )}
-                   </button>
-                 </div>
-               </div>
-             </div>
-     
-             {/* Mobile menu */}
-             <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
-                 {/* Mobile Navigation Links */}
-                 <Link
-                   to="/"
-                   onClick={closeMobileMenu}
-                   className="text-[#ff5722] block px-3 py-2 rounded-md text-base font-bold border-l-4 border-[#ff5722] bg-orange-50"
-                 >
-                   Home
-                 </Link>
-                 <Link
-                   to="/About"
-                   onClick={closeMobileMenu}
-                   className="text-gray-600 hover:text-[#ff5722] hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-bold transition-all duration-200"
-                 >
-                   About
-                 </Link>
-                 <Link
-                   to="/pricing"
-                   onClick={closeMobileMenu}
-                   className="text-gray-600 hover:text-[#ff5722] hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-bold transition-all duration-200"
-                 >
-                   Pricing
-                 </Link>
-                 
-                 {/* Mobile Auth Buttons */}
-                 <div className="pt-4 pb-3 border-t border-gray-200">
-                   <div className="flex flex-col space-y-3 px-3">
-                     <Link to="/auth" onClick={closeMobileMenu}>
-                       <button className="w-full px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
-                         Login
-                       </button>
-                     </Link>
-                     <Link to="/auth" onClick={closeMobileMenu}>
-                       <button className="w-full px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
-                         Sign Up
-                       </button>
-                     </Link>
-                   </div>
-                 </div>
-               </div>
-             </div>
-           </nav>
-      <GlobalStyle />
-      <BodyWrapper>
-        <BackgroundPattern />
-        <GridLines />
-        
-        <Box>
-          <FlipCardInner isFlipped={isFlipped}>
-            <BoxLogin>
-              <FormContainer onSubmit={handleLoginSubmit}>
-                <Title>LOGIN</Title>
-                <SubTitle>Welcome Back</SubTitle>
-                
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  required
-                  value={loginData.email}
-                  onChange={handleLoginInputChange}
-                />
+      <div>
+        <nav className="bg-white border-b-4 border-[#ff5722] shadow-xl fixed top-0 w-full z-50">
+          <div className="max-w-full mx-auto px-4 sm:px-8" style={{width: '100vw'}}>
+            <div className="flex justify-between h-16 items-center">
+              <div className="flex-shrink-0 flex items-center">
+                <span className="text-2xl sm:text-3xl font-black tracking-tight">
+                  <span className="text-black">Money</span>
+                  <span className="text-[#ff5722] italic">Overflow</span>
+                </span>
+              </div>
 
-                <PasswordContainer>
+              <div className="hidden md:flex md:space-x-10">
+                <Link
+                  to="/"
+                  className="border-[#ff5722] text-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+                >
+                  Home
+                </Link>
+                <Link
+                  to="/About"
+                  className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+                >
+                  About
+                </Link>
+                <Link
+                  to="/pricing"
+                  className="border-transparent text-gray-600 hover:text-[#ff5722] hover:border-[#ff5722] inline-flex items-center px-4 pt-1 border-b-2 text-lg font-black transition-all duration-200"
+                >
+                  Pricing
+                </Link>
+              </div>
+
+              <div className="hidden md:flex space-x-4">
+                <Link to="/auth">
+                  <button className="px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
+                    Login
+                  </button>
+                </Link>
+                <Link to="/auth">
+                  <button className="px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+
+              <div className="md:hidden">
+                <button
+                  onClick={toggleMobileMenu}
+                  className="inline-flex items-center justify-center p-2 rounded-md text-[#ff5722] hover:text-[#e64a19] hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#ff5722] transition-all duration-200"
+                  aria-expanded="false"
+                >
+                  <span className="sr-only">Open main menu</span>
+                  {isMobileMenuOpen ? (
+                    <X className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <Menu className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white border-t border-gray-200">
+              <Link
+                to="/"
+                onClick={closeMobileMenu}
+                className="text-[#ff5722] block px-3 py-2 rounded-md text-base font-bold border-l-4 border-[#ff5722] bg-orange-50"
+              >
+                Home
+              </Link>
+              <Link
+                to="/About"
+                onClick={closeMobileMenu}
+                className="text-gray-600 hover:text-[#ff5722] hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-bold transition-all duration-200"
+              >
+                About
+              </Link>
+              <Link
+                to="/pricing"
+                onClick={closeMobileMenu}
+                className="text-gray-600 hover:text-[#ff5722] hover:bg-gray-50 block px-3 py-2 rounded-md text-base font-bold transition-all duration-200"
+              >
+                Pricing
+              </Link>
+              
+              <div className="pt-4 pb-3 border-t border-gray-200">
+                <div className="flex flex-col space-y-3 px-3">
+                  <Link to="/auth" onClick={closeMobileMenu}>
+                    <button className="w-full px-4 py-2 bg-white text-[#ff5722] border-2 border-[#ff5722] rounded-xl text-sm font-bold hover:bg-[#ff5722] hover:text-white transition-all duration-200">
+                      Login
+                    </button>
+                  </Link>
+                  <Link to="/auth" onClick={closeMobileMenu}>
+                    <button className="w-full px-4 py-2 bg-[#ff5722] text-white rounded-xl text-sm font-bold hover:bg-[#e64a19] transition-all duration-200">
+                      Sign Up
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <GlobalStyle />
+        <BodyWrapper>
+          <BackgroundPattern />
+          <GridLines />
+          
+          <Box>
+            <FlipCardInner isFlipped={isFlipped}>
+              <BoxLogin>
+                <FormContainer onSubmit={handleLoginSubmit}>
+                  <Title>LOGIN</Title>
+                  <SubTitle>Welcome Back</SubTitle>
+                  
                   <Input
-                    type={showPasswordLogin ? "text" : "password"}
-                    name="password"
-                    placeholder="Password"
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
                     required
-                    value={loginData.password}
+                    value={loginData.email}
                     onChange={handleLoginInputChange}
                   />
-                  <i
-                    className={`fa ${
-                      showPasswordLogin ? "fa-eye" : "fa-eye-slash"
-                    }`}
-                    onClick={togglePasswordVisibilityLogin}
-                  ></i>
-                </PasswordContainer>
+                  
+                  <PasswordContainer>
+                    <Input
+                      type={showPasswordLogin ? "text" : "password"}
+                      name="password"
+                      placeholder="Password"
+                      required
+                      value={loginData.password}
+                      onChange={handleLoginInputChange}
+                      autoComplete="current-password"
+                    />
+                    <PasswordToggleIcon
+                      onClick={togglePasswordVisibilityLogin}
+                      role="button"
+                      tabIndex={0}
+                      title={showPasswordLogin ? "Hide password" : "Show password"}
+                      aria-label={showPasswordLogin ? "Hide password" : "Show password"}
+                    >
+                      {showPasswordLogin ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </PasswordToggleIcon>
+                  </PasswordContainer>
+                  
+                  <Button type="submit">
+                    LOGIN →
+                  </Button>
+                  
+                  <Button 
+                    type="button" 
+                    style={{ background: '#000000', marginTop: '10px' }}                   
+                    disabled={demoLoading}                   
+                    onClick={async () => {                     
+                      setLoginData({ email: 'chris@gmail.com', password: 'chris@C' });                     
+                      setDemoLoading(true);                     
+                      try {                       
+                        const demoData = { email: 'chris@gmail.com', password: 'chris@C' };                       
+                        const response = await axios.post(login, demoData);                       
+                        document.cookie = `accessToken=${response?.data?.data?.accessToken};max-age=${7 * 24 * 60 * 60};path=/`;                       
+                        document.cookie = `userId=${response?.data?.data?.user?._id};max-age=${7 * 24 * 60 * 60};path=/`;                       
+                        document.cookie = `email=${response?.data?.data?.user?.email};max-age=${7 * 24 * 60 * 60};path=/`;                       
+                        navigate('/main');                     
+                      } catch (error) {                       
+                        alert('Demo login failed.');                     
+                      } finally {                       
+                        setDemoLoading(false);                     
+                      }                   
+                    }}                 
+                  >
+                    Demo Login
+                  </Button>
+                </FormContainer>
                 
-                <Button type="submit">
-                  LOGIN →
-                </Button>
-                {/* Demo Login Button */}
-              <Button 
-  type="button" 
-  style={{ background: '#000000', marginTop: '10px' }}                   
-  disabled={demoLoading}                   
-  onClick={async () => {                     
-    setLoginData({ email: 'chris@gmail.com', password: 'chris@C' });                     
-    setDemoLoading(true);                     
-    try {                       
-      const demoData = { email: 'chris@gmail.com', password: 'chris@C' };                       
-      const response = await axios.post(login, demoData);                       
-      document.cookie = `accessToken=${response?.data?.data?.accessToken};max-age=${7 * 24 * 60 * 60};path=/`;                       
-      document.cookie = `userId=${response?.data?.data?.user?._id};max-age=${7 * 24 * 60 * 60};path=/`;                       
-      document.cookie = `email=${response?.data?.data?.user?.email};max-age=${7 * 24 * 60 * 60};path=/`;                       
-      navigate('/main');                     
-    } catch (error) {                       
-      alert('Demo login failed.');                     
-    } finally {                       
-      setDemoLoading(false);                     
-    }                   
-  }}                 
->
-  Demo Login
-</Button>
-              </FormContainer>
+                <RegisterLink>
+                  <p>
+                    Don't have an account?{" "}
+                    <a onClick={flip}>Register Now</a>
+                  </p>
+                </RegisterLink>
+                
+                <DecorativeCircle>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </DecorativeCircle>
+              </BoxLogin>
               
-              <RegisterLink>
-                <p>
-                  Don't have an account?{" "}
-                  <a onClick={flip}>Register Now</a>
-                </p>
-              </RegisterLink>
-              
-              <DecorativeCircle>
-                <div></div>
-                <div></div>
-                <div></div>
-              </DecorativeCircle>
-            </BoxLogin>
-            
-            <BoxSignup>
-              <FormContainer onSubmit={handleSignupSubmit}>
-                <Title>REGISTER</Title>
-                <SubTitle>Join Our Community</SubTitle>
+              <BoxSignup>
+                <FormContainer onSubmit={handleSignupSubmit}>
+                  <Title>REGISTER</Title>
+                  <SubTitle>Join Our Community</SubTitle>
 
-                <UserSignup>
+                  <UserSignup>
+                    <Input
+                      type="text"
+                      name="firstName"
+                      placeholder="First Name"
+                      value={signupData.firstName}
+                      onChange={handleSignupInputChange}
+                      required
+                    />
+                    <Input
+                      type="text"
+                      name="lastName"
+                      placeholder="Last Name"
+                      value={signupData.lastName}
+                      onChange={handleSignupInputChange}
+                      required
+                    />
+                  </UserSignup>
+
                   <Input
                     type="text"
-                    name="firstName"
-                    placeholder="First Name"
-                    value={signupData.firstName}
+                    name="username"
+                    placeholder="Username"
+                    value={signupData.username}
                     onChange={handleSignupInputChange}
                     required
                   />
+
                   <Input
-                    type="text"
-                    name="lastName"
-                    placeholder="Last Name"
-                    value={signupData.lastName}
-                    onChange={handleSignupInputChange}
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
                     required
+                    value={signupData.email}
+                    onChange={handleSignupInputChange}
                   />
-                </UserSignup>
 
-                <Input
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={signupData.username}
-                  onChange={handleSignupInputChange}
-                  required
-                />
-
-                <Input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address"
-                  required
-                  value={signupData.email}
-                  onChange={handleSignupInputChange}
-                />
-
-                <Input
-                  type="tel"
-                  name="phone_no"
-                  placeholder="Phone Number"
-                  required
-                  value={signupData.phone_no}
-                  onChange={handleSignupInputChange}
-                />
-
-                <Input
-                  type="date"
-                  name="date_of_birth"
-                  placeholder="Date of birth"
-                  required
-                  value={signupData.date_of_birth}
-                  onChange={handleSignupInputChange}
-                />
-
-                <PasswordContainer>
                   <Input
-                    type={showPasswordSignup ? "text" : "password"}
-                    name="password"
-                    placeholder="Create Password"
+                    type="tel"
+                    name="phone_no"
+                    placeholder="Phone Number"
                     required
-                    value={signupData.password}
+                    value={signupData.phone_no}
                     onChange={handleSignupInputChange}
                   />
-                  <i
-                    className={`fa ${
-                      showPasswordSignup ? "fa-eye" : "fa-eye-slash"
-                    }`}
-                    onClick={togglePasswordVisibilitySignup}
-                  ></i>
-                </PasswordContainer>
+
+                  <Input
+                    type="date"
+                    name="date_of_birth"
+                    placeholder="Date of birth"
+                    required
+                    value={signupData.date_of_birth}
+                    onChange={handleSignupInputChange}
+                  />
+                  
+                  <PasswordContainer>
+                    <Input
+                      type={showPasswordSignup ? "text" : "password"}
+                      name="password"
+                      placeholder="Create Password"
+                      required
+                      value={signupData.password}
+                      onChange={handleSignupInputChange}
+                      autoComplete="new-password"
+                    />
+                    <PasswordToggleIcon
+                      onClick={togglePasswordVisibilitySignup}
+                      role="button"
+                      tabIndex={0}
+                      title={showPasswordSignup ? "Hide password" : "Show password"}
+                      aria-label={showPasswordSignup ? "Hide password" : "Show password"}
+                    >
+                      {showPasswordSignup ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </PasswordToggleIcon>
+                  </PasswordContainer>
+                  
+                  <Button type="submit">
+                    REGISTER →
+                  </Button>
+                </FormContainer>
                 
-                <Button type="submit">
-                  REGISTER →
-                </Button>
-              </FormContainer>
-              
-              <RegisterLink>
-                <p>
-                  Already have an account?{" "}
-                  <a onClick={flip}>Log In</a>
-                </p>
-              </RegisterLink>
-              
-              <DecorativeCircle>
-                <div></div>
-                <div></div>
-                <div></div>
-              </DecorativeCircle>
-            </BoxSignup>
-          </FlipCardInner>
-        </Box>
-      </BodyWrapper>
+                <RegisterLink>
+                  <p>
+                    Already have an account?{" "}
+                    <a onClick={flip}>Log In</a>
+                  </p>
+                </RegisterLink>
+                
+                <DecorativeCircle>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                </DecorativeCircle>
+              </BoxSignup>
+            </FlipCardInner>
+          </Box>
+        </BodyWrapper>
       </div>
     </>
   );
