@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowDown, ArrowRight, Home, MessageSquare, BookOpen, Mail, Calendar, Route, Wrench, Activity, Newspaper, FileText } from 'lucide-react';
 
-const Flow = () => {
+const WebsiteFlow = () => {
   const sections = [
     {
       level: 1,
@@ -166,11 +166,12 @@ const Flow = () => {
     const isOrange = colorScheme.bg === "#ff5722";
     const isBeige = colorScheme.bg === "#e8ddd4";
     const isBlack = colorScheme.bg === "#000000";
+    const isWhite = colorScheme.bg === "#ffffff";
     
     return (
       <div 
         key={card.id} 
-        className={`rounded-[16px] md:mb-24 overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
+        className={`rounded-[16px] overflow-hidden shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl ${
           card.isRoot ? 'ring-4 ring-blue-400 ring-opacity-50' : ''
         } ${card.isParent ? 'ring-2 ring-purple-400 ring-opacity-50' : ''}`}
         style={{
@@ -215,7 +216,12 @@ const Flow = () => {
                 </div>
               </div>
             )}
-            {!isBeige && !isBlack && !isOrange && (
+            {isWhite && (
+              <div className="text-base font-medium text-gray-800 leading-snug">
+                {card.description}
+              </div>
+            )}
+            {!isBeige && !isBlack && !isOrange && !isWhite && (
               <div className="text-sm opacity-90 leading-snug">
                 {card.description}
               </div>
@@ -237,7 +243,17 @@ const Flow = () => {
                 <ArrowRight size={16} />
               </div>
             )}
-            {(isBlack || (!isOrange && !isBeige)) && (
+            {isWhite && (
+              <div className="flex items-center justify-between">
+                <div className="text-sm font-bold text-gray-900">
+                  {card.highlight}
+                </div>
+                <div className="bg-black text-white px-3 py-1 rounded-full text-xs font-bold">
+                  →
+                </div>
+              </div>
+            )}
+            {(isBlack || (!isOrange && !isBeige && !isWhite)) && (
               <button className="bg-transparent border border-current px-4 py-2 rounded text-sm font-bold hover:bg-current hover:text-black transition-colors flex items-center gap-2">
                 {card.highlight || "EXPLORE"} <ArrowRight size={14} />
               </button>
@@ -305,7 +321,7 @@ const Flow = () => {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="w-full px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="mb-10 text-left">
           <h2 className="text-6xl font-black tracking-tight text-[#000000] leading-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
             <span className="block italic">SITE</span>
@@ -340,9 +356,9 @@ const Flow = () => {
             </div>
             
             {/* Cards Grid */}
-            <div className={`grid gap-6 ${
-              section.cards.length === 1 ? 'grid-cols-1 max-w-md mx-auto' :
-              section.cards.length === 2 ? 'grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto' :
+            <div className={`grid gap-6 w-full ${
+              section.cards.length === 1 ? 'grid-cols-1' :
+              section.cards.length === 2 ? 'grid-cols-1 md:grid-cols-2' :
               'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4'
             }`}>
               {section.cards.map((card, index) => renderCard(card, index, sectionIndex))}
@@ -360,10 +376,18 @@ const Flow = () => {
         ))}
         
         {/* Footer Info */}
-        
+        <div className="mt-16 text-center">
+          <div className="bg-white rounded-lg p-6 shadow-lg max-w-2xl mx-auto">
+            <h3 className="text-xl font-bold text-gray-800 mb-2">Navigation Flow</h3>
+            <p className="text-gray-600 text-sm">
+              Users start at the Home Page and can navigate to main features. The Learning Bar leads to structured Learning Paths, 
+              which then branch into specialized tools and resources for comprehensive learning experience.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Flow;
+export default WebsiteFlow;
