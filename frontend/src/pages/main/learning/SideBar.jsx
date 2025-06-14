@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronDown, ChevronUp, Lock, Unlock } from 'lucide-react';
+import { ChevronDown, ChevronUp, Lock, Unlock, Menu, X } from 'lucide-react';
 import FinancialBasic from './modules/FinancialBasic';
 import Budgeting from './modules/Budgeting';
 import Saving from './modules/Saving';
@@ -20,6 +20,7 @@ const SideBar = () => {
   const [expandedModules, setExpandedModules] = useState([]);
   const [course, setCourse] = useState();
   const [user, setUser] = useState();
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const fetchData = async () => {
     let accessToken = await document.cookie.split("accessToken=")[1]?.split(";")[0];
@@ -111,31 +112,30 @@ const SideBar = () => {
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-[#f6f6f6] relative overflow-hidden" style={{ fontFamily: 'Arial, sans-serif' }}>
-      {/* Background Pattern */}
-      <div className="fixed inset-0 opacity-10 pointer-events-none">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: `radial-gradient(circle, #000 1px, transparent 1px)`,
-            backgroundSize: '30px 30px',
-            backgroundPosition: '0 0'
-          }}
+      {/* Mobile Sidebar Toggle Button */}
+      <button
+        onClick={() => setSidebarOpen(!isSidebarOpen)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 bg-[#ff5722] text-white rounded-xl shadow-lg hover:bg-[#e64a19] transition-all duration-300"
+      >
+        {isSidebarOpen ? (
+          <X className="h-6 w-6" />
+        ) : (
+          <Menu className="h-6 w-6" />
+        )}
+      </button>
+
+      {/* Sidebar Overlay for Mobile */}
+      {isSidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 bg-black/50 z-30 backdrop-blur-sm transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
         />
-      </div>
-      
-      {/* Vertical Lines */}
-      <div className="fixed inset-0 opacity-5 pointer-events-none hidden md:block">
-        {[...Array(10)].map((_, i) => (
-          <div
-            key={`v-${i}`}
-            className="absolute h-full border-l border-dotted border-black"
-            style={{ left: `${i * 10}%` }}
-          />
-        ))}
-      </div>
+      )}
 
       {/* Sidebar */}
-      <div className="w-full md:w-80 bg-white md:rounded-r-[24px] shadow-2xl border-b-4 md:border-b-0 md:border-r-4 border-[#ff5722] md:sticky md:top-0 h-auto md:h-screen overflow-y-auto relative z-10 transition-all duration-300">
+      <div className={`fixed md:static inset-y-0 left-0 w-[80%] md:w-80 bg-white md:rounded-r-[24px] shadow-2xl border-r-4 border-[#ff5722] h-screen overflow-y-auto z-40 transition-transform duration-300 ${
+        isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+      }`}>
         {/* Header */}
         <div className="p-4 md:p-6 border-b-2 border-[#ff5722] bg-white md:rounded-tr-[24px] relative overflow-hidden">
           {/* Background Pattern */}

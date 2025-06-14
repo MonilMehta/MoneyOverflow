@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import API from '../../../../apis/server.api';
+import { X, Maximize2, Minimize2 } from 'lucide-react';
 
 const Budgeting = ({ onNextModule }) => {
   const [submodules, setSubmodules] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [videoModal, setVideoModal] = useState({ isOpen: false, url: null, title: null });
+  
   useEffect(() => {
     const fetchSubmodules = async () => {
       const learningPathId = "66faa0841e549319649a8efc";
@@ -122,6 +124,18 @@ const Budgeting = ({ onNextModule }) => {
     
     console.warn('Invalid YouTube URL format:', url);
     return null;
+  };
+
+  const openVideoModal = (url, title) => {
+    if (url && formatVideoUrl(url)) {
+      setVideoModal({ isOpen: true, url: formatVideoUrl(url), title });
+      document.body.style.overflow = 'hidden';
+    }
+  };
+
+  const closeVideoModal = () => {
+    setVideoModal({ isOpen: false, url: null, title: null });
+    document.body.style.overflow = 'auto';
   };
 
   return (
@@ -295,7 +309,9 @@ const Budgeting = ({ onNextModule }) => {
                   </div>
 
                   {/* Video Section */}
-                  <div className={`${videoBg} rounded-[16px] p-6 border-2 ${isActive ? 'border-white border-opacity-30' : 'border-gray-200'} relative overflow-hidden`}>
+                  <div className={`${videoBg} rounded-[16px] p-4 md:p-6 border-2 ${
+                    isActive ? 'border-white border-opacity-30' : 'border-gray-200'
+                  } relative overflow-hidden`}>
                     {/* Background Pattern */}
                     <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
                       <div 
@@ -309,11 +325,26 @@ const Budgeting = ({ onNextModule }) => {
                     </div>
                     
                     <div className="relative z-10">
-                      <div className="flex items-center mb-4">
-                        <div className={`${videoIconBg} rounded-full w-10 h-10 flex items-center justify-center mr-3 border-2 ${isActive ? 'border-white' : 'border-[#ff5722]'}`}>
-                          <span className={`${videoIconText} text-sm font-black`}>▶</span>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center">
+                          <div className={`${videoIconBg} rounded-full w-8 md:w-10 h-8 md:h-10 flex items-center justify-center mr-3 border-2 ${
+                            isActive ? 'border-white' : 'border-[#ff5722]'
+                          }`}>
+                            <span className={`${videoIconText} text-sm font-black`}>▶</span>
+                          </div>
+                          <h3 className={`font-black text-base md:text-lg uppercase tracking-wide ${textColor}`}>Video Lesson</h3>
                         </div>
-                        <h3 className={`font-black text-lg uppercase tracking-wide ${textColor}`}>Video Lesson</h3>
+                        {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) && (
+                          <button
+                            onClick={() => openVideoModal(submodule.VideoUrl, submodule.title)}
+                            className={`flex items-center px-3 py-1.5 rounded-lg ${
+                              isActive ? 'bg-white text-[#ff5722]' : 'bg-[#ff5722] text-white'
+                            } hover:opacity-90 transition-opacity duration-200`}
+                          >
+                            <Maximize2 className="h-4 w-4 mr-2" />
+                            <span className="text-sm font-bold">Expand</span>
+                          </button>
+                        )}
                       </div>
                       
                       {submodule.VideoUrl && formatVideoUrl(submodule.VideoUrl) ? (
@@ -416,6 +447,33 @@ const Budgeting = ({ onNextModule }) => {
           </div>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {videoModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm">
+          <div className="relative w-full max-w-6xl mx-auto bg-black rounded-2xl overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-white/10">
+              <h3 className="text-white font-bold truncate pr-4">{videoModal.title}</h3>
+              <button
+                onClick={closeVideoModal}
+                className="p-2 hover:bg-white/10 rounded-lg transition-colors duration-200"
+              >
+                <X className="h-6 w-6 text-white" />
+              </button>
+            </div>
+            <div className="relative w-full" style={{ paddingBottom: '56.25%', height: 0 }}>
+              <iframe
+                className="absolute top-0 left-0 w-full h-full"
+                src={videoModal.url}
+                title={videoModal.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
