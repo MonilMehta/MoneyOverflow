@@ -282,18 +282,34 @@ export default function Simulation() {
 
   const [user, setUser] = useState();
   const fetchData = async () => {
-    let accessToken = await document.cookie
-      .split("accessToken=")[1]
-      ?.split(";")[0];
-    const res = await axios.get(currentUser, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    console.log(res?.data?.data);
-    setUser(res?.data?.data?.username);
+    try {
+      const accessToken = document.cookie
+        .split("; ")
+        .find(row => row.startsWith("accessToken="))
+        ?.split("=")[1];
+
+      if (!accessToken) {
+        console.log("No access token found");
+        return;
+      }
+
+      const res = await axios.get(currentUser, {
+        headers: { 
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        withCredentials: true
+      });
+      
+      setUser(res?.data?.data?.username);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
   };
+
   useEffect(() => {
     fetchData();
-  });
+  }, []); // Add empty dependency array to prevent infinite loop
 
   const addAlert = (message, type = "info") => {
     const id = Date.now();
