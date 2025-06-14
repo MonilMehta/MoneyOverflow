@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Coins } from "lucide-react";
 import { Button } from "./Button";
 import CompletedLearningPaths from "./CompletedLearning";
@@ -18,6 +18,10 @@ const Home = () => {
   const [name, setName] = useState();
   const [points, setPoints] = useState();
   const [course, setCourse] = useState();
+  
+  // Animation state for FIN TEST section
+  const [isFinTestVisible, setIsFinTestVisible] = useState(false);
+  const finTestRef = useRef(null);
 
   // Updated card color schemes matching the finance idle style
   const cardColors = [
@@ -51,7 +55,6 @@ const Home = () => {
   }
 ]
 
-
   const cardData = [
     {
       title: "Savings",
@@ -78,6 +81,41 @@ const Home = () => {
       progress: 0,
     }
   ];
+
+  // Intersection Observer for FIN TEST section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Reset animation state first
+            setIsFinTestVisible(false);
+            // Small delay to ensure reset, then trigger animation
+            setTimeout(() => {
+              setIsFinTestVisible(true);
+            }, 50);
+          } else {
+            // Reset when component leaves viewport
+            setIsFinTestVisible(false);
+          }
+        });
+      },
+      {
+        threshold: 0.1, // Trigger when 10% of component is visible
+        rootMargin: '50px 0px -50px 0px' // Start animation slightly before/after entering viewport
+      }
+    );
+
+    if (finTestRef.current) {
+      observer.observe(finTestRef.current);
+    }
+
+    return () => {
+      if (finTestRef.current) {
+        observer.unobserve(finTestRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // let userId = document.cookie.split("userId=")[1]?.split(";")[0];
@@ -146,11 +184,19 @@ const Home = () => {
         {/* Sidebar with Quiz Categories (Right Side) */}
         <aside className="space-y-6 sticky top-6 relative z-10 h-fit">
          
-          {/* Quiz Categories Cards */}
-          <div>
-            <h2 className="text-3xl font-black italic text-[#000000] mb-6 tracking-tight" style={{ fontFamily: 'Arial, sans-serif' }}>
+          {/* Quiz Categories Cards with Animation */}
+          <div ref={finTestRef}>
+            {/* Header with staggered fade-in */}
+            <h2 
+              className={`text-3xl font-black italic text-[#000000] mb-6 tracking-tight transition-all duration-1000 ease-out ${
+                isFinTestVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+              }`}
+              style={{ fontFamily: 'Arial, sans-serif' }}
+            >
               FIN TEST
             </h2>
+            
+            {/* Cards with staggered animations */}
             <div className="space-y-5">
               {cardData.map((card, index) => {
                 const colors = cardColors[index];
@@ -162,18 +208,26 @@ const Home = () => {
                 return (
                   <div
                     key={index}
-                    className="rounded-[16px] overflow-hidden shadow-lg transition-transform hover:-translate-y-2 hover:shadow-xl relative"
+                    className={`rounded-[16px] overflow-hidden shadow-lg transition-all duration-1000 ease-out hover:-translate-y-2 hover:shadow-xl relative ${
+                      isFinTestVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-8 scale-95'
+                    }`}
                     style={{
                       backgroundColor: colors.bg,
                       color: colors.text,
                       border: `2px solid ${colors.accent}`,
                       fontFamily: 'Arial, sans-serif',
-                      height: '220px'  // Increased from 200px to 220px
+                      height: '220px',
+                      transitionDelay: `${400 + index * 150}ms`
                     }}
                   >
                     <div className="p-6 h-full flex flex-col justify-between relative">
                       {/* Main Content */}
-                      <div className="z-10">
+                      <div 
+                        className={`z-10 transition-all duration-800 ease-out ${
+                          isFinTestVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
+                        }`}
+                        style={{ transitionDelay: `${600 + index * 150}ms` }}
+                      >
                         <h3 className="text-xl font-black leading-tight tracking-wide uppercase mb-2">
                           {card.title}
                         </h3>
@@ -185,7 +239,12 @@ const Home = () => {
                       </div>
                       
                       {/* Middle Content */}
-                      <div className="z-10 flex-1 flex items-center">
+                      <div 
+                        className={`z-10 flex-1 flex items-center transition-all duration-800 ease-out ${
+                          isFinTestVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'
+                        }`}
+                        style={{ transitionDelay: `${800 + index * 150}ms` }}
+                      >
                         {isBeige && (
                           <div className="text-lg font-bold text-black">
                             {colors.highlight}
@@ -217,7 +276,12 @@ const Home = () => {
                       </div>
                       
                       {/* Bottom Content - Start Test Button */}
-                      <div className="z-10">
+                      <div 
+                        className={`z-10 transition-all duration-800 ease-out ${
+                          isFinTestVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                        }`}
+                        style={{ transitionDelay: `${1000 + index * 150}ms` }}
+                      >
                         {isOrange && (
                           <div className="text-xs font-medium text-black opacity-80 mb-2">
                             {colors.subtitle}
@@ -237,13 +301,23 @@ const Home = () => {
                       
                       {/* Decorative Elements */}
                       {isOrange && (
-                        <div className="absolute top-4 right-4 opacity-20">
+                        <div 
+                          className={`absolute top-4 right-4 opacity-20 transition-all duration-1000 ease-out ${
+                            isFinTestVisible ? 'opacity-20 scale-100' : 'opacity-0 scale-0'
+                          }`}
+                          style={{ transitionDelay: `${1200 + index * 150}ms` }}
+                        >
                           <div className="w-8 h-8 border-2 border-white rounded-full"></div>
                         </div>
                       )}
                       
                       {isBeige && (
-                        <div className="absolute bottom-4 right-4 opacity-30">
+                        <div 
+                          className={`absolute bottom-4 right-4 opacity-30 transition-all duration-1000 ease-out ${
+                            isFinTestVisible ? 'opacity-30 scale-100' : 'opacity-0 scale-0'
+                          }`}
+                          style={{ transitionDelay: `${1200 + index * 150}ms` }}
+                        >
                           <div className="flex -space-x-1">
                             <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
                             <div className="w-4 h-4 bg-gray-500 rounded-full"></div>
@@ -253,14 +327,24 @@ const Home = () => {
                       )}
                       
                       {/* Progress indicator */}
-                      <div className="absolute top-2 left-2 z-10">
+                      <div 
+                        className={`absolute top-2 left-2 z-10 transition-all duration-800 ease-out ${
+                          isFinTestVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'
+                        }`}
+                        style={{ transitionDelay: `${600 + index * 150}ms` }}
+                      >
                         <div className="text-xs font-bold opacity-60">
                           {card.completed}/{card.total}
                         </div>
                       </div>
                       
-                      {/* Background Pattern */}
-                      <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5">
+                      {/* Background Pattern with fade-in */}
+                      <div 
+                        className={`absolute top-0 left-0 w-full h-full pointer-events-none rounded-[16px] opacity-5 transition-opacity duration-1500 ease-out ${
+                          isFinTestVisible ? 'opacity-5' : 'opacity-0'
+                        }`}
+                        style={{ transitionDelay: `${1400 + index * 150}ms` }}
+                      >
                         <div 
                           className="w-full h-full"
                           style={{
@@ -276,7 +360,6 @@ const Home = () => {
               })}
             </div>
           </div>
-
 
         </aside>
       </div>
