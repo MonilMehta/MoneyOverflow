@@ -47,7 +47,7 @@ const MainNavbar = () => {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex lg:space-x-2 xl:space-x-2">
+            <div className="hidden lg:flex lg:space-x-4 xl:space-x-4">
               {navigationLinks.map(([title, path]) => (
                 <Link
                   key={path}
@@ -64,11 +64,11 @@ const MainNavbar = () => {
             </div>
 
             {/* Desktop User Section */}
-            <div className="hidden sm:flex items-center space-x-2">
+            <div className="hidden sm:flex items-center space-x-4">
               {isLoggedIn ? (
                 <div className="relative">
                   <button
-                    className="flex items-center space-x-2 text-gray-700 hover:text-[#ff5722] focus:outline-none transition-colors duration-200"
+                    className="flex items-center space-x-4 text-gray-700 hover:text-[#ff5722] focus:outline-none transition-colors duration-200"
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   >
                     <div className="h-8 w-8 rounded-full bg-[#ff5722] flex items-center justify-center">
