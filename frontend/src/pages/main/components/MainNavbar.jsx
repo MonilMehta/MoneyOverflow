@@ -47,7 +47,7 @@ const MainNavbar = () => {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex lg:space-x-6 xl:space-x-10">
+            <div className="hidden lg:flex lg:space-x-2 xl:space-x-2">
               {navigationLinks.map(([title, path]) => (
                 <Link
                   key={path}
@@ -64,7 +64,7 @@ const MainNavbar = () => {
             </div>
 
             {/* Desktop User Section */}
-            <div className="hidden sm:flex items-center space-x-4">
+            <div className="hidden sm:flex items-center space-x-2">
               {isLoggedIn ? (
                 <div className="relative">
                   <button
