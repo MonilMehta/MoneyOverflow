@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+// Initialize Google Generative AI with API key
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 
 const SWPCalculator = () => {
   const [totalInvestment, setTotalInvestment] = useState('');
@@ -9,6 +13,8 @@ const SWPCalculator = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [currency, setCurrency] = useState('₹');
+  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
   const calculateSWP = () => {
     let investment = parseFloat(totalInvestment) || 0;
@@ -45,8 +51,40 @@ const SWPCalculator = () => {
       }
   
       setRemainingAmount(finalValue.toFixed(2));
-      setLoading(false); 
+      setLoading(false);
+      
+      // Get AI Analysis
+      getAIAnalysis(investment, withdrawal, returnRate, period, finalValue);
     }, 1500);
+  };
+
+  const getAIAnalysis = async (investment, monthlyWithdrawal, returnRate, period, finalValue) => {
+    setIsLoadingAnalysis(true);
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+      const prompt = `As a financial advisor, analyze this Systematic Withdrawal Plan (SWP):
+Initial Investment: ₹${investment.toLocaleString()}
+Monthly Withdrawal: ₹${monthlyWithdrawal.toLocaleString()}
+Expected Return Rate: ${returnRate}% per annum
+Time Period: ${period} years
+Remaining Amount: ₹${finalValue.toLocaleString()}
+
+Provide 4 key points (one line each):
+1. Sustainability analysis (will the money last?)
+2. Withdrawal rate assessment (is it too aggressive?)
+3. Return expectations vs market conditions
+4. Suggestions for portfolio rebalancing`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      setAiAnalysis(response.text());
+    } catch (error) {
+      console.error("Error getting AI analysis:", error);
+      setAiAnalysis("Unable to generate analysis at this time. Please try again.");
+    } finally {
+      setIsLoadingAnalysis(false);
+    }
   };
 
   const clearAll = () => {
@@ -56,7 +94,9 @@ const SWPCalculator = () => {
     setTotalPeriod('');
     setRemainingAmount('');
     setError(''); 
-    setLoading(false); 
+    setLoading(false);
+    setAiAnalysis('');
+    setIsLoadingAnalysis(false);
   };
 
   const currencyChange = (e) => {
@@ -246,6 +286,25 @@ const SWPCalculator = () => {
                   />
                 </div>
               </div>
+
+              {/* AI Analysis Section */}
+              {(aiAnalysis || isLoadingAnalysis) && (
+                <div className="mt-6 bg-black/10 p-6 rounded-xl border-2 border-black/20 shadow-lg">
+                  <div className="mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-black tracking-wide uppercase">SWP Analysis</h3>
+                  </div>
+                  {isLoadingAnalysis ? (
+                    <div className="flex items-center gap-3 text-black">
+                      <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full"></div>
+                      <span className="font-bold">Analyzing your withdrawal plan...</span>
+                    </div>
+                  ) : (
+                    <div className="max-w-none">
+                      <p className="text-black text-base sm:text-lg font-bold leading-relaxed whitespace-pre-line">{aiAnalysis}</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             
             {/* Decorative Elements */}

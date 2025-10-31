@@ -112,6 +112,9 @@ const Questions = ({ category }) => {
   const [correct, setCorrect] = useState(false);
   const [score, setScore] = useState(0);
   const [scoreChange, setScoreChange] = useState(0);
+  const [explanation, setExplanation] = useState("");
+  const [showExplanation, setShowExplanation] = useState(false);
+  const [isLoadingExplanation, setIsLoadingExplanation] = useState(false);
   const [user, setUser] = useState('');
 
   useEffect(() => {
@@ -162,23 +165,28 @@ const Questions = ({ category }) => {
   const handleAnswer = async (index) => {
     if (answered) return;
     
+    const currentQuestion = questions[currentQuestionIndex];
+    const isAnswerCorrect = index === currentQuestion.correctAnswer;
+    
     setSelectedAnswer(index);
     setAnswered(true);
+    setShowExplanation(false);
+    setExplanation("");
+    setCorrect(isAnswerCorrect);
+    setCorrectAnswer(currentQuestion.correctAnswer);
     
     try {
       const response = await checkAnswer({
-        questionId: questions[currentQuestionIndex]._id,
+        questionId: currentQuestion._id,
         selectedAnswer: index,
         userId: user
       });
       
-      const { isCorrect, correctAnswer, newScore } = response.data;
-      setCorrect(isCorrect);
-      setCorrectAnswer(correctAnswer);
+      const { points } = response.data;
       
-      if (newScore !== undefined) {
-        const scoreIncrease = newScore - score;
-        setScore(newScore);
+      if (points !== undefined) {
+        const scoreIncrease = points - score;
+        setScore(points);
         setScoreChange(scoreIncrease);
       }
     } catch (error) {
@@ -195,6 +203,9 @@ const Questions = ({ category }) => {
       setSelectedAnswer(null);
       setCorrectAnswer(null);
       setCorrect(false);
+      setExplanation("");
+      setShowExplanation(false);
+      setIsLoadingExplanation(false);
     } else {
       // Quiz completed - reset for a new round
       fetchQuestions();
@@ -349,39 +360,98 @@ const Questions = ({ category }) => {
                           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                             <AnimatePresence>
                               {answered && (
-                                <motion.div
-                                  initial={{ opacity: 0, y: 20 }}
-                                  animate={{ opacity: 1, y: 0 }}
-                                  exit={{ opacity: 0, y: -20 }}
-                                  className={`text-base font-bold flex items-center gap-2 
-                                    ${correct ? "text-green-600" : "text-red-600"}`}
-                                >
-                                  {correct ? (
-                                    <>
-                                      <motion.span
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: [0, 1.2, 1] }}
-                                        className="text-2xl"
-                                      >
-                                        🎉
-                                      </motion.span>
-                                      <span>Great job! That's correct!</span>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <motion.span
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: [0, 1.2, 1] }}
-                                        className="text-2xl"
-                                      >
-                                        💡
-                                      </motion.span>
-                                      <span>Keep learning! The correct answer was option {String.fromCharCode(65 + correctAnswer)}</span>
-                                    </>
-                                  )}
-                                </motion.div>
+                                <div className="flex flex-col gap-4 w-full">
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    className={`text-base font-bold flex items-center gap-2 
+                                      ${correct ? "text-green-600" : "text-red-600"}`}
+                                  >
+                                    <div className="flex-1 flex items-center gap-2">
+                                      {correct ? (
+                                        <>
+                                          <motion.span
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: [0, 1.2, 1] }}
+                                            className="text-2xl"
+                                          >
+                                            🎉
+                                          </motion.span>
+                                          <span>Great job! That's correct!</span>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <motion.span
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: [0, 1.2, 1] }}
+                                            className="text-2xl"
+                                          >
+                                            💡
+                                          </motion.span>
+                                          <span>Incorrect</span>
+                                        </>
+                                      )}
+                                    </div>
+                                    <motion.button
+                                      whileHover={{ scale: 1.05 }}
+                                      whileTap={{ scale: 0.95 }}
+                                      onClick={() => {
+                                        setShowExplanation(!showExplanation);
+                                        if (!explanation) {
+                                          setIsLoadingExplanation(true);
+                                          checkAnswer({
+                                            questionId: questions[currentQuestionIndex]._id,
+                                            selectedAnswer: selectedAnswer,
+                                            userId: user
+                                          })
+                                          .then(response => {
+                                            setExplanation(response.data.explanation || "");
+                                          })
+                                          .catch(error => {
+                                            console.error("Error getting explanation:", error);
+                                          })
+                                          .finally(() => {
+                                            setIsLoadingExplanation(false);
+                                          });
+                                        }
+                                      }}
+                                      className="px-6 py-3 rounded-xl font-bold text-white transition-all duration-300 flex items-center gap-2 bg-[#ff5722] hover:bg-[#e64a19] shadow-lg hover:shadow-xl"
+                                    >
+                                      {isLoadingExplanation ? (
+                                        <span className="flex items-center gap-2">
+                                          <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div>
+                                          Loading...
+                                        </span>
+                                      ) : (
+                                        "Get AI Explanation"
+                                      )}
+                                    </motion.button>
+                                  </motion.div>
+                                </div>
                               )}
                             </AnimatePresence>
+
+                            {answered && showExplanation && explanation && (
+                              <div className="w-full mt-4">
+                                {showExplanation && explanation && (
+                                  <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -20 }}
+                                    className="w-full bg-orange-50 p-4 rounded-xl border-2 border-[#ff5722] shadow-md"
+                                  >
+                                    <div className="flex items-start gap-3">
+                                      <span className="text-2xl mt-1">💡</span>
+                                      <div className="flex-1">
+                                        <h4 className="font-black text-[#ff5722] mb-2 tracking-wide uppercase text-sm">AI Explanation</h4>
+                                        <p className="text-gray-800 font-medium leading-relaxed">{explanation}</p>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </div>
+                            )}
                             <motion.button
                               whileHover={answered ? { scale: 1.05 } : {}}
                               whileTap={answered ? { scale: 0.95 } : {}}

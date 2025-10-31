@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { singleBlog } from '../../../apis/blogs.api';
+import { singleBlog, summarizeBlog } from '../../../apis/blogs.api';
 
 export default function BlogPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [blogDetails, setBlogDetails] = useState(null);
+  const [blogSummary, setBlogSummary] = useState(null);
+  const [summaryLoading, setSummaryLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -45,12 +47,27 @@ export default function BlogPage() {
     return selectedColors[hash % selectedColors.length];
   };
 
+  const fetchSummary = async () => {
+    setSummaryLoading(true);
+    try {
+      console.log('Sending request with id:', blogDetails._id); // Debug log
+      const response = await axios.post(summarizeBlog, { 
+        id: blogDetails._id  // Use the _id from blogDetails
+      });
+      setBlogSummary(response.data);
+    } catch (err) {
+      console.error('Error fetching summary:', err);
+      console.error('Error details:', err.response?.data); // Debug log
+    } finally {
+      setSummaryLoading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchBlogDetails = async () => {
       setLoading(true);
       try {
         const response = await axios.post(singleBlog, { id });
-        console.log(response.data);
         setBlogDetails(response.data);
       } catch (err) {
         setError('Error fetching blog details');
@@ -262,6 +279,58 @@ export default function BlogPage() {
                   ))}
                 </div>
               )}
+
+              {/* AI Summary Card */}
+              <div className="mt-12 mb-8">
+                <div className="w-full h-px bg-current opacity-20 mb-10"></div>
+                <div className="rounded-[16px] p-8 relative" style={{
+                  backgroundColor: '#1a1a1a',
+                  border: `2px solid ${colorScheme.accent}`,
+                  boxShadow: '0 4px 6px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 87, 34, 0.1)'
+                }}>
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="bg-[#ff5722] text-white px-4 py-2 rounded-full text-sm font-bold shadow-md">
+                      AI SUMMARY
+                    </div>
+                    {!blogSummary && !summaryLoading && (
+                      <button
+                        onClick={fetchSummary}
+                        className="flex items-center gap-2 bg-[#ff5722] hover:bg-[#ff7043] transition-colors duration-200 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md"
+                      >
+                        <span>Generate Summary</span>
+                        <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M12 6V18M6 12H18" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  
+                  {summaryLoading && (
+                    <div className="flex items-center justify-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#ff5722]"></div>
+                      <span className="ml-3 text-sm font-medium text-gray-300">Generating summary...</span>
+                    </div>
+                  )}
+
+                  {blogSummary && (
+                    <div className="text-gray-200 text-base md:text-lg leading-relaxed font-normal space-y-4">
+                      {blogSummary.summary.split('\n').map((paragraph, index) => (
+                        paragraph.trim() && (
+                          <p key={index} className="text-justify" style={{ textShadow: '0 1px 2px rgba(0,0,0,0.3)' }}>
+                            {paragraph}
+                          </p>
+                        )
+                      ))}
+                    </div>
+                  )}
+
+                  {!blogSummary && !summaryLoading && (
+                    <div className="text-base text-gray-400 font-normal">
+                      Click the "Generate Summary" button to get an AI-powered summary of this blog post.
+                    </div>
+                  )}
+                </div>
+              </div>
 
               {/* Bottom Action Section */}
               <div className="mt-12 flex justify-between items-center">

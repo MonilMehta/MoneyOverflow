@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
+// Initialize Google Generative AI with your API key
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 const SIPCalculator = () => {
   const [investment, setInvestment] = useState('');
   const [years, setYears] = useState('');
@@ -11,6 +14,8 @@ const SIPCalculator = () => {
   const [mode, setMode] = useState('SIP');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
   const calculateResult = () => {
     let amount = parseInt(investment.replace(/,/g, '')) || 0;
@@ -54,7 +59,33 @@ const SIPCalculator = () => {
       setWealthGained(`${currency}${wealthGainedCalc.toLocaleString()}`);
       setMaturityValue(`${currency}${maturity.toLocaleString()}`);
       setLoading(false);
+
+      // Get AI Analysis
+      getAIAnalysis(totalInvested, wealthGainedCalc, maturity, mode, amount, duration, rate);
     }, 1500);
+  };
+
+  const getAIAnalysis = async (totalInvested, wealthGained, maturity, mode, monthlyAmount, duration, returnRate) => {
+    setIsLoadingAnalysis(true);
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+      const prompt = `Quick analysis of this SIP investment (respond in exactly 4 lines):
+Investment: ₹${monthlyAmount}/month for ${duration} years at ${returnRate}% return
+Total Invested: ₹${totalInvested.toLocaleString()} → Final Amount: ₹${wealthGained.toLocaleString()}
+
+Give exactly 4 points: 1) Return quality 2) Risk level 3) One improvement tip 4) Tax benefit`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+      setAiAnalysis(text);
+    } catch (error) {
+      console.error("Error getting AI analysis:", error);
+      setAiAnalysis("Unable to generate analysis at this time. Please refresh and try again.");
+    } finally {
+      setIsLoadingAnalysis(false);
+    }
   };
 
   const clearFields = () => {
@@ -66,6 +97,8 @@ const SIPCalculator = () => {
     setMaturityValue('₹00.00');
     setError('');
     setLoading(false);
+    setAiAnalysis('');
+    setIsLoadingAnalysis(false);
   };
 
   const currencyChange = (e) => {
@@ -262,21 +295,40 @@ const SIPCalculator = () => {
                     </div>
                   </div>
                 )}
-                
-                {/* Background Pattern */}
-                <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-lg sm:rounded-xl opacity-5">
-                  <div 
-                    className="w-full h-full"
-                    style={{
-                      backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
-                      backgroundSize: '8px 8px sm:10px sm:10px',
-                      backgroundPosition: '0 0, 0 4px sm:0 5px'
-                    }}
-                  />
+              </div>
+
+              {/* AI Analysis Section */}
+              {(aiAnalysis || isLoadingAnalysis) && (
+                <div className="mt-6 bg-black/10 p-6 rounded-xl border-2 border-black/20 shadow-lg">
+                  <div className="mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-black tracking-wide uppercase">Investment Analysis</h3>
+                  </div>
+                  {isLoadingAnalysis ? (
+                    <div className="flex items-center gap-3 text-black">
+                      <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full"></div>
+                      <span className="font-bold">Analyzing your investment...</span>
+                    </div>
+                  ) : (
+                    <div className="max-w-none">
+                      <p className="text-black text-base sm:text-lg font-bold leading-relaxed whitespace-pre-line">{aiAnalysis}</p>
+                    </div>
+                  )}
                 </div>
+              )}
+
+              {/* Background Pattern */}
+              <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-lg sm:rounded-xl opacity-5">
+                <div 
+                  className="w-full h-full"
+                  style={{
+                    backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
+                    backgroundSize: '8px 8px sm:10px sm:10px',
+                    backgroundPosition: '0 0, 0 4px sm:0 5px'
+                  }}
+                />
               </div>
             </div>
-            
+
             {/* Decorative Elements */}
             <div className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 opacity-20">
               <div className="w-8 h-8 sm:w-12 sm:h-12 border-2 sm:border-4 border-black rounded-full"></div>

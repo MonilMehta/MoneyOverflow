@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { GoogleGenerativeAI } from '@google/generative-ai';
+
+// Initialize Google Generative AI with API key
+const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GEMINI_API_KEY);
 
 const FDCalculator = () => {
   const [principal, setPrincipal] = useState('');
@@ -8,6 +12,8 @@ const FDCalculator = () => {
   const [maturityAmount, setMaturityAmount] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [aiAnalysis, setAiAnalysis] = useState('');
+  const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
   const calculateFD = () => {
     const principalAmount = parseFloat(principal);
@@ -38,7 +44,39 @@ const FDCalculator = () => {
       setInterestEarned(interest.toFixed(2));
       setMaturityAmount(maturity.toFixed(2));
       setLoading(false);
+
+      // Get AI Analysis after calculation
+      getAIAnalysis(principalAmount, interest, maturity, interestRate, timePeriod);
     }, 1500);
+  };
+
+  const getAIAnalysis = async (principalAmount, interest, maturity, interestRate, duration) => {
+    setIsLoadingAnalysis(true);
+    try {
+      const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+      const prompt = `As a financial advisor, analyze this Fixed Deposit investment:
+Principal Amount: ₹${principalAmount.toLocaleString()}
+Interest Rate: ${interestRate}% per annum
+Duration: ${duration} years
+Interest Earned: ₹${interest.toLocaleString()}
+Maturity Amount: ₹${maturity.toLocaleString()}
+
+Provide 4 key points (one line each):
+1. Compare this FD rate with current market rates
+2. Risk vs reward analysis
+3. Inflation impact on returns
+4. Quick tax implications for this FD`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      setAiAnalysis(response.text());
+    } catch (error) {
+      console.error("Error getting AI analysis:", error);
+      setAiAnalysis("Unable to generate analysis at this time. Please try again.");
+    } finally {
+      setIsLoadingAnalysis(false);
+    }
   };
 
   const clearAll = () => {
@@ -48,6 +86,7 @@ const FDCalculator = () => {
     setInterestEarned('');
     setMaturityAmount('');
     setError('');
+    setAiAnalysis('');
     setLoading(false);
   };
 
@@ -204,18 +243,36 @@ const FDCalculator = () => {
                   </div>
                 )}
                 
-                {/* Background Pattern */}
-                <div className="absolute top-0 left-0 w-full h-full pointer-events-none rounded-lg sm:rounded-xl opacity-5">
+                <div className="absolute inset-0 pointer-events-none opacity-5">
                   <div 
                     className="w-full h-full"
                     style={{
                       backgroundImage: 'linear-gradient(45deg, currentColor 25%, transparent 25%), linear-gradient(-45deg, currentColor 25%, transparent 25%)',
-                      backgroundSize: '8px 8px sm:10px sm:10px',
-                      backgroundPosition: '0 0, 0 4px sm:0 5px'
+                      backgroundSize: '8px 8px',
+                      backgroundPosition: '0 0, 0 4px'
                     }}
                   />
                 </div>
               </div>
+
+              {/* AI Analysis Section */}
+              {(aiAnalysis || isLoadingAnalysis) && (
+                <div className="mt-6 bg-black/10 p-6 rounded-xl border-2 border-black/20 shadow-lg">
+                  <div className="mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-black tracking-wide uppercase">FD Analysis</h3>
+                  </div>
+                  {isLoadingAnalysis ? (
+                    <div className="flex items-center gap-3 text-black">
+                      <div className="animate-spin h-5 w-5 border-2 border-black border-t-transparent rounded-full"></div>
+                      <span className="font-bold">Analyzing your FD investment...</span>
+                    </div>
+                  ) : (
+                    <div className="max-w-none">
+                      <p className="text-black text-base sm:text-lg font-bold leading-relaxed whitespace-pre-line">{aiAnalysis}</p>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
             
             {/* Decorative Elements */}
