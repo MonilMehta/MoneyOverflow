@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 // const isDevelopment = process.env.NODE_ENV === 'development';
-// const API = isDevelopment ? "http://localhost:8000/api" : "https://moneyoverflow-backend.onrender.com/api";
-const API = "http://localhost:8000/api";
+const API = "https://moneyoverflow-backend.onrender.com/api";
+// const API = "http://localhost:8000/api";
 
 export const axiosInstance = axios.create({
     baseURL: API,
